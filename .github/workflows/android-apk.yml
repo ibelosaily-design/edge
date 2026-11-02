@@ -1,0 +1,52 @@
+name: android-apk
+
+# Builds an installable Android APK of our fork on every push to the
+# `elosaily` branch (and on demand). No secrets needed: without a release
+# keystore the build falls back to debug signing, and without
+# google-services.json the Firebase plugins are not applied at all, so the
+# app runs fully local with no telemetry.
+
+on:
+  push:
+    branches: [elosaily]
+  workflow_dispatch:
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.41.6'   # pinned: the version upstream CI builds with
+          cache: true
+
+      - name: Write .env (fully local build, no cloud endpoints)
+        run: |
+          echo "COMPANION_URL=" > .env
+          echo "BACKEND_URL=" >> .env
+
+      - run: flutter pub get
+
+      - name: Build release APK (debug-signed, no Firebase)
+        run: flutter build apk --release --dart-define-from-file=.env
+
+      - name: Name the APK
+        run: |
+          mkdir -p dist
+          ver=$(grep -E '^version:' pubspec.yaml | awk '{print $2}')
+          cp build/app/outputs/flutter-apk/app-release.apk "dist/elosaily-strap-${ver}.apk"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: elosaily-strap-apk
+          path: dist/*.apk
+          retention-days: 30
