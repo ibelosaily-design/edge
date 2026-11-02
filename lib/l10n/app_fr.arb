@@ -2654,6 +2654,7 @@
   "sleepDetailDeviceMissingStages": "{label} ne signale pas {stages} ; ce temps est compté dans ses autres phases.",
   "tabToday": "Aujourd'hui",
   "tabSleep": "Sommeil",
+  "tabStudy": "Étude",
   "tabActivity": "Activité",
   "deviceUseScoresTitle": "Utiliser cet appareil pour les scores",
   "deviceUseWorkoutsTitle": "Utiliser pendant les entraînements",

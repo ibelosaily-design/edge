@@ -15390,6 +15390,10 @@
   "@tabSleep": {
     "description": "Bottom tab: last night, sleep plan, alarm and body clock."
   },
+  "tabStudy": "Study",
+  "@tabStudy": {
+    "description": "Bottom tab: SAT vocabulary, reading passages and stories (Elosaily build)."
+  },
   "tabActivity": "Activity",
   "@tabActivity": {
     "description": "Bottom tab: workouts, steps and food. Also the Activity screen title."

@@ -116,13 +116,14 @@ class C {
   static const domFood = orange;
   static const domMove = purple;
   static const domMind = teal;
+  static const domStudy = yellow;
 
   /// Every accent the contrast test sweeps. Adding a colour above without
   /// adding it here means it ships unverified.
   static const all = <Color>[
     green, greenD, blue, purple, orange, red, teal, yellow, pink, indigo,
     sky, blueSoft,
-    domHome, domSleep, domHealth, domFood, domMove, domMind,
+    domHome, domSleep, domHealth, domFood, domMove, domMind, domStudy,
   ];
 }
 

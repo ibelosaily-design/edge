@@ -2654,6 +2654,7 @@
   "sleepDetailDeviceMissingStages": "{label} {stages} नहीं बताता; वह समय उसके दूसरे चरणों में गिना जाता है।",
   "tabToday": "आज",
   "tabSleep": "नींद",
+  "tabStudy": "अध्ययन",
   "tabActivity": "गतिविधि",
   "deviceUseScoresTitle": "स्कोर के लिए यह डिवाइस इस्तेमाल करें",
   "deviceUseWorkoutsTitle": "वर्कआउट के दौरान इस्तेमाल करें",

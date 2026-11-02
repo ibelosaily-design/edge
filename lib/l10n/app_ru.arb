@@ -7369,6 +7369,7 @@
   },
   "tabToday": "Сегодня",
   "tabSleep": "Сон",
+  "tabStudy": "Учёба",
   "tabActivity": "Активность",
   "profileBandBattery": "Браслет {pct}%",
   "@profileBandBattery": {

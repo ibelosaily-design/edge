@@ -31,6 +31,7 @@ import 'ui2/screens/ai_briefing.dart';
 import 'ui2/screens/calm_breathing.dart';
 import 'ui2/screens/what_changed.dart';
 import 'ui2/screens/health_screen.dart';
+import 'ui2/study/study_screen.dart';
 import 'ui2/screens/home_screen.dart';
 import 'ui2/screens/journal_compose.dart';
 import 'ui2/screens/log_workout.dart';
@@ -623,6 +624,7 @@ class _ShellState extends State<_Shell> {
         ShellDomain.sleep => const SleepTab(),
         ShellDomain.activity => const WorkoutScreen(),
         ShellDomain.health => const HealthScreen(),
+        ShellDomain.study => const StudyScreen(),
       },
     );
   }

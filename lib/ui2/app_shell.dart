@@ -23,7 +23,10 @@ enum ShellDomain {
   today('Today', LucideIcons.house, C.domHome),
   sleep('Sleep', LucideIcons.moon, C.domSleep),
   activity('Activity', LucideIcons.dumbbell, C.domMove),
-  health('Health', LucideIcons.heartPulse, C.domHealth);
+  health('Health', LucideIcons.heartPulse, C.domHealth),
+  // Elosaily fork: the fifth tab the upstream header says not to add.
+  // Study is a destination of its own here, not a section of a health domain.
+  study('Study', LucideIcons.notebookPen, C.domStudy);
 
   const ShellDomain(this.label, this.icon, this.accent);
 
@@ -39,6 +42,7 @@ enum ShellDomain {
           ShellDomain.sleep => l?.tabSleep,
           ShellDomain.activity => l?.tabActivity,
           ShellDomain.health => l?.tabHealth,
+          ShellDomain.study => l?.tabStudy,
         } ??
         label;
   }

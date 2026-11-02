@@ -741,6 +741,8 @@ flutter:
     # Lucide glyph can't stand in for GitHub/Discord/Reddit's own logos.
     # Official simple-icons SVGs, single fill path, tinted at paint time.
     - assets/icons/
+    # Elosaily build: the SAT study pack (vocabulary, stories, passages).
+    - assets/study/
   # Both families are bundled, not fetched. google_fonts resolves a missing
   # family over HTTP to fonts.gstatic.com on first launch — before the user
   # has seen the consent screen, and contrary to PRIVACY.md. It also lets the

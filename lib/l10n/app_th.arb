@@ -15390,6 +15390,7 @@
   "@tabSleep": {
     "description": "Bottom tab: last night, sleep plan, alarm and body clock."
   },
+  "tabStudy": "เรียน",
   "tabActivity": "กิจกรรม",
   "@tabActivity": {
     "description": "Bottom tab: workouts, steps and food. Also the Activity screen title."
