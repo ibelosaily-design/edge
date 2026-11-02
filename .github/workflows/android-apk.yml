@@ -11,15 +11,18 @@ on:
     branches: [elosaily]
   workflow_dispatch:
 
+permissions:
+  contents: write   # to publish the APK on a GitHub Release
+
 jobs:
   apk:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           persist-credentials: false
 
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '17'
@@ -45,8 +48,22 @@ jobs:
           ver=$(grep -E '^version:' pubspec.yaml | awk '{print $2}')
           cp build/app/outputs/flutter-apk/app-release.apk "dist/elosaily-strap-${ver}.apk"
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: elosaily-strap-apk
           path: dist/*.apk
           retention-days: 30
+
+      # Publish the same APK on a rolling pre-release so it can be downloaded
+      # directly on a phone from the Releases page, no GitHub login needed.
+      - name: Publish rolling pre-release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: elosaily-latest
+          name: Elosaily Strap (latest build)
+          prerelease: true
+          files: dist/*.apk
+          body: |
+            Debug-signed APK built automatically from branch `elosaily`
+            (commit ${{ github.sha }}). Install on Android 8+; allow
+            "install from unknown sources" when prompted.
