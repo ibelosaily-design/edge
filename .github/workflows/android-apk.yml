@@ -14,6 +14,8 @@ on:
 jobs:
   apk:
     runs-on: ubuntu-24.04
+    permissions:
+      contents: write   # only to stash the APK on a private DRAFT release
     env:
       # Secrets cannot be used in `if:` directly; surface their presence here.
       HAS_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
@@ -77,3 +79,16 @@ jobs:
           name: elosaily-strap-apk
           path: dist/*.apk
           retention-days: 30
+
+      # Also stash the APK on a private DRAFT release (drafts are visible only
+      # to repo collaborators, never on the public Releases page). Artifacts
+      # can only be fetched through a browser login; a draft asset can be
+      # pulled with the API, which is how the file reaches the chat.
+      - name: Stash APK on a private draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="build-${{ github.run_number }}"
+          gh release create "$tag" --draft --title "CI build #${{ github.run_number }}" \
+            --notes "Automated build of ${{ github.sha }} (branch elosaily). Draft: not public." \
+            dist/*.apk
