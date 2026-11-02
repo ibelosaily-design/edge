@@ -6,6 +6,8 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
+import '../screens/coach.dart' show CoachScreen, CoachSetup, coachReady;
+import '../screens/home_screen.dart' show go;
 import '../ui2.dart';
 
 /// An Arabic paragraph: right-to-left, right-aligned, in [style].
@@ -120,3 +122,43 @@ class WhyCard extends StatelessWidget {
 
 /// A/B/C/D for an option index.
 String optionLetter(int i) => String.fromCharCode(65 + i);
+
+/// "اسأل المدرب" — opens the BYOK coach with a ready question about the
+/// item on screen, or the coach setup when no model is configured yet. The
+/// question is sent as the user's own turn, nothing is injected as trusted
+/// prose (see CoachScreen.initialMessage).
+class AskTutorButton extends StatelessWidget {
+  final String prompt;
+  const AskTutorButton({super.key, required this.prompt});
+
+  @override
+  Widget build(BuildContext c) {
+    final ready = coachReady(c);
+    return BigButton(
+      ready ? 'اسأل المدرب الذكي' : 'فعّل المدرب الذكي علشان يشرحلك',
+      icon: LucideIcons.sparkles,
+      color: C.purple,
+      soft: true,
+      onTap: () => go(
+        c,
+        ready
+            ? CoachScreen(initialMessage: prompt, startNewSession: true)
+            : const CoachSetup(),
+      ),
+    );
+  }
+}
+
+/// The tutor is asked in Egyptian Arabic and told to answer the same way.
+String tutorWordPrompt(String word, String def, String ex) =>
+    'أنا بذاكر كلمات SAT. اشرحلي كلمة "$word" بالعربي المصري ببساطة: '
+    'معناها، وإزاي أفتكرها، وجملتين مثال جداد غير دي: "$ex". '
+    '(التعريف الإنجليزي: $def)';
+
+String tutorPassagePrompt(String passage, String q, List<String> options,
+        int answer, int? chosen) =>
+    'ده سؤال SAT Reading & Writing. اشرحلي بالعربي المصري ليه الإجابة الصح هي '
+    '${optionLetter(answer)}${chosen != null && chosen != answer ? '، وليه اختياري ${optionLetter(chosen)} غلط' : ''}'
+    '، وإيه الطريقة اللي أحل بيها النوع ده بسرعة.\n\n'
+    'النص: $passage\n\nالسؤال: $q\n\n'
+    '${[for (var i = 0; i < options.length; i++) '${optionLetter(i)}. ${options[i]}'].join('\n')}';

@@ -159,6 +159,11 @@ class _PassageScreenState extends State<PassageScreen> {
         if (revealed) ...[
           const SizedBox(height: S.x2),
           WhyCard(correct: _chosen == b.answer, whyAr: b.whyAr),
+          const SizedBox(height: S.x3),
+          AskTutorButton(
+            prompt: tutorPassagePrompt(
+                b.passage, b.q, b.options, b.answer, _chosen),
+          ),
         ],
         if (b.trAr.isNotEmpty) ...[
           const SizedBox(height: S.x4),

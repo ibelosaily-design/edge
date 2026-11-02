@@ -14,6 +14,9 @@ on:
 jobs:
   apk:
     runs-on: ubuntu-24.04
+    env:
+      # Secrets cannot be used in `if:` directly; surface their presence here.
+      HAS_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
     steps:
       - uses: actions/checkout@v5
         with:
@@ -36,8 +39,32 @@ jobs:
 
       - run: flutter pub get
 
-      - name: Build release APK (debug-signed, no Firebase)
-        run: flutter build apk --release --dart-define-from-file=.env
+      # Release signing when the four ANDROID_* secrets are set on the repo
+      # (Settings → Secrets → Actions); otherwise the build falls back to
+      # debug signing, which installs fine but cannot update over a
+      # release-signed install (and vice versa).
+      - name: Restore release keystore
+        if: env.HAS_KEYSTORE == 'true'
+        env:
+          KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: echo "$KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/release.jks"
+
+      - name: Build release APK (no Firebase)
+        env:
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          # Gradle treats ANY value of ANDROID_KEYSTORE_PATH (even "") as
+          # "sign for release", so the variable is only exported when the
+          # keystore really exists.
+          if [ "$HAS_KEYSTORE" = "true" ]; then
+            export ANDROID_KEYSTORE_PATH="$RUNNER_TEMP/release.jks"
+            echo "Signing: release key"
+          else
+            echo "Signing: debug fallback (no ANDROID_KEYSTORE_BASE64 secret)"
+          fi
+          flutter build apk --release --dart-define-from-file=.env
 
       - name: Name the APK
         run: |

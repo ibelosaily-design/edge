@@ -134,6 +134,10 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
           ),
         ),
         const SizedBox(height: S.x4),
+        if (_flipped) ...[
+          AskTutorButton(prompt: tutorWordPrompt(w.word, w.def, w.ex)),
+          const SizedBox(height: S.x2),
+        ],
         if (_flipped)
           Row(children: [
             Expanded(
