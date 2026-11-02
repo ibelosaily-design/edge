@@ -35,25 +35,25 @@ import 'package:flutter/material.dart';
 /// [P.fill] (accent as a filled surface under [P.inkOnFill]) first.
 class C {
   // primary
-  static const green = Color(0xFF22C55E);
-  static const greenD = Color(0xFF16A34A);
-  static const blue = Color(0xFF3B82F6);
-  static const purple = Color(0xFF8B5CF6);
+  static const green = Color(0xFF3C9D66);
+  static const greenD = Color(0xFF2A7A4B);
+  static const blue = Color(0xFF4F74A8);
+  static const purple = Color(0xFF7A5AA6);
 
   // secondary
-  static const orange = Color(0xFFF97316);
-  static const red = Color(0xFFEF4444);
-  static const teal = Color(0xFF14B8A6);
-  static const yellow = Color(0xFFEAB308);
-  static const pink = Color(0xFFEC4899);
-  static const indigo = Color(0xFF6366F1);
+  static const orange = Color(0xFFC98A3A);
+  static const red = Color(0xFFB33A3A);
+  static const teal = Color(0xFF2F8C86);
+  static const yellow = Color(0xFFCDAA4F);
+  static const pink = Color(0xFFB96A80);
+  static const indigo = Color(0xFF4A5C9E);
 
   /// Two light blues the ramps need and nothing else does: the light-sleep
   /// lane sits between REM and deep, and zone 1 sits below `blue`. They live
   /// here rather than inside the painters because a palette that is partly in
   /// theme.dart and partly in charts.dart is two palettes.
-  static const sky = Color(0xFF7DD3FC);
-  static const blueSoft = Color(0xFF93C5FD);
+  static const sky = Color(0xFF9BBBDD);
+  static const blueSoft = Color(0xFFB3C7E4);
 
   /// The route ramp, and only the route ramp.
   ///
@@ -95,15 +95,15 @@ class C {
   static const mapCeil = Color(0xFF44536D);
 
   // neutrals
-  static const n900 = Color(0xFF0F172A);
-  static const n800 = Color(0xFF1E293B);
-  static const n600 = Color(0xFF475569);
-  static const n500 = Color(0xFF64748B);
-  static const n400 = Color(0xFF94A3B8);
-  static const n300 = Color(0xFFCBD5E1);
-  static const n200 = Color(0xFFE2E8F0);
-  static const n100 = Color(0xFFF1F5F9);
-  static const n50 = Color(0xFFF8FAFC);
+  static const n900 = Color(0xFF1A1A1C);
+  static const n800 = Color(0xFF2A2A2E);
+  static const n600 = Color(0xFF5C5850);
+  static const n500 = Color(0xFF7A756B);
+  static const n400 = Color(0xFFA39D91);
+  static const n300 = Color(0xFFCBC5B8);
+  static const n200 = Color(0xFFE2DCD0);
+  static const n100 = Color(0xFFEFEAE0);
+  static const n50 = Color(0xFFF6F2EA);
 
   static const white = Color(0xFFFFFFFF);
 
@@ -135,20 +135,20 @@ class P {
 
   static P of(BuildContext c) => P(Theme.of(c).brightness == Brightness.dark);
 
-  Color get bg => dark ? const Color(0xFF0B1017) : C.n50;
-  Color get card => dark ? const Color(0xFF151C26) : C.white;
-  Color get card2 => dark ? const Color(0xFF1D2632) : C.n100;
-  Color get line => dark ? const Color(0xFF232D3B) : C.n200;
-  Color get track => dark ? const Color(0xFF232D3B) : C.n200;
+  Color get bg => dark ? const Color(0xFF0D0E11) : C.n50;
+  Color get card => dark ? const Color(0xFF17181D) : const Color(0xFFFFFDF9);
+  Color get card2 => dark ? const Color(0xFF1F2127) : C.n100;
+  Color get line => dark ? const Color(0xFF2B2E36) : C.n200;
+  Color get track => dark ? const Color(0xFF2B2E36) : C.n200;
 
-  Color get ink => dark ? const Color(0xFFF1F5F9) : C.n900;
-  Color get ink2 => dark ? const Color(0xFF94A3B8) : C.n600;
+  Color get ink => dark ? const Color(0xFFF2EDE3) : C.n900;
+  Color get ink2 => dark ? const Color(0xFFB9B2A5) : C.n600;
 
   /// The muted caption ink. Hand-solved to clear 4.5:1 on [card2], the darkest
   /// (light theme) / lightest (dark theme) surface it can sit on — so it is
   /// legible on every surface, not just the one it was eyeballed against.
   /// The values it replaces measured 4.34:1 and 3.21:1 respectively.
-  Color get ink3 => dark ? const Color(0xFF7F8DA0) : const Color(0xFF627188);
+  Color get ink3 => dark ? const Color(0xFF8E887C) : const Color(0xFF6B665C);
 
   /// The ink that goes on top of a [fill]. White by construction — [fill]
   /// darkens the accent until white clears AA on it.
@@ -259,6 +259,15 @@ class F {
   static const _f = '.SF Pro Text';
   static const _fb = ['Manrope'];
   static const _tab = [FontFeature.tabularFigures()];
+  /// The hero numerals' face: a bundled serif (assets/fonts/CormorantGaramond,
+  /// OFL) so the readiness / strain / sleep figures read like a watch dial
+  /// rather than a dashboard. Lining + tabular figures: Cormorant's default
+  /// numerals are oldstyle and would bounce on the baseline.
+  static const _serif = 'Cormorant Garamond';
+  static const _serifNum = [
+    FontFeature.liningFigures(),
+    FontFeature.tabularFigures(),
+  ];
 
   // The 7 steps.
   static const display = TextStyle(
@@ -308,21 +317,21 @@ class F {
   // Numerals — a parallel display ramp. Tabular, so a live value never jitters
   // its own layout as digits change.
   static const n48 = TextStyle(
-      fontFamily: _f,
+      fontFamily: _serif,
       fontFamilyFallback: _fb,
       fontSize: 48,
       height: 1,
       fontWeight: FontWeight.w700,
-      letterSpacing: -1.8,
-      fontFeatures: _tab);
+      letterSpacing: -.5,
+      fontFeatures: _serifNum);
   static const n34 = TextStyle(
-      fontFamily: _f,
+      fontFamily: _serif,
       fontFamilyFallback: _fb,
       fontSize: 34,
       height: 1,
       fontWeight: FontWeight.w700,
-      letterSpacing: -1.2,
-      fontFeatures: _tab);
+      letterSpacing: -.3,
+      fontFeatures: _serifNum);
   static const n24 = TextStyle(
       fontFamily: _f,
       fontFamilyFallback: _fb,

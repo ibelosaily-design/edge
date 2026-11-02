@@ -754,6 +754,14 @@ flutter:
           weight: 700
         - asset: assets/fonts/BarlowCondensed/BarlowCondensed-ExtraBold.ttf
           weight: 800
+    # Hero numerals (F.n48 / F.n34): the "watch dial" face of the Elosaily
+    # build. Subset to Latin + digits; OFL.txt alongside.
+    - family: Cormorant Garamond
+      fonts:
+        - asset: assets/fonts/CormorantGaramond/CormorantGaramond-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/CormorantGaramond/CormorantGaramond-Bold.ttf
+          weight: 700
     - family: Manrope
       fonts:
         - asset: assets/fonts/Manrope/Manrope-400.ttf

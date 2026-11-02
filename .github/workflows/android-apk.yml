@@ -11,9 +11,6 @@ on:
     branches: [elosaily]
   workflow_dispatch:
 
-permissions:
-  contents: write   # to publish the APK on a GitHub Release
-
 jobs:
   apk:
     runs-on: ubuntu-24.04
@@ -53,17 +50,3 @@ jobs:
           name: elosaily-strap-apk
           path: dist/*.apk
           retention-days: 30
-
-      # Publish the same APK on a rolling pre-release so it can be downloaded
-      # directly on a phone from the Releases page, no GitHub login needed.
-      - name: Publish rolling pre-release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: elosaily-latest
-          name: Elosaily Strap (latest build)
-          prerelease: true
-          files: dist/*.apk
-          body: |
-            Debug-signed APK built automatically from branch `elosaily`
-            (commit ${{ github.sha }}). Install on Android 8+; allow
-            "install from unknown sources" when prompted.
