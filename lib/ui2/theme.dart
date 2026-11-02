@@ -317,6 +317,18 @@ class F {
 
   // Numerals — a parallel display ramp. Tabular, so a live value never jitters
   // its own layout as digits change.
+  /// The one hero size: the readiness figure in the middle of Home's dial.
+  /// An eighth numeral step, not an eighth type step — it is only ever one
+  /// number, and the dial is the one place the app spends this much on a
+  /// figure.
+  static const n64 = TextStyle(
+      fontFamily: _serif,
+      fontFamilyFallback: _fb,
+      fontSize: 64,
+      height: 1,
+      fontWeight: FontWeight.w700,
+      letterSpacing: -1,
+      fontFeatures: _serifNum);
   static const n48 = TextStyle(
       fontFamily: _serif,
       fontFamilyFallback: _fb,

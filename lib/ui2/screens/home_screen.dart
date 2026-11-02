@@ -28,6 +28,7 @@ import '../../l10n/date_text.dart';
 // only three of them and they are read together.
 
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -877,16 +878,11 @@ class RingTrio extends StatelessWidget {
             _RingRow(rings[i], onTap: _open(rings[i].kind)),
           ]
         else
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              for (var i = 0; i < rings.length; i++) ...[
-                if (i > 0) const SizedBox(width: S.x3),
-                Expanded(
-                    child: _RingColumn(rings[i], onTap: _open(rings[i].kind))),
-              ],
-            ],
-          ),
+          // ONE FACE, not three rings in a row. Recovery is the dial, strain
+          // and sleep are its two sub-dials — the way a chronograph puts the
+          // minute and hour registers inside the main face. The same three
+          // states, the same three doors; only the geometry changed.
+          _Face(rings, open: _open),
         for (final r in gaps) ...[
           const SizedBox(height: S.x2),
           Divider(color: p.line, height: 1),
@@ -996,10 +992,15 @@ class _RingState {
     this.need,
     this.why,
     this.provisional = false,
+    this.minutes,
   });
 
   /// A number that may still move (the night is still draining), drawn grey.
   final bool provisional;
+
+  /// The sleep ring's duration in minutes, next to its formatted [value] —
+  /// the face's register has no room for "7h 45m" and prints it as 7:45.
+  final num? minutes;
 
   /// A number the ring is actually reporting. Calibration is progress, not a
   /// reading, so it is not one.
@@ -1082,7 +1083,8 @@ _RingState _ringOf(HomeRingKind k, HomeData d, AppLocalizations? l) {
               sub: need == null
                   ? (l?.homeSleepNoTarget ?? 'No target yet')
                   : (l?.homeOfSpan(hm(need)) ?? 'of ${hm(need)}'),
-              frac: need == null || need <= 0 ? null : v / need);
+              frac: need == null || need <= 0 ? null : v / need,
+              minutes: v);
   }
 }
 
@@ -1116,6 +1118,321 @@ _RingState _gap(HomeRingKind k, String label, IconData icon, Color color,
               : (l?.homeGapNoReason ?? 'Nothing recorded says why this is missing.')));
 }
 
+/// The home face: recovery as the main dial, strain and sleep as its two
+/// sub-dials, drawn as one instrument rather than three charts.
+///
+/// Geometry is in units of the face's half-side so one set of constants
+/// serves every width. Sub-dial centres sit at (±[_subX], [_subY]); each is a
+/// door of its own, on top of the face so its tap wins over the face's.
+class _Face extends StatelessWidget {
+  final List<_RingState> rings;
+  final VoidCallback? Function(HomeRingKind) open;
+
+  const _Face(this.rings, {required this.open});
+
+  /// Widest the face gets. Past this the hero numeral stops reading as a
+  /// number on a dial and starts reading as a poster.
+  static const _maxSide = 272.0;
+  static const _subX = .40, _subY = .36, _subR = .20;
+
+  /// The hero block's box, as fractions of the side: a band across the upper
+  /// face, bottom-aligned so the figure sits just above centre and its band
+  /// word ends clear of the sub-dials below.
+  static const _numInset = .19, _numTop = .10, _numH = .46;
+
+  @override
+  Widget build(BuildContext c) {
+    final p = P.of(c);
+    final rec = rings[HomeRingKind.recovery.index];
+    final strain = rings[HomeRingKind.strain.index];
+    final sleep = rings[HomeRingKind.sleep.index];
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: _maxSide),
+        child: AspectRatio(
+          aspectRatio: 1,
+          child: LayoutBuilder(builder: (c, box) {
+            final side = box.maxWidth;
+            final sub = _subR * side; // sub-dial diameter
+            return Stack(children: [
+              Positioned.fill(
+                child: Pressable(
+                  onTap: open(rec.kind),
+                  semanticLabel: rec.spoken,
+                  child: CustomPaint(
+                    size: Size.infinite,
+                    painter: _FacePainter(
+                      p: p,
+                      recovery: rec,
+                      strain: strain,
+                      sleep: sleep,
+                      t: animate(c, 1),
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                left: _numInset * side,
+                right: _numInset * side,
+                top: _numTop * side,
+                height: _numH * side,
+                // A FittedBox so the block can only ever shrink, never spill:
+                // at the top of the non-accessibility scale range the figure
+                // plus a two-line band word is a hair taller than the box.
+                child: IgnorePointer(
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.bottomCenter,
+                    child: SizedBox(
+                      width: (1 - 2 * _numInset) * side,
+                      child: _FaceNumber(rec),
+                    ),
+                  ),
+                ),
+              ),
+              Align(
+                alignment: const Alignment(-_subX, _subY),
+                child: _SubDial(strain, side: sub, onTap: open(strain.kind)),
+              ),
+              Align(
+                alignment: const Alignment(_subX, _subY),
+                child: _SubDial(sleep, side: sub, onTap: open(sleep.kind)),
+              ),
+            ]);
+          }),
+        ),
+      ),
+    );
+  }
+}
+
+/// The hero figure and its one-word band under it. Absent reads as words in
+/// the sentence weight, the same rule as [_RingText].
+class _FaceNumber extends StatelessWidget {
+  final _RingState r;
+
+  const _FaceNumber(this.r);
+
+  @override
+  Widget build(BuildContext c) {
+    final p = P.of(c);
+    final l = AppLocalizations.of(c);
+    final measured = r.measured;
+    return Column(mainAxisSize: MainAxisSize.min, children: [
+      Text(
+        presentationText(l, r.value),
+        textAlign: TextAlign.center,
+        style: measured
+            ? F.n64.copyWith(color: r.provisional ? p.ink3 : p.ink)
+            : F.body.copyWith(color: p.ink2),
+      ),
+      if (r.sub.isNotEmpty) ...[
+        const SizedBox(height: S.x1),
+        Text(
+          presentationText(l, r.sub),
+          // The band word in the dial's own metal: the one piece of type on
+          // Home in the index colour, so it reads as the verdict, not a label.
+          style: F.cap.copyWith(
+              color: measured && !r.provisional ? p.on(C.yellow) : p.ink3,
+              fontWeight: FontWeight.w600),
+          textAlign: TextAlign.center,
+        ),
+      ],
+    ]);
+  }
+}
+
+/// One register: the label above, the figure below, inside the ring the
+/// painter drew under it. Short by construction — a register is too small
+/// for a duration, so sleep shows the share of its need when it has one.
+class _SubDial extends StatelessWidget {
+  final _RingState r;
+  final double side;
+  final VoidCallback? onTap;
+
+  const _SubDial(this.r, {required this.side, this.onTap});
+
+  @override
+  Widget build(BuildContext c) {
+    final p = P.of(c);
+    final l = AppLocalizations.of(c);
+    return SizedBox(
+      width: side,
+      height: side,
+      child: Pressable(
+        onTap: onTap,
+        semanticLabel: r.spoken,
+        child: Center(
+          // Both lines scale down rather than spill: "Нагрузка" is wider
+          // than a register on a 320 pt phone, and the register's size is
+          // the face's, not the word's.
+          child: Column(mainAxisSize: MainAxisSize.min, children: [
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(r.label, style: F.over.copyWith(color: p.ink3)),
+            ),
+            const SizedBox(height: 2),
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                presentationText(l, _subValue(r)),
+                style: F.n17.copyWith(color: r.ink(p)),
+              ),
+            ),
+          ]),
+        ),
+      ),
+    );
+  }
+
+  /// The figure a register can hold: strain as is, calibration as
+  /// "have/need", sleep as the share of its need (or h:mm with no need),
+  /// absence as nothing — the gap row under the face carries the words.
+  static String _subValue(_RingState r) {
+    if (r.why != null) return '';
+    if (r.calibrating) return '${r.have}/${r.need}';
+    if (r.kind == HomeRingKind.sleep) {
+      final f = r.frac;
+      if (f != null) return '${(f * 100).round()}%';
+      if (r.minutes case final num m) {
+        final min = m.round();
+        return '${min ~/ 60}:${(min % 60).toString().padLeft(2, '0')}';
+      }
+    }
+    return r.value;
+  }
+}
+
+/// The instrument: a disc with a hairline bezel and sixty ticks, a gold index
+/// at twelve, the recovery ring, and the two registers' tracks and arcs. Text
+/// is NOT painted here — it is laid out by [_Face] over the painting so it
+/// scales and localises like every other piece of type.
+class _FacePainter extends CustomPainter {
+  final P p;
+  final _RingState recovery, strain, sleep;
+  final double t;
+
+  _FacePainter(
+      {required this.p,
+      required this.recovery,
+      required this.strain,
+      required this.sleep,
+      required this.t});
+
+  @override
+  void paint(Canvas cv, Size s) {
+    final c = Offset(s.width / 2, s.height / 2);
+    final h = math.min(s.width, s.height) / 2;
+    if (h <= 0) return;
+    final gold = C.yellow;
+
+    // Disc and bezel.
+    cv.drawCircle(
+      c,
+      h * .98,
+      Paint()
+        ..shader = RadialGradient(
+          center: const Alignment(0, -.1),
+          colors: [p.card2, p.card],
+        ).createShader(Rect.fromCircle(center: c, radius: h)),
+    );
+    cv.drawCircle(
+      c,
+      h * .98,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1
+        ..color = gold.withValues(alpha: .55),
+    );
+
+    // Sixty ticks, every fifth longer, in the muted ink.
+    final tick = Paint()
+      ..strokeWidth = 1
+      ..strokeCap = StrokeCap.round
+      ..color = p.ink3.withValues(alpha: .55);
+    for (var i = 0; i < 60; i++) {
+      final a = i * math.pi / 30 - math.pi / 2;
+      final inner = i % 5 == 0 ? .86 : .885;
+      cv.drawLine(_at(c, h * inner, a), _at(c, h * .92, a), tick);
+    }
+    // The index at twelve, in the metal.
+    cv.drawLine(
+      _at(c, h * .905, -math.pi / 2),
+      _at(c, h * .845, -math.pi / 2),
+      Paint()
+        ..strokeWidth = 2.5
+        ..strokeCap = StrokeCap.round
+        ..color = gold,
+    );
+
+    _ring(cv, c, h * .80, h * .07, recovery);
+    _ring(cv, c + Offset(-_Face._subX * h, _Face._subY * h), _Face._subR * h,
+        h * .035, strain);
+    _ring(cv, c + Offset(_Face._subX * h, _Face._subY * h), _Face._subR * h,
+        h * .035, sleep);
+  }
+
+  /// One track and whatever arc is honest on it: solid for a measurement,
+  /// faded for a provisional one, dashes filling night by night while a
+  /// baseline calibrates, nothing at all for an absence.
+  void _ring(Canvas cv, Offset c, double r, double stroke, _RingState s) {
+    cv.drawCircle(
+      c,
+      r,
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = stroke
+        ..color = p.track,
+    );
+    final f = s.frac;
+    if (f == null) return;
+    final rect = Rect.fromCircle(center: c, radius: r);
+    final paint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = stroke
+      ..strokeCap = StrokeCap.round
+      ..color = s.arc(p);
+    if (s.calibrating && s.need != null && s.need! > 0) {
+      // One dash per night the baseline needs, [have] of them filled. Butt
+      // caps: round ones would eat the gap between dashes at this size.
+      paint.strokeCap = StrokeCap.butt;
+      final n = s.need!;
+      final gap = math.min(.08, math.pi / n / 3);
+      final span = 2 * math.pi / n - gap;
+      for (var i = 0; i < (s.have ?? 0).clamp(0, n); i++) {
+        cv.drawArc(rect, -math.pi / 2 + i * (span + gap), span, false, paint);
+      }
+      return;
+    }
+    final sweep = 2 * math.pi * f.clamp(0.0, 1.0) * t.clamp(0.0, 1.0);
+    if (sweep <= 0) return;
+    if (!s.measured || s.provisional) {
+      paint.color = s.arc(p).withValues(alpha: .55);
+    }
+    cv.drawArc(rect, -math.pi / 2, sweep, false, paint);
+  }
+
+  static Offset _at(Offset c, double r, double a) =>
+      c + Offset(r * math.cos(a), r * math.sin(a));
+
+  @override
+  bool shouldRepaint(covariant _FacePainter o) =>
+      o.p.dark != p.dark ||
+      o.t != t ||
+      !_same(o.recovery, recovery) ||
+      !_same(o.strain, strain) ||
+      !_same(o.sleep, sleep);
+
+  static bool _same(_RingState a, _RingState b) =>
+      a.frac == b.frac &&
+      a.calibrating == b.calibrating &&
+      a.provisional == b.provisional &&
+      a.have == b.have &&
+      a.need == b.need &&
+      a.color == b.color &&
+      a.why == b.why;
+}
+
 /// The dial itself. An empty [frac] draws the track and nothing else — which is
 /// exactly what [Ring] already does with a zero sweep.
 class _Dial extends StatelessWidget {
@@ -1144,33 +1461,6 @@ class _Dial extends StatelessWidget {
       Icon(r.icon, size: icon, color: r.ink(p)),
     ]);
   }
-}
-
-/// The default: three across, the number under the ring rather than inside it.
-/// Inside is where a duration overflows its own circle at the first
-/// accessibility step, and nothing about "7h 45m" gets shorter.
-class _RingColumn extends StatelessWidget {
-  final _RingState r;
-  final VoidCallback? onTap;
-
-  const _RingColumn(this.r, {this.onTap});
-
-  @override
-  Widget build(BuildContext c) => Pressable(
-        onTap: onTap,
-        semanticLabel: r.spoken,
-        child: Column(children: [
-          ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 96),
-            child: AspectRatio(
-              aspectRatio: 1,
-              child: _Dial(r, stroke: 7, icon: 20),
-            ),
-          ),
-          const SizedBox(height: S.x3),
-          _RingText(r, align: TextAlign.center),
-        ]),
-      );
 }
 
 /// The accessibility layout: ring left, type in the width it needs.
