@@ -901,6 +901,24 @@ class _SleepDetailState extends State<SleepDetail> with RevisionReload {
         const SizedBox(height: S.x1),
         Text(l?.sleepDetailTotalSleep ?? 'Total sleep',
             style: F.cap.copyWith(color: p.ink3)),
+        // Against the need — but only on the night the need belongs to. The
+        // need comes from today's cross-day rollup, so under an older night
+        // it would be some other night's target.
+        if (_ofNeed(tst, d) case (final double frac, final num need)) ...[
+          const SizedBox(height: S.x3),
+          ClipRRect(
+            borderRadius: R.rPill,
+            child: LinearProgressIndicator(
+              value: frac,
+              minHeight: S.x1,
+              backgroundColor: p.track,
+              color: p.on(C.indigo),
+            ),
+          ),
+          const SizedBox(height: S.x1),
+          Text(l?.homeOfSpan(hm(need)) ?? 'of ${hm(need)}',
+              style: F.cap.copyWith(color: p.ink3)),
+        ],
         if (from.isNotEmpty && to.isNotEmpty) ...[
           const SizedBox(height: S.x4),
           Row(children: [
@@ -938,6 +956,15 @@ class _SleepDetailState extends State<SleepDetail> with RevisionReload {
         ],
       ]),
     );
+  }
+
+  /// Total sleep as a share of the need, clamped to a full bar, with the
+  /// need itself — or null when either is missing or the need is not this
+  /// night's (it comes from today's rollup).
+  static (double, num)? _ofNeed(num? tst, SleepData d) {
+    final need = d.isLatestNight ? d.need.value : null;
+    if (tst == null || need == null || need <= 0) return null;
+    return ((tst / need).clamp(0.0, 1.0).toDouble(), need);
   }
 
   /// Where this night's window came from, and the user's say over it.
