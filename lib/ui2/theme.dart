@@ -258,7 +258,9 @@ class P {
 /// silently landing on Roboto.
 class F {
   static const _f = '.SF Pro Text';
-  static const _fb = ['Manrope'];
+  // Arabic glyphs come from IBM Plex Sans Arabic; Manrope and the platform
+  // face have none, and a system Arabic fallback would not match the rest.
+  static const _fb = ['Manrope', 'IBM Plex Sans Arabic'];
   static const _tab = [FontFeature.tabularFigures()];
   /// The hero numerals' face: a bundled serif (assets/fonts/CormorantGaramond,
   /// OFL) so the readiness / strain / sleep figures read like a watch dial
