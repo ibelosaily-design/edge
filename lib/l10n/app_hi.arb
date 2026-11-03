@@ -760,6 +760,7 @@
   "journalComposeIncrease": "बढ़ाएँ",
   "journalComposeDecrease": "घटाएँ",
   "journalComposeWeightLabel": "वज़न",
+  "journalComposeWaistLabel": "कमर",
   "journalComposeNotEntered": "दर्ज नहीं किया गया",
   "journalComposeEnteredNotMeasured": "{value} · दर्ज किया गया, मापा नहीं गया",
   "journalComposeEnterWeight": "वज़न दर्ज करें",

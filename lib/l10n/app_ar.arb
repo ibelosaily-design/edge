@@ -782,6 +782,7 @@
   "journalComposeIncrease": "زوّد",
   "journalComposeDecrease": "قلّل",
   "journalComposeWeightLabel": "الوزن",
+  "journalComposeWaistLabel": "الوسط",
   "journalComposeNotEntered": "مش مكتوب",
   "journalComposeEnteredNotMeasured": "{value} · مكتوب، مش متقاس",
   "journalComposeEnterWeight": "اكتب الوزن",

@@ -760,6 +760,7 @@
   "journalComposeIncrease": "Augmenter",
   "journalComposeDecrease": "Diminuer",
   "journalComposeWeightLabel": "Poids",
+  "journalComposeWaistLabel": "Tour de taille",
   "journalComposeNotEntered": "Non renseigné",
   "journalComposeEnteredNotMeasured": "{value} · saisi, non mesuré",
   "journalComposeEnterWeight": "Saisir le poids",

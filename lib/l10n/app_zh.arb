@@ -760,6 +760,7 @@
   "journalComposeIncrease": "增加",
   "journalComposeDecrease": "减少",
   "journalComposeWeightLabel": "体重",
+  "journalComposeWaistLabel": "腰围",
   "journalComposeNotEntered": "未输入",
   "journalComposeEnteredNotMeasured": "{value} · 手动输入，非测量值",
   "journalComposeEnterWeight": "输入体重",

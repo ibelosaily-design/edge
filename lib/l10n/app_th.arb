@@ -3782,6 +3782,7 @@
     "description": "Accessibility label for the stepper's decrease button."
   },
   "journalComposeWeightLabel": "น้ำหนัก",
+  "journalComposeWaistLabel": "รอบเอว",
   "@journalComposeWeightLabel": {
     "description": "Label for the weight row in the journal, and fallback name for the weight field used in error messages."
   },

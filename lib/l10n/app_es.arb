@@ -760,6 +760,7 @@
   "journalComposeIncrease": "Aumentar",
   "journalComposeDecrease": "Disminuir",
   "journalComposeWeightLabel": "Peso",
+  "journalComposeWaistLabel": "Cintura",
   "journalComposeNotEntered": "Sin registrar",
   "journalComposeEnteredNotMeasured": "{value} · introducido, no medido",
   "journalComposeEnterWeight": "Introducir peso",

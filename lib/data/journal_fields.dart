@@ -222,6 +222,17 @@ const kJournalFields = <JournalFieldSpec>[
     max: 400,
     step: 0.1,
   ),
+  // Waist, for the same reason weight is here: a slow trend the user enters
+  // by hand, against a tape measure. Same ceiling as weight — entered, never
+  // measured; no goal, no colour, no body-fat estimate from it.
+  JournalFieldSpec(
+    key: 'waist_cm',
+    label: 'Waist',
+    kind: JournalFieldKind.dose,
+    unit: 'cm',
+    max: 250,
+    step: 0.5,
+  ),
 ];
 
 /// Outcome lag per journal field, keyed by THIS app's field keys (MIND-02).

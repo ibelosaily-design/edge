@@ -135,6 +135,7 @@ String localizedText(AppLocalizations? l, String text) {
     "lb" => l.presentationLb,
     "in" => l.presentationIn,
     "Weight" => l.journalComposeWeightLabel,
+    "Waist" => l.journalComposeWaistLabel,
     "Screens before bed" => l.presentationScreensBeforeBed,
     "Soreness" => l.presentationSoreness,
     "Alcohol" => l.presentationAlcohol,

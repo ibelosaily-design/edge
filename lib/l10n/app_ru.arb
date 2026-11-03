@@ -1641,6 +1641,7 @@
   "journalComposeIncrease": "Увеличить",
   "journalComposeDecrease": "Уменьшить",
   "journalComposeWeightLabel": "Вес",
+  "journalComposeWaistLabel": "Талия",
   "journalComposeNotEntered": "Не указано",
   "journalComposeEnteredNotMeasured": "{value} · введено вручную, не измерено",
   "@journalComposeEnteredNotMeasured": {

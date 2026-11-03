@@ -797,6 +797,7 @@
   "journalComposeIncrease": "Erhöhen",
   "journalComposeDecrease": "Verringern",
   "journalComposeWeightLabel": "Gewicht",
+  "journalComposeWaistLabel": "Taille",
   "journalComposeNotEntered": "Nicht eingetragen",
   "journalComposeEnteredNotMeasured": "{value} · eingegeben, nicht gemessen",
   "journalComposeEnterWeight": "Gewicht eingeben",
