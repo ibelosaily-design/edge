@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../study/study_data.dart';
+import '../../study/sat_plan.dart';
 import '../../study/study_progress.dart';
 import '../profile/profile.dart' show ProfileAvatar;
 import '../screens/home_screen.dart' show pad;
@@ -58,8 +59,13 @@ class _StudyScreenState extends State<StudyScreen> {
   List<Widget> _body(BuildContext c, P p, StudyPack pack) {
     final prog = StudyProgress.load();
     final ids = [for (final w in pack.words) w.id];
+    final sat = SatPlan.load();
+    final satPhase = sat.phase();
     final due = prog.dueToday(ids);
-    final fresh = prog.newToday(ids);
+    // The day before and the day of the exam: review only, nothing new.
+    final fresh = satPhase == SatPhase.eve || satPhase == SatPhase.testDay
+        ? <String>[]
+        : prog.newToday(ids);
     final session = [...due, ...fresh];
     final today = prog.today();
     final streak = prog.streak();
@@ -72,6 +78,8 @@ class _StudyScreenState extends State<StudyScreen> {
         pack.stories.where((s) => !prog.storiesRead.contains(s.id)).firstOrNull;
 
     return [
+      _SatCard(plan: sat, onChanged: () => setState(() {})),
+      const SizedBox(height: S.x3),
       // ── today ──
       Surface(
         child: Column(
@@ -237,5 +245,126 @@ class _StudyScreenState extends State<StudyScreen> {
             Icon(LucideIcons.chevronRight, size: 18, color: p.ink3),
           ]),
         ),
+      );
+}
+
+
+/// The SAT plan card: the exam date, the phase, and tonight's schedule. Every
+/// figure on it comes from the date and wake time the user entered — none of
+/// it is a reading from the band.
+class _SatCard extends StatelessWidget {
+  final SatPlan plan;
+  final VoidCallback onChanged;
+
+  const _SatCard({required this.plan, required this.onChanged});
+
+  Future<void> _pickDate(BuildContext c) async {
+    final now = DateTime.now();
+    final current = plan.examDay == null ? null : DateTime.parse(plan.examDay!);
+    final picked = await showDatePicker(
+      context: c,
+      initialDate: current != null && !current.isBefore(now) ? current : now,
+      firstDate: DateTime(now.year, now.month, now.day),
+      lastDate: DateTime(now.year + 2, 12, 31),
+      helpText: 'ميعاد امتحان الـSAT',
+    );
+    if (picked == null) return;
+    SatPlan.saveExamDay(picked);
+    onChanged();
+  }
+
+  Future<void> _pickWake(BuildContext c) async {
+    final m = plan.usualWakeMin;
+    final picked = await showTimePicker(
+      context: c,
+      initialTime: TimeOfDay(hour: m ~/ 60, minute: m % 60),
+      helpText: 'بتصحى إمتى عادةً؟',
+    );
+    if (picked == null) return;
+    SatPlan.saveUsualWake(picked.hour * 60 + picked.minute);
+    onChanged();
+  }
+
+  @override
+  Widget build(BuildContext c) {
+    final p = P.of(c);
+    final phase = plan.phase();
+    final left = plan.daysLeft();
+    final (title, body) = switch (phase) {
+      SatPhase.unset => (
+          'خطة الـSAT',
+          'حدد ميعاد امتحانك، والتطبيق يرتبلك المراجعة والنوم لحد يومه.'
+        ),
+      SatPhase.build => (
+          'باقي $left يوم',
+          'دلوقتي وقت البناء: كلمات كل يوم، وقطعة قراءة، ونوم في ميعاد ثابت. '
+              'النوم بعد المذاكرة هو اللي بيثبت اللي حفظته.'
+        ),
+      SatPhase.ramp => (
+          'باقي $left يوم',
+          'الامتحان الصبح بدري، فبنقدّم صحيانك شوية كل يوم لحد '
+              '${SatPlan.clock(SatPlan.testWakeMin)} يوم الامتحان.'
+        ),
+      SatPhase.eve => (
+          'بكرة الامتحان',
+          'مفيش كلمات جديدة النهارده. مراجعة خفيفة بس، جهّز ورقك وبطاقتك، ونام بدري.'
+        ),
+      SatPhase.testDay => (
+          'النهارده الامتحان',
+          'الأبواب بتفتح 7:45. افطر كويس، وماتذاكرش حاجة جديدة.'
+        ),
+      SatPhase.done => (
+          'الامتحان عدّى',
+          'لو فيه امتحان تاني، حدد ميعاده.'
+        ),
+    };
+    final showSchedule =
+        phase == SatPhase.build || phase == SatPhase.ramp || phase == SatPhase.eve;
+    return Surface(
+      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        Row(children: [
+          Expanded(
+              child: ArText(title, style: F.head.copyWith(color: p.ink))),
+          if (plan.examDay != null)
+            Pill(plan.examDay!, C.yellow, icon: LucideIcons.calendar),
+        ]),
+        const SizedBox(height: S.x2),
+        ArText(body, style: F.body.copyWith(color: p.ink2)),
+        if (showSchedule) ...[
+          const SizedBox(height: S.x4),
+          Row(children: [
+            _slot(p, SatPlan.clock(plan.bedtimeMin()), 'نوم الليلة'),
+            _slot(p, SatPlan.clock(plan.targetWakeMin()), 'صحيان بكرة'),
+            _slot(p, SatPlan.clock(plan.caffeineCutoffMin()), 'آخر قهوة'),
+          ]),
+        ],
+        const SizedBox(height: S.x4),
+        BigButton(
+          plan.examDay == null ? 'حدد ميعاد الامتحان' : 'غيّر الميعاد',
+          icon: LucideIcons.calendar,
+          color: C.yellow,
+          soft: plan.examDay != null,
+          onTap: () => _pickDate(c),
+        ),
+        if (plan.examDay != null) ...[
+          const SizedBox(height: S.x2),
+          BigButton(
+            'صحيانك المعتاد: ${SatPlan.clock(plan.usualWakeMin)}',
+            icon: LucideIcons.alarmClock,
+            color: C.blue,
+            soft: true,
+            onTap: () => _pickWake(c),
+          ),
+        ],
+      ]),
+    );
+  }
+
+  Widget _slot(P p, String time, String label) => Expanded(
+        child: Column(children: [
+          Text(time, style: F.n34.copyWith(color: p.ink)),
+          const SizedBox(height: 2),
+          ArText(label, style: F.cap.copyWith(color: p.ink3)),
+        ]),
       );
 }
