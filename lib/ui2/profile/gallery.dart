@@ -59,6 +59,7 @@ import '../onboarding/welcome.dart' show ImportOutcome, ImportReport;
 // Screens are deliberately not re-exported from the ui2 barrel (see the
 // barrel test), so their components are imported by path.
 import '../screens/screens.dart';
+import '../study/study_shared.dart';
 import '../ui2.dart';
 import 'devices.dart';
 import 'profile.dart';
@@ -808,6 +809,38 @@ Map<String, Widget> extraCases() => {
       // sentence. Two of the three rings are last night's and the third is
       // today's, and the morning before the first sync is not a rare case.
       'rings_held_over': const RingTrio(d: _ringsHeldOver),
+      // Study: the four pieces every drill screen is built from. The two
+      // option states that matter are the revealed ones — the right answer
+      // chosen, and a wrong one chosen with the right one shown beside it.
+      'study_option_rows': const Column(children: [
+        OptionRow(
+            letter: 'A',
+            text: 'The author concedes the point before refuting it.',
+            chosen: true,
+            correct: true,
+            revealed: true),
+        SizedBox(height: S.x2),
+        OptionRow(
+            letter: 'B',
+            text: 'The passage shifts from description to argument.',
+            chosen: true,
+            correct: false,
+            revealed: true),
+        SizedBox(height: S.x2),
+        OptionRow(
+            letter: 'C',
+            text: 'An unchosen option, not yet revealed.',
+            chosen: false,
+            correct: false,
+            revealed: false),
+      ]),
+      'study_why_card': const WhyCard(
+          correct: false,
+          whyAr: 'الإجابة الصحيحة هي A لأن الكاتب يعترف بالنقطة أولاً ثم يردّ عليها.'),
+      'study_ar_text': const ArText(
+          'كلمة اليوم: ubiquitous — موجود في كل مكان.',
+          style: F.body),
+      'study_ask_tutor': const AskTutorButton(prompt: 'Explain "ubiquitous".'),
       // THE ABSENCE THAT KNOWS WHY. `wearGapWhy` reads the day's off-wrist
       // stretches — written on every derive, read by nothing until now — and
       // hands the card the reason as a measurement. Both rankings, because the

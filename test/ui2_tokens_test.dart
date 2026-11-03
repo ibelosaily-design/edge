@@ -193,6 +193,13 @@ void main() {
 /// this list fails the test above, so the choice has to be made rather than
 /// drifted into.
 const _notComponents = {
+  // Study routes: the tab reads the bundled packs and the Leitner progress
+  // blob on init and every drill screen owns a session over them, so a
+  // gallery case would read assets and write Prefs from a screenshot sweep.
+  // The components they are built from (ArText, OptionRow, WhyCard,
+  // AskTutorButton) are in the gallery.
+  'StudyScreen', 'FlashcardsScreen', 'PassageListScreen', 'PassageScreen',
+  'StoryListScreen', 'StoryScreen',
   // shell and routing
   'AppShell', 'Domain', 'GalleryScreen',
   // WHOOP MG ECG routes: the Heart Screener entry reads the database and

@@ -410,6 +410,12 @@ void main() {
       final tile = find.text(label);
       await t.scrollUntilVisible(tile, 300,
           scrollable: find.byType(Scrollable).first);
+      // The tile is BUILT as soon as the column is (scrollUntilVisible stops
+      // there), but on the harness's 600 pt view the home face above the
+      // tiles pushes the second row of them below the fold: bring it on
+      // screen before tapping it.
+      await t.ensureVisible(tile);
+      await _settle(t);
       await t.tap(tile);
       await _settle(t);
 
