@@ -2030,6 +2030,7 @@
   "activitySummarySomeSetsNoLoadTitle": "Algunas series no tenían carga",
   "activitySummarySomeSetsNoLoadBody": "Contadas en series y repeticiones, pero excluidas del volumen.",
   "activitySummaryScore": "Marcador",
+  "activitySummarySetHeart": "media {avg} · minuto máx. {peak}",
   "activitySummaryGameSetLabel": "Set {n}",
   "activitySummaryNoSplitsTitle": "No hay parciales para esta sesión",
   "activitySummaryNoSplitsBody": "Los parciales necesitan una distancia registrada.",

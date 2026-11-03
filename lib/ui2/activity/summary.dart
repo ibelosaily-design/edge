@@ -18,6 +18,7 @@
 // come from elsewhere (`workout_route`, `strength_set`) or not at all, and the
 // screen has to be honest about it without falling apart.
 
+import '../../compute/match_sets.dart';
 import '../../l10n/display_text.dart';
 import '../../state/locale_controller.dart';
 import 'package:intl/intl.dart';
@@ -328,6 +329,10 @@ class ActivityResult {
   // match
   final List<(int, int)> gameScore;
 
+  /// Elapsed second each closed set ended at; empty for a session recorded
+  /// before set ends were stamped.
+  final List<int> gameSetEndsSec;
+
   const ActivityResult(
     this.activity, {
     required this.start,
@@ -364,6 +369,7 @@ class ActivityResult {
     this.poses = const [],
     this.breathsPerMin,
     this.gameScore = const [],
+    this.gameSetEndsSec = const [],
   });
 
   /// A copy carrying the things a session can only learn after it ends — the
@@ -431,6 +437,7 @@ class ActivityResult {
         poses: poses,
         breathsPerMin: breathsPerMin,
         gameScore: gameScore,
+        gameSetEndsSec: gameSetEndsSec,
       );
 
   Arch get arch => archOf(activity);
@@ -1860,6 +1867,8 @@ class _ActivitySummaryState extends State<ActivitySummary> {
         return const [];
 
       case Arch.match:
+        final setHr = setHeartRates(r.hr, r.gameSetEndsSec,
+            r.gameScore.length, r.duration.inSeconds);
         return [
           if (r.gameScore.isNotEmpty)
             Section(
@@ -1876,6 +1885,14 @@ class _ActivitySummaryState extends State<ActivitySummary> {
                                 l?.activitySummaryGameSetLabel(i + 1) ??
                                     'Set ${i + 1}',
                                 style: F.body.copyWith(color: p.ink3))),
+                        if (setHr?[i] case (avg: final int avg, peak: final int peak))
+                          Padding(
+                            padding: const EdgeInsetsDirectional.only(end: S.x3),
+                            child: Text(
+                                l?.activitySummarySetHeart(avg, peak) ??
+                                    '$avg avg · $peak top min',
+                                style: F.cap.copyWith(color: p.ink3)),
+                          ),
                         Text('${r.gameScore[i].$1} — ${r.gameScore[i].$2}',
                             style: F.n17.copyWith(
                                 color: r.gameScore[i].$1 > r.gameScore[i].$2

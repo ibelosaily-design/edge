@@ -2084,6 +2084,7 @@
   "activitySummarySomeSetsNoLoadTitle": "شوية مجموعات من غير وزن",
   "activitySummarySomeSetsNoLoadBody": "محسوبة في المجموعات والتكرارات، بس مش داخلة في الحجم.",
   "activitySummaryScore": "النتيجة",
+  "activitySummarySetHeart": "متوسط {avg} · أعلى دقيقة {peak}",
   "activitySummaryGameSetLabel": "ست {n}",
   "activitySummaryNoSplitsTitle": "مفيش تقسيمات للجلسة دي",
   "activitySummaryNoSplitsBody": "التقسيمات محتاجة مسافة متسجلة.",

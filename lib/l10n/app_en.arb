@@ -10490,6 +10490,14 @@
   "@activitySummaryScore": {
     "description": "Section title above the match game score table"
   },
+  "activitySummarySetHeart": "{avg} avg · {peak} top min",
+  "@activitySummarySetHeart": {
+    "description": "Per-set heart rate on a match summary: mean of the set's recorded minutes and its highest minute, in bpm.",
+    "placeholders": {
+      "avg": {"type": "int"},
+      "peak": {"type": "int"}
+    }
+  },
   "activitySummaryGameSetLabel": "Set {n}",
   "@activitySummaryGameSetLabel": {
     "description": "Row label naming a game set number in the match score table",

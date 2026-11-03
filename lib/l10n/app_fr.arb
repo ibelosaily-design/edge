@@ -2018,6 +2018,7 @@
   "activitySummarySomeSetsNoLoadTitle": "Certaines séries n'avaient pas de charge",
   "activitySummarySomeSetsNoLoadBody": "Comptées dans les séries et répétitions, mais exclues du volume.",
   "activitySummaryScore": "Score",
+  "activitySummarySetHeart": "moy. {avg} · minute max {peak}",
   "activitySummaryGameSetLabel": "Set {n}",
   "activitySummaryNoSplitsTitle": "Aucun temps intermédiaire pour cette séance",
   "activitySummaryNoSplitsBody": "Les temps intermédiaires nécessitent une distance enregistrée.",

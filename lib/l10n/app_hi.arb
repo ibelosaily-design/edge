@@ -2018,6 +2018,7 @@
   "activitySummarySomeSetsNoLoadTitle": "कुछ सेट में वज़न नहीं था",
   "activitySummarySomeSetsNoLoadBody": "सेट और रेप्स में गिना गया, लेकिन आयतन में शामिल नहीं।",
   "activitySummaryScore": "स्कोर",
+  "activitySummarySetHeart": "औसत {avg} · सबसे ऊँचा मिनट {peak}",
   "activitySummaryGameSetLabel": "सेट {n}",
   "activitySummaryNoSplitsTitle": "इस सत्र के लिए कोई स्प्लिट नहीं",
   "activitySummaryNoSplitsBody": "स्प्लिट के लिए दर्ज दूरी ज़रूरी है।",

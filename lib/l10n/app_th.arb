@@ -10487,6 +10487,7 @@
   "@activitySummaryScore": {
     "description": "Section title above the match game score table"
   },
+  "activitySummarySetHeart": "เฉลี่ย {avg} · นาทีสูงสุด {peak}",
   "activitySummaryGameSetLabel": "เซ็ต {n}",
   "@activitySummaryGameSetLabel": {
     "description": "Row label naming a game set number in the match score table",

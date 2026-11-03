@@ -4910,6 +4910,7 @@
   "activitySummarySomeSetsNoLoadTitle": "Некоторые подходы без веса",
   "activitySummarySomeSetsNoLoadBody": "Учтены в подходах и повторах, но не в объёме.",
   "activitySummaryScore": "Счёт",
+  "activitySummarySetHeart": "в среднем {avg} · макс. минута {peak}",
   "activitySummaryGameSetLabel": "Сет {n}",
   "@activitySummaryGameSetLabel": {
     "placeholders": {

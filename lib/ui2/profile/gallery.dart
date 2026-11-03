@@ -1496,6 +1496,9 @@ final _sessions = <String, ActivityResult>{
     hr: [for (var i = 0; i < 76; i++) 120 + (i * 31 % 51) * 1.0],
     zoneMinutes: const [8, 17, 24, 22, 5],
     gameScore: const [(6, 4), (3, 6), (7, 5)],
+    // Two closed sets; the third ran to the finish. Exercises the per-set
+    // heart-rate figures on the score card.
+    gameSetEndsSec: const [1560, 3060],
   ),
   'basic': ActivityResult(
     activityByName('Treadmill')!,

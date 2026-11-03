@@ -1006,6 +1006,7 @@ ActivityResult _baseResult(
   List<IntervalRound> rounds = const [],
   List<String> poses = const [],
   List<(int, int)> gameScore = const [],
+  List<int> gameSetEndsSec = const [],
 }) =>
     ActivityResult(
       a,
@@ -1046,6 +1047,7 @@ ActivityResult _baseResult(
       rounds: rounds,
       poses: poses,
       gameScore: gameScore,
+      gameSetEndsSec: gameSetEndsSec,
     );
 
 // ══════════════ MEASURED — route, journey, power, basic ══════════════
@@ -2261,6 +2263,10 @@ class _LiveMatchState extends State<LiveMatch> {
   int me = 0, them = 0;
   final sets = <(int, int)>[];
 
+  /// The elapsed second each closed set ended at — what lets the summary
+  /// split the heart-rate curve by set.
+  final setEnds = <int>[];
+
   @override
   void initState() {
     super.initState();
@@ -2277,6 +2283,10 @@ class _LiveMatchState extends State<LiveMatch> {
     }
     me = (d.data['me'] as num?)?.toInt() ?? 0;
     them = (d.data['them'] as num?)?.toInt() ?? 0;
+    setEnds.addAll([
+      for (final e in (d.data['set_ends'] as List? ?? const []))
+        if (e is num) e.toInt(),
+    ]);
   }
 
   /// Change the score and bank it in the same breath.
@@ -2292,6 +2302,7 @@ class _LiveMatchState extends State<LiveMatch> {
     d.put('score', [for (final s in sets) ...[s.$1, s.$2]]);
     d.put('me', me);
     d.put('them', them);
+    d.put('set_ends', [...setEnds]);
   }
 
   @override
@@ -2307,7 +2318,8 @@ class _LiveMatchState extends State<LiveMatch> {
       result: (elapsed) => _baseResult(widget.a,
           widget.feed?.call() ?? LiveFeed.none, widget.weightKg, elapsed,
           widget.private,
-          gameScore: [...sets, if (me > 0 || them > 0) (me, them)]),
+          gameScore: [...sets, if (me > 0 || them > 0) (me, them)],
+          gameSetEndsSec: [...setEnds]),
       body: (ctx, elapsed) {
         final p = P.of(ctx);
         final l = AppLocalizations.of(ctx);
@@ -2335,6 +2347,7 @@ class _LiveMatchState extends State<LiveMatch> {
               soft: true,
               onTap: () => _score(() {
                     sets.add((me, them));
+                    setEnds.add(elapsed);
                     me = 0;
                     them = 0;
                   })),
