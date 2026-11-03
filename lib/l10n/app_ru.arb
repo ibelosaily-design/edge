@@ -4911,6 +4911,12 @@
   "activitySummarySomeSetsNoLoadBody": "Учтены в подходах и повторах, но не в объёме.",
   "activitySummaryScore": "Счёт",
   "activitySummarySetHeart": "в среднем {avg} · макс. минута {peak}",
+  "@activitySummarySetHeart": {
+    "placeholders": {
+      "avg": {"type": "int"},
+      "peak": {"type": "int"}
+    }
+  },
   "activitySummaryGameSetLabel": "Сет {n}",
   "@activitySummaryGameSetLabel": {
     "placeholders": {

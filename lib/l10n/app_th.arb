@@ -10488,6 +10488,12 @@
     "description": "Section title above the match game score table"
   },
   "activitySummarySetHeart": "เฉลี่ย {avg} · นาทีสูงสุด {peak}",
+  "@activitySummarySetHeart": {
+    "placeholders": {
+      "avg": {"type": "int"},
+      "peak": {"type": "int"}
+    }
+  },
   "activitySummaryGameSetLabel": "เซ็ต {n}",
   "@activitySummaryGameSetLabel": {
     "description": "Row label naming a game set number in the match score table",

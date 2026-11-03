@@ -1880,19 +1880,25 @@ class _ActivitySummaryState extends State<ActivitySummary> {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: S.x3),
                       child: Row(children: [
+                        // The set's heart rate sits UNDER its label, not
+                        // beside the score: at large text a third item in
+                        // this row pushed the score off the card.
                         Expanded(
-                            child: Text(
-                                l?.activitySummaryGameSetLabel(i + 1) ??
-                                    'Set ${i + 1}',
-                                style: F.body.copyWith(color: p.ink3))),
-                        if (setHr?[i] case (avg: final int avg, peak: final int peak))
-                          Padding(
-                            padding: const EdgeInsetsDirectional.only(end: S.x3),
-                            child: Text(
-                                l?.activitySummarySetHeart(avg, peak) ??
-                                    '$avg avg · $peak top min',
-                                style: F.cap.copyWith(color: p.ink3)),
-                          ),
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                              Text(
+                                  l?.activitySummaryGameSetLabel(i + 1) ??
+                                      'Set ${i + 1}',
+                                  style: F.body.copyWith(color: p.ink3)),
+                              if (setHr?[i]
+                                  case (avg: final int avg, peak: final int peak))
+                                Text(
+                                    l?.activitySummarySetHeart(avg, peak) ??
+                                        '$avg avg · $peak top min',
+                                    style: F.cap.copyWith(color: p.ink3)),
+                            ])),
+                        const SizedBox(width: S.x3),
                         Text('${r.gameScore[i].$1} — ${r.gameScore[i].$2}',
                             style: F.n17.copyWith(
                                 color: r.gameScore[i].$1 > r.gameScore[i].$2
