@@ -16332,5 +16332,155 @@
         "type": "int"
       }
     }
-  }
+  },
+  "healthspanTitle": "ช่วงสุขภาพ",
+  "healthspanDoorTitle": "อายุร่างกายและอัตราการแก่",
+  "healthspanBodyAge": "อายุร่างกาย",
+  "healthspanYears": "ปี",
+  "healthspanYounger": "อ่อนกว่าอายุจริง {n} ปี",
+  "@healthspanYounger": {
+    "placeholders": {
+      "n": {
+        "type": "String"
+      }
+    }
+  },
+  "healthspanOlder": "แก่กว่าอายุจริง {n} ปี",
+  "@healthspanOlder": {
+    "placeholders": {
+      "n": {
+        "type": "String"
+      }
+    }
+  },
+  "healthspanOnPace": "เท่ากับอายุจริง",
+  "healthspanBasedOn": "จากข้อมูล {days} วัน ครบถ้วนที่ {window} วัน",
+  "@healthspanBasedOn": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "window": {
+        "type": "int"
+      }
+    }
+  },
+  "healthspanLockedTitle": "จะเปิดหลังจากมีข้อมูล 21 วันใน 31 วัน",
+  "healthspanLockedProgress": "{have} จาก {need} ใน 31 วันล่าสุด",
+  "@healthspanLockedProgress": {
+    "placeholders": {
+      "have": {
+        "type": "int"
+      },
+      "need": {
+        "type": "int"
+      }
+    }
+  },
+  "healthspanPace": "อัตราการแก่",
+  "healthspanPaceReversing": "ย้อนกลับ — เดือนนี้ลดอายุร่างกายลง",
+  "healthspanPaceSlowing": "ช้าลง — แก่ช้ากว่าปฏิทิน",
+  "healthspanPaceSteady": "คงที่ — แก่ตามปฏิทิน",
+  "healthspanPaceFaster": "เร็วขึ้น — เดือนนี้เพิ่มอายุร่างกาย",
+  "healthspanPaceWhy": "30 วันล่าสุดเทียบกับค่าเฉลี่ย {days} วัน",
+  "@healthspanPaceWhy": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "healthspanGroupSleep": "การนอน",
+  "healthspanGroupActivity": "กิจกรรม",
+  "healthspanGroupFitness": "สมรรถภาพ",
+  "healthspanSleepHours": "ชั่วโมงการนอน",
+  "healthspanConsistency": "ความสม่ำเสมอของการนอน",
+  "healthspanSteps": "ก้าวต่อวัน",
+  "healthspanZone13": "โซนหัวใจ 1–3",
+  "healthspanZone45": "โซนหัวใจ 4–5",
+  "healthspanStrength": "การฝึกความแข็งแรง",
+  "healthspanVo2max": "VO₂ max",
+  "healthspanRestingHr": "อัตราการเต้นหัวใจขณะพัก",
+  "healthspanLeanMass": "มวลกายไร้ไขมัน",
+  "healthspanHoursValue": "{h} ชม.",
+  "@healthspanHoursValue": {
+    "placeholders": {
+      "h": {
+        "type": "String"
+      }
+    }
+  },
+  "healthspanPerWeek": "{v} นาที/สัปดาห์",
+  "@healthspanPerWeek": {
+    "placeholders": {
+      "v": {
+        "type": "int"
+      }
+    }
+  },
+  "healthspanBpm": "{v} ครั้ง/นาที",
+  "@healthspanBpm": {
+    "placeholders": {
+      "v": {
+        "type": "int"
+      }
+    }
+  },
+  "healthspanTargetRange": "เป้าหมาย {lo}–{hi} ชม.",
+  "@healthspanTargetRange": {
+    "placeholders": {
+      "lo": {
+        "type": "String"
+      },
+      "hi": {
+        "type": "String"
+      }
+    }
+  },
+  "healthspanTarget": "เป้าหมาย {t}",
+  "@healthspanTarget": {
+    "placeholders": {
+      "t": {
+        "type": "String"
+      }
+    }
+  },
+  "healthspanTargetUnder": "ต่ำกว่า {t}",
+  "@healthspanTargetUnder": {
+    "placeholders": {
+      "t": {
+        "type": "String"
+      }
+    }
+  },
+  "healthspanAbsent": "ยังไม่ได้วัด",
+  "healthspanAddValue": "แตะเพื่อกรอก",
+  "healthspanYearsPlus": "+{y} ปี",
+  "@healthspanYearsPlus": {
+    "placeholders": {
+      "y": {
+        "type": "String"
+      }
+    }
+  },
+  "healthspanYearsMinus": "−{y} ปี",
+  "@healthspanYearsMinus": {
+    "placeholders": {
+      "y": {
+        "type": "String"
+      }
+    }
+  },
+  "healthspanYearsZero": "ตรงเป้า",
+  "healthspanEnterVo2Title": "VO₂ max",
+  "healthspanEnterVo2Hint": "จากแอป WHOOP นาฬิกา หรือการทดสอบในแล็บ",
+  "healthspanEnterFatTitle": "ไขมันในร่างกาย",
+  "healthspanEnterFatHint": "จากเครื่องชั่งหรือคาลิปเปอร์ ส่วนที่เหลือคือมวลไร้ไขมัน",
+  "healthspanVo2FromSession": "จากการวิ่งของคุณ",
+  "healthspanVo2Typed": "กรอกเอง",
+  "healthspanMethodTitle": "คำนวณอย่างไร",
+  "healthspanMethod": "แต่ละนิสัยถูกเทียบกับเป้าหมายด้านสาธารณสุข ช่องว่างกลายเป็นความเสี่ยงการเสียชีวิตจากงานวิจัยที่เชื่อมนิสัยนั้นกับอายุขัย และความเสี่ยงกลายเป็นปี: ความเสี่ยงเพิ่มเป็นสองเท่าทุก 8–10 ปีของวัยผู้ใหญ่ อัตราส่วนความเสี่ยงจึงเป็นส่วนต่างของอายุ ส่วนต่างทั้งเก้ารวมเข้ากับอายุของคุณ อัตราการแก่เทียบ 30 วันล่าสุดกับค่าเฉลี่ยระยะยาว กรอบ ข้อมูลนำเข้า และเป้าหมายเป็นของที่ WHOOP เผยแพร่สำหรับฟีเจอร์ Healthspan น้ำหนักที่แน่นอนไม่ได้เผยแพร่ ค่าของแอปนี้จึงมาจากงานวิจัยที่อ้างอิงและจะไม่ตรงกับตัวเลขของ WHOOP ถึงทศนิยม",
+  "healthspanAdultNote": "งานวิจัยเบื้องหลังเป็นกลุ่มผู้ใหญ่ WHOOP จึงปิดฟีเจอร์นี้สำหรับผู้ที่อายุต่ำกว่า 18 หากอายุต่ำกว่า 18 ให้อ่านเป็นคะแนนนิสัย ไม่ใช่อายุทางชีวภาพ",
+  "healthspanNeedProfileTitle": "ต้องการอายุและเพศของคุณ",
+  "healthspanNeedProfile": "เพิ่มในโปรไฟล์ ทุกเป้าหมายที่นี่ขึ้นอยู่กับข้อมูลนี้"
 }

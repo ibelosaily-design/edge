@@ -3404,5 +3404,155 @@
   "dataCompactNoSpace": "البيانات القديمة اتمسحت، بس الضغط محتاج {need} MB فاضيين والموبايل فيه {free} MB.",
   "dataCompactUnknownSpace": "البيانات القديمة اتمسحت، بس معرفناش نقرا المساحة الفاضية في الموبايل، فالملف مااتضغطش.",
   "dataCompactBusy": "في مزامنة أو جلسة لايف شغالة. جرّب تاني لما تخلص.",
-  "dataSizeMb": "{mb} MB"
+  "dataSizeMb": "{mb} MB",
+  "healthspanTitle": "العمر الصحي",
+  "healthspanDoorTitle": "عمر الجسم وسرعة التقدم في العمر",
+  "healthspanBodyAge": "عمر الجسم",
+  "healthspanYears": "سنة",
+  "healthspanYounger": "أصغر من عمرك بـ {n} سنة",
+  "@healthspanYounger": {
+    "placeholders": {
+      "n": {
+        "type": "String"
+      }
+    }
+  },
+  "healthspanOlder": "أكبر من عمرك بـ {n} سنة",
+  "@healthspanOlder": {
+    "placeholders": {
+      "n": {
+        "type": "String"
+      }
+    }
+  },
+  "healthspanOnPace": "زي عمرك بالظبط",
+  "healthspanBasedOn": "من {days} يوم متقيّم؛ بيكتمل عند {window}",
+  "@healthspanBasedOn": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "window": {
+        "type": "int"
+      }
+    }
+  },
+  "healthspanLockedTitle": "بيتفتح بعد 21 يوم متقيّم من 31",
+  "healthspanLockedProgress": "{have} من {need} في آخر 31 يوم",
+  "@healthspanLockedProgress": {
+    "placeholders": {
+      "have": {
+        "type": "int"
+      },
+      "need": {
+        "type": "int"
+      }
+    }
+  },
+  "healthspanPace": "سرعة التقدم في العمر",
+  "healthspanPaceReversing": "بيرجع لورا — الشهر ده بيشيل سنين من عمرك",
+  "healthspanPaceSlowing": "بيبطّأ — بتكبر أبطأ من التقويم",
+  "healthspanPaceSteady": "ثابت — بتكبر بسرعة التقويم",
+  "healthspanPaceFaster": "أسرع — الشهر ده بيزوّد سنين",
+  "healthspanPaceWhy": "آخر 30 يوم مقارنة بمتوسط {days} يوم",
+  "@healthspanPaceWhy": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "healthspanGroupSleep": "النوم",
+  "healthspanGroupActivity": "الحركة",
+  "healthspanGroupFitness": "اللياقة",
+  "healthspanSleepHours": "ساعات النوم",
+  "healthspanConsistency": "انتظام النوم",
+  "healthspanSteps": "الخطوات اليومية",
+  "healthspanZone13": "نطاقات النبض 1–3",
+  "healthspanZone45": "نطاقات النبض 4–5",
+  "healthspanStrength": "تمارين القوة",
+  "healthspanVo2max": "VO₂ max",
+  "healthspanRestingHr": "نبض الراحة",
+  "healthspanLeanMass": "الكتلة بدون دهون",
+  "healthspanHoursValue": "{h} س",
+  "@healthspanHoursValue": {
+    "placeholders": {
+      "h": {
+        "type": "String"
+      }
+    }
+  },
+  "healthspanPerWeek": "{v} دقيقة/أسبوع",
+  "@healthspanPerWeek": {
+    "placeholders": {
+      "v": {
+        "type": "int"
+      }
+    }
+  },
+  "healthspanBpm": "{v} نبضة/د",
+  "@healthspanBpm": {
+    "placeholders": {
+      "v": {
+        "type": "int"
+      }
+    }
+  },
+  "healthspanTargetRange": "الهدف {lo}–{hi} س",
+  "@healthspanTargetRange": {
+    "placeholders": {
+      "lo": {
+        "type": "String"
+      },
+      "hi": {
+        "type": "String"
+      }
+    }
+  },
+  "healthspanTarget": "الهدف {t}",
+  "@healthspanTarget": {
+    "placeholders": {
+      "t": {
+        "type": "String"
+      }
+    }
+  },
+  "healthspanTargetUnder": "أقل من {t}",
+  "@healthspanTargetUnder": {
+    "placeholders": {
+      "t": {
+        "type": "String"
+      }
+    }
+  },
+  "healthspanAbsent": "لسه متقاسش",
+  "healthspanAddValue": "دوس عشان تدخّله",
+  "healthspanYearsPlus": "+{y} سنة",
+  "@healthspanYearsPlus": {
+    "placeholders": {
+      "y": {
+        "type": "String"
+      }
+    }
+  },
+  "healthspanYearsMinus": "−{y} سنة",
+  "@healthspanYearsMinus": {
+    "placeholders": {
+      "y": {
+        "type": "String"
+      }
+    }
+  },
+  "healthspanYearsZero": "على الهدف",
+  "healthspanEnterVo2Title": "VO₂ max",
+  "healthspanEnterVo2Hint": "من تطبيق WHOOP أو ساعة أو اختبار معمل",
+  "healthspanEnterFatTitle": "نسبة الدهون",
+  "healthspanEnterFatHint": "من ميزان أو كاليبر؛ الكتلة بدون دهون هي الباقي",
+  "healthspanVo2FromSession": "من جرياتك",
+  "healthspanVo2Typed": "مدخّل يدوي",
+  "healthspanMethodTitle": "بيتحسب إزاي",
+  "healthspanMethod": "كل عادة بتتقارن بهدف من إرشادات الصحة العامة. الفرق بيتحوّل لخطر وفيات من الدراسات اللي بتربط العادة دي بطول العمر، والخطر بيتحوّل لسنين: الخطر بيتضاعف كل 8 لـ10 سنين تقريبًا من عمر البالغ، فنسبة الخطر هي فرق في العمر. الـ9 فروق بتتجمع على عمرك؛ والسرعة بتقارن آخر 30 يوم بمتوسطك الطويل. الإطار والمدخلات والأهداف هي اللي WHOOP ناشرها لخاصية Healthspan. الأوزان الدقيقة مش منشورة، فأوزان التطبيق ده جاية من الدراسات المذكورة ومش هتطابق رقم WHOOP للعُشر.",
+  "healthspanAdultNote": "الدراسات ورا الحساب ده على بالغين، وعشان كده WHOOP بتقفلها تحت 18. تحت 18، اقراها كمؤشر عادات مش عمر بيولوجي.",
+  "healthspanNeedProfileTitle": "محتاج عمرك ونوعك",
+  "healthspanNeedProfile": "ضيفهم في الملف الشخصي؛ كل هدف هنا بيعتمد عليهم."
 }

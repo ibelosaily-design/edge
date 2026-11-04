@@ -29,6 +29,7 @@ import '../ui2.dart';
 import 'advanced.dart';
 import 'ecg.dart' show EcgEntryCard, pairedIsMaverickOf;
 import 'findings_log.dart';
+import 'healthspan_screen.dart' show HealthspanDoor;
 import 'home_screen.dart';
 import 'investigate.dart';
 import 'metric_detail.dart';
@@ -945,6 +946,16 @@ class _HealthScreenState extends State<HealthScreen> with RevisionReload {
       ],
 
       // Naps moved to the Sleep tab, beside the night (the Naps door there).
+
+      // HEALTHSPAN — body age and pace of aging from the nine habits. One
+      // door; the screen behind it holds the nine lines. It reads on its own
+      // (healthspan_screen.dart), so nothing above waits for it. Not shown
+      // when handed data: the gallery and the goldens have no repo to read.
+      if (widget.data == null)
+        Section(
+          l?.healthspanTitle ?? 'Healthspan',
+          const HealthspanDoor(),
+        ),
 
       // What used to be the Wellness tab: the things you tell the app back.
       // ONE door now, not one per tab: in the contributed data breathing,

@@ -8,6 +8,7 @@ export 'ecg.dart';
 export 'coach_figures.dart';
 export 'findings_log.dart';
 export 'health_screen.dart';
+export 'healthspan_screen.dart';
 export 'home_screen.dart';
 export 'calm_breathing.dart';
 export 'cycle_screen.dart';

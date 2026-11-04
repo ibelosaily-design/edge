@@ -7911,5 +7911,155 @@
         "type": "int"
       }
     }
-  }
+  },
+  "healthspanTitle": "Здоровое долголетие",
+  "healthspanDoorTitle": "Возраст тела и темп старения",
+  "healthspanBodyAge": "Возраст тела",
+  "healthspanYears": "лет",
+  "healthspanYounger": "на {n} лет моложе вашего возраста",
+  "@healthspanYounger": {
+    "placeholders": {
+      "n": {
+        "type": "String"
+      }
+    }
+  },
+  "healthspanOlder": "на {n} лет старше вашего возраста",
+  "@healthspanOlder": {
+    "placeholders": {
+      "n": {
+        "type": "String"
+      }
+    }
+  },
+  "healthspanOnPace": "Совпадает с вашим возрастом",
+  "healthspanBasedOn": "По {days} оценённым дням; полная картина при {window}",
+  "@healthspanBasedOn": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "window": {
+        "type": "int"
+      }
+    }
+  },
+  "healthspanLockedTitle": "Откроется после 21 оценённого дня из 31",
+  "healthspanLockedProgress": "{have} из {need} за последний 31 день",
+  "@healthspanLockedProgress": {
+    "placeholders": {
+      "have": {
+        "type": "int"
+      },
+      "need": {
+        "type": "int"
+      }
+    }
+  },
+  "healthspanPace": "Темп старения",
+  "healthspanPaceReversing": "Обратный ход — этот месяц снимает годы",
+  "healthspanPaceSlowing": "Замедление — старение медленнее календаря",
+  "healthspanPaceSteady": "Ровно — старение со скоростью календаря",
+  "healthspanPaceFaster": "Быстрее — этот месяц добавляет годы",
+  "healthspanPaceWhy": "Последние 30 дней против среднего за {days} дней",
+  "@healthspanPaceWhy": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "healthspanGroupSleep": "Сон",
+  "healthspanGroupActivity": "Активность",
+  "healthspanGroupFitness": "Форма",
+  "healthspanSleepHours": "Часы сна",
+  "healthspanConsistency": "Регулярность сна",
+  "healthspanSteps": "Шаги за день",
+  "healthspanZone13": "Пульсовые зоны 1–3",
+  "healthspanZone45": "Пульсовые зоны 4–5",
+  "healthspanStrength": "Силовые тренировки",
+  "healthspanVo2max": "VO₂ max",
+  "healthspanRestingHr": "Пульс в покое",
+  "healthspanLeanMass": "Безжировая масса",
+  "healthspanHoursValue": "{h} ч",
+  "@healthspanHoursValue": {
+    "placeholders": {
+      "h": {
+        "type": "String"
+      }
+    }
+  },
+  "healthspanPerWeek": "{v} мин/нед",
+  "@healthspanPerWeek": {
+    "placeholders": {
+      "v": {
+        "type": "int"
+      }
+    }
+  },
+  "healthspanBpm": "{v} уд/мин",
+  "@healthspanBpm": {
+    "placeholders": {
+      "v": {
+        "type": "int"
+      }
+    }
+  },
+  "healthspanTargetRange": "Цель {lo}–{hi} ч",
+  "@healthspanTargetRange": {
+    "placeholders": {
+      "lo": {
+        "type": "String"
+      },
+      "hi": {
+        "type": "String"
+      }
+    }
+  },
+  "healthspanTarget": "Цель {t}",
+  "@healthspanTarget": {
+    "placeholders": {
+      "t": {
+        "type": "String"
+      }
+    }
+  },
+  "healthspanTargetUnder": "Ниже {t}",
+  "@healthspanTargetUnder": {
+    "placeholders": {
+      "t": {
+        "type": "String"
+      }
+    }
+  },
+  "healthspanAbsent": "Ещё не измерено",
+  "healthspanAddValue": "Нажмите, чтобы ввести",
+  "healthspanYearsPlus": "+{y} г",
+  "@healthspanYearsPlus": {
+    "placeholders": {
+      "y": {
+        "type": "String"
+      }
+    }
+  },
+  "healthspanYearsMinus": "−{y} г",
+  "@healthspanYearsMinus": {
+    "placeholders": {
+      "y": {
+        "type": "String"
+      }
+    }
+  },
+  "healthspanYearsZero": "В цели",
+  "healthspanEnterVo2Title": "VO₂ max",
+  "healthspanEnterVo2Hint": "Из приложения WHOOP, часов или лабораторного теста",
+  "healthspanEnterFatTitle": "Жир в теле",
+  "healthspanEnterFatHint": "С весов или калипера; безжировая масса — остальное",
+  "healthspanVo2FromSession": "по вашим пробежкам",
+  "healthspanVo2Typed": "введено вручную",
+  "healthspanMethodTitle": "Как это считается",
+  "healthspanMethod": "Каждая привычка сравнивается с целью из рекомендаций общественного здравоохранения. Разрыв становится риском смертности по исследованиям, связывающим эту привычку с продолжительностью жизни, а риск — годами: риск удваивается примерно каждые 8–10 лет взрослой жизни, поэтому отношение рисков — это сдвиг возраста. Девять сдвигов складываются с вашим возрастом; темп сравнивает последние 30 дней с вашим длинным средним. Структура, входные данные и цели — те, что WHOOP публикует для функции Healthspan. Точные веса не опубликованы, поэтому веса этого приложения взяты из приведённых исследований и не совпадут с числом WHOOP до десятых.",
+  "healthspanAdultNote": "Исследования за этим расчётом — взрослые когорты, поэтому WHOOP не показывает его до 18 лет. До 18 читайте это как оценку привычек, а не биологический возраст.",
+  "healthspanNeedProfileTitle": "Нужны ваш возраст и пол",
+  "healthspanNeedProfile": "Укажите их в профиле; каждая цель здесь зависит от них."
 }

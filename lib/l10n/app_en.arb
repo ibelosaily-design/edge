@@ -16339,5 +16339,249 @@
         "type": "int"
       }
     }
+  },
+  "healthspanTitle": "Healthspan",
+  "@healthspanTitle": {
+    "description": "Screen and section title: body age and pace of aging."
+  },
+  "healthspanDoorTitle": "Body age and pace of aging",
+  "@healthspanDoorTitle": {
+    "description": "The door row on the Health tab."
+  },
+  "healthspanBodyAge": "Body age",
+  "@healthspanBodyAge": {
+    "description": "Label over the headline number (years)."
+  },
+  "healthspanYears": "years",
+  "@healthspanYears": {
+    "description": "Unit after the body-age number."
+  },
+  "healthspanYounger": "{n} years younger than your age",
+  "@healthspanYounger": {
+    "description": "Under the body age; n is a decimal like 2.1.",
+    "placeholders": {
+      "n": {
+        "type": "String"
+      }
+    }
+  },
+  "healthspanOlder": "{n} years older than your age",
+  "@healthspanOlder": {
+    "description": "Under the body age; n is a decimal like 2.1.",
+    "placeholders": {
+      "n": {
+        "type": "String"
+      }
+    }
+  },
+  "healthspanOnPace": "Same as your age",
+  "@healthspanOnPace": {
+    "description": "Under the body age when it equals the calendar age."
+  },
+  "healthspanBasedOn": "From {days} scored days; fills out at {window}",
+  "@healthspanBasedOn": {
+    "description": "How many days the body age rests on; window is 182.",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "window": {
+        "type": "int"
+      }
+    }
+  },
+  "healthspanLockedTitle": "Unlocks after 21 scored days in 31",
+  "@healthspanLockedTitle": {
+    "description": "Headline while the feature is locked."
+  },
+  "healthspanLockedProgress": "{have} of {need} in the last 31 days",
+  "@healthspanLockedProgress": {
+    "description": "Unlock counter under the progress bar.",
+    "placeholders": {
+      "have": {
+        "type": "int"
+      },
+      "need": {
+        "type": "int"
+      }
+    }
+  },
+  "healthspanPace": "Pace of aging",
+  "@healthspanPace": {
+    "description": "Label over the pace number (e.g. 0.8x)."
+  },
+  "healthspanPaceReversing": "Reversing — this month is taking years off",
+  "@healthspanPaceReversing": {
+    "description": "Pace under 0."
+  },
+  "healthspanPaceSlowing": "Slowing — aging slower than the calendar",
+  "@healthspanPaceSlowing": {
+    "description": "Pace between 0 and 1."
+  },
+  "healthspanPaceSteady": "Steady — aging at calendar speed",
+  "@healthspanPaceSteady": {
+    "description": "Pace exactly 1."
+  },
+  "healthspanPaceFaster": "Faster — this month is adding years",
+  "@healthspanPaceFaster": {
+    "description": "Pace over 1."
+  },
+  "healthspanPaceWhy": "The last 30 days against your {days}-day average",
+  "@healthspanPaceWhy": {
+    "description": "Under the pace line.",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "healthspanGroupSleep": "Sleep",
+  "@healthspanGroupSleep": {
+    "description": "Contributor group."
+  },
+  "healthspanGroupActivity": "Activity",
+  "@healthspanGroupActivity": {
+    "description": "Contributor group."
+  },
+  "healthspanGroupFitness": "Fitness",
+  "@healthspanGroupFitness": {
+    "description": "Contributor group."
+  },
+  "healthspanSleepHours": "Hours of sleep",
+  "healthspanConsistency": "Sleep consistency",
+  "healthspanSteps": "Daily steps",
+  "healthspanZone13": "Heart rate zones 1–3",
+  "healthspanZone45": "Heart rate zones 4–5",
+  "healthspanStrength": "Strength training",
+  "healthspanVo2max": "VO₂ max",
+  "healthspanRestingHr": "Resting heart rate",
+  "healthspanLeanMass": "Lean body mass",
+  "healthspanHoursValue": "{h} h",
+  "@healthspanHoursValue": {
+    "description": "Hours of sleep as a decimal, e.g. 7.4 h.",
+    "placeholders": {
+      "h": {
+        "type": "String"
+      }
+    }
+  },
+  "healthspanPerWeek": "{v} min/week",
+  "@healthspanPerWeek": {
+    "description": "Weekly minutes of zone time or strength.",
+    "placeholders": {
+      "v": {
+        "type": "int"
+      }
+    }
+  },
+  "healthspanBpm": "{v} bpm",
+  "@healthspanBpm": {
+    "description": "A heart rate.",
+    "placeholders": {
+      "v": {
+        "type": "int"
+      }
+    }
+  },
+  "healthspanTargetRange": "Target {lo}–{hi} h",
+  "@healthspanTargetRange": {
+    "description": "Sleep target range.",
+    "placeholders": {
+      "lo": {
+        "type": "String"
+      },
+      "hi": {
+        "type": "String"
+      }
+    }
+  },
+  "healthspanTarget": "Target {t}",
+  "@healthspanTarget": {
+    "description": "A contributor target, already formatted with its unit.",
+    "placeholders": {
+      "t": {
+        "type": "String"
+      }
+    }
+  },
+  "healthspanTargetUnder": "Under {t}",
+  "@healthspanTargetUnder": {
+    "description": "Resting heart rate target: below a figure.",
+    "placeholders": {
+      "t": {
+        "type": "String"
+      }
+    }
+  },
+  "healthspanAbsent": "Not measured yet",
+  "@healthspanAbsent": {
+    "description": "Row sub-line for a contributor with no data."
+  },
+  "healthspanAddValue": "Tap to enter",
+  "@healthspanAddValue": {
+    "description": "Row sub-line for a typed contributor with no value yet."
+  },
+  "healthspanYearsPlus": "+{y} y",
+  "@healthspanYearsPlus": {
+    "description": "Years a contributor adds to the body age.",
+    "placeholders": {
+      "y": {
+        "type": "String"
+      }
+    }
+  },
+  "healthspanYearsMinus": "−{y} y",
+  "@healthspanYearsMinus": {
+    "description": "Years a contributor takes off the body age.",
+    "placeholders": {
+      "y": {
+        "type": "String"
+      }
+    }
+  },
+  "healthspanYearsZero": "On target",
+  "@healthspanYearsZero": {
+    "description": "Pill for a contributor that adds nothing."
+  },
+  "healthspanEnterVo2Title": "VO₂ max",
+  "@healthspanEnterVo2Title": {
+    "description": "Dialog title."
+  },
+  "healthspanEnterVo2Hint": "From the WHOOP app, a watch or a lab test",
+  "@healthspanEnterVo2Hint": {
+    "description": "Helper under the VO2max field."
+  },
+  "healthspanEnterFatTitle": "Body fat",
+  "@healthspanEnterFatTitle": {
+    "description": "Dialog title."
+  },
+  "healthspanEnterFatHint": "From a scale or a caliper; lean mass is the rest",
+  "@healthspanEnterFatHint": {
+    "description": "Helper under the body-fat field."
+  },
+  "healthspanVo2FromSession": "from your runs",
+  "@healthspanVo2FromSession": {
+    "description": "Where the VO2max came from."
+  },
+  "healthspanVo2Typed": "typed in",
+  "@healthspanVo2Typed": {
+    "description": "Where the VO2max came from."
+  },
+  "healthspanMethodTitle": "How this is worked out",
+  "healthspanMethod": "Each habit is compared with a public-health target. The gap becomes a mortality risk from the studies that link that habit to lifespan, and the risk becomes years: risk doubles about every eight to ten years of adult life, so a risk ratio is an age offset. The nine offsets are added to your age; pace compares the last 30 days with your long average. The framework, inputs and targets are the ones WHOOP publishes for its Healthspan feature. The exact weights are not published, so this app's come from the cited studies and will not match WHOOP's number to the decimal.",
+  "@healthspanMethod": {
+    "description": "Method note at the foot of the Healthspan screen."
+  },
+  "healthspanAdultNote": "The studies behind this are adult cohorts, which is why WHOOP keeps it off under 18. Under 18, read it as a habits score, not a biological age.",
+  "@healthspanAdultNote": {
+    "description": "Shown when the profile age is under 18."
+  },
+  "healthspanNeedProfileTitle": "Needs your age and sex",
+  "@healthspanNeedProfileTitle": {
+    "description": "Empty state title."
+  },
+  "healthspanNeedProfile": "Add them in Profile; every target here depends on them.",
+  "@healthspanNeedProfile": {
+    "description": "Empty state body."
   }
 }

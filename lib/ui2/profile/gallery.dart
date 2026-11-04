@@ -43,6 +43,7 @@ import '../../data/med_store.dart';
 import '../../data/nutrition_store.dart';
 import '../../ai/nightly_sweep.dart' show SweepFinding;
 import '../../compute/findings.dart';
+import '../../compute/healthspan.dart';
 import '../../models/metric.dart';
 import '../../models/activity_suggestion.dart';
 import '../screens/detected_activities.dart';
@@ -841,6 +842,16 @@ Map<String, Widget> extraCases() => {
           'كلمة اليوم: ubiquitous — موجود في كل مكان.',
           style: F.body),
       'study_ask_tutor': const AskTutorButton(prompt: 'Explain "ubiquitous".'),
+      // HEALTHSPAN — the three states the body can be in: unlocked (a real
+      // computation over 40 synthetic days, so the nine lines carry the
+      // values and pills a real one does), still locked (the unlock bar), and
+      // the under-18 caveat. The door is the Health tab's row.
+      'healthspan_unlocked': HealthspanBody(_healthspanSample(days: 40)),
+      'healthspan_locked': HealthspanBody(_healthspanSample(days: 9)),
+      'healthspan_teen': HealthspanBody(_healthspanSample(days: 40, age: 17)),
+      'healthspan_no_profile':
+          const HealthspanBody(HealthspanView(profileComplete: false)),
+      'healthspan_door': HealthspanDoor(data: _healthspanSample(days: 40)),
       // Renders nothing until the bundled audio index has loaded, and only
       // the buttons the pack has recordings for.
       'study_listen': ListenRow([
@@ -2607,3 +2618,39 @@ const EcgReading _ecgDemoReading = EcgReading(
   notes: null,
   createdAt: 1787823784000,
 );
+
+/// A Healthspan read-out over [days] synthetic scored days ending yesterday:
+/// a decent sleeper who walks, lifts a little and runs enough to have a
+/// VO2max estimate — short on zone 4-5 minutes and a little under on lean
+/// mass, so both signs of pill appear.
+HealthspanView _healthspanSample({required int days, int age = 30}) {
+  final today = DateTime(2026, 11, 4);
+  // Wall-clock date arithmetic, not motion: a day label `ago` days back.
+  String label(int ago) => dayLabelOf(DateTime(today.year, today.month, today.day - ago));
+  final list = [
+    for (var i = 1; i <= days; i++)
+      HsDay(
+        label(i),
+        tstMin: 440.0 + (i % 3) * 25,
+        onsetSec: (i.isEven ? 1 : -1) * 20 * 60.0,
+        midsleepSec: (i.isEven ? 1 : -1) * 15 * 60.0,
+        steps: 9400.0 + (i % 5) * 600,
+        rhr: 57.0 + (i % 4),
+        zone13Min: 24,
+        zone45Min: 0.5,
+        strengthMin: i % 4 == 0 ? 45.0 : 0.0,
+      ),
+  ];
+  return HealthspanView(
+    result: computeHealthspan(
+      days: list,
+      age: age,
+      sex: 'm',
+      today: today,
+      vo2max: 47.2,
+      leanPct: 78,
+    ),
+    vo2maxSource: 'session',
+  );
+}
+
