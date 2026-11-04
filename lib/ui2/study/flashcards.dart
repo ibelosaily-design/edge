@@ -113,8 +113,8 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
               ],
               const SizedBox(height: S.x3),
               ListenRow([
-                ('اسمع', (a) => [if (a.word(w.word) case final x?) x]),
-                ('ببطء', (a) => [if (a.slow(w.word) case final x?) x]),
+                ('اسمع', (a) => [?a.word(w.word)]),
+                ('ببطء', (a) => [?a.slow(w.word)]),
               ]),
               const SizedBox(height: S.x6),
               if (!_flipped)
@@ -132,7 +132,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
                           color: p.ink2, fontStyle: FontStyle.italic)),
                   const SizedBox(height: S.x2),
                   ListenRow([
-                    ('المثال', (a) => [if (a.example(w.word) case final x?) x]),
+                    ('المثال', (a) => [?a.example(w.word)]),
                   ], alignment: WrapAlignment.start),
                 ],
                 if (w.syn.isNotEmpty || w.ant.isNotEmpty) ...[

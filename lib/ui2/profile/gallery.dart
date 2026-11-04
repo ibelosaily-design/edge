@@ -844,8 +844,8 @@ Map<String, Widget> extraCases() => {
       // Renders nothing until the bundled audio index has loaded, and only
       // the buttons the pack has recordings for.
       'study_listen': ListenRow([
-        ('اسمع', (a) => [if (a.word('ubiquitous') case final x?) x]),
-        ('ببطء', (a) => [if (a.slow('ubiquitous') case final x?) x]),
+        ('اسمع', (a) => [?a.word('ubiquitous')]),
+        ('ببطء', (a) => [?a.slow('ubiquitous')]),
       ]),
       // THE ABSENCE THAT KNOWS WHY. `wearGapWhy` reads the day's off-wrist
       // stretches — written on every derive, read by nothing until now — and
