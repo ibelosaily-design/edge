@@ -4,9 +4,10 @@ name: soak
 # for every PR — a simulated day costs ~15-30 s through the real ingest — so it
 # runs nightly and on demand, and the per-day size report is kept as an
 # artifact either way.
+# Fork: no schedule. GitHub disables Actions on forks whose inherited
+# scheduled workflows burn compute, and that took the APK builds down with
+# it. Run on demand only.
 on:
-  schedule:
-    - cron: '30 2 * * *'
   workflow_dispatch:
     inputs:
       days:

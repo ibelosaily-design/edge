@@ -10,9 +10,8 @@ name: refresh star history
 # means the landing page makes no third-party request, which matters for a
 # project whose pitch is that your data stays on your device.
 
+# Fork: no schedule (see soak.yml). On demand only.
 on:
-  schedule:
-    - cron: '17 4 * * 1'   # Mondays, 04:17 UTC — off the hour to dodge the rush
   workflow_dispatch:
 
 # Unlike the test workflow, this one has to write: it commits the regenerated
