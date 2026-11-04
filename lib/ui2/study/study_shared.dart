@@ -6,6 +6,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
+import '../../study/study_audio.dart';
 import '../screens/coach.dart' show CoachScreen, CoachSetup, coachReady;
 import '../screens/home_screen.dart' show go;
 import '../ui2.dart';
@@ -162,3 +163,43 @@ String tutorPassagePrompt(String passage, String q, List<String> options,
     '، وإيه الطريقة اللي أحل بيها النوع ده بسرعة.\n\n'
     'النص: $passage\n\nالسؤال: $q\n\n'
     '${[for (var i = 0; i < options.length; i++) '${optionLetter(i)}. ${options[i]}'].join('\n')}';
+
+
+/// Play buttons for whatever audio the pack has for the item on screen.
+/// Each entry is a label and a pick from the loaded index; an entry the pack
+/// has no recording for is left out, and with none the row takes no space.
+class ListenRow extends StatelessWidget {
+  final List<(String, List<AudioClip> Function(StudyAudio a))> items;
+  final WrapAlignment alignment;
+
+  const ListenRow(this.items,
+      {super.key, this.alignment = WrapAlignment.center});
+
+  @override
+  Widget build(BuildContext c) => FutureBuilder<StudyAudio?>(
+        future: StudyAudio.load(),
+        builder: (c, snap) {
+          final a = snap.data;
+          if (a == null) return const SizedBox.shrink();
+          final ready = [
+            for (final (label, pick) in items)
+              if (pick(a) case final clips when clips.isNotEmpty)
+                (label, clips),
+          ];
+          if (ready.isEmpty) return const SizedBox.shrink();
+          return Wrap(
+            alignment: alignment,
+            spacing: S.x2,
+            runSpacing: S.x2,
+            children: [
+              for (final (label, clips) in ready)
+                Pressable(
+                  semanticLabel: label,
+                  onTap: () => StudyAudio.playAll(clips),
+                  child: Pill(label, C.blue, icon: LucideIcons.volume2),
+                ),
+            ],
+          );
+        },
+      );
+}

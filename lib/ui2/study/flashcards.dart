@@ -8,6 +8,7 @@ import '../../study/study_data.dart';
 import '../../study/study_progress.dart';
 import '../screens/metric_detail.dart' show detailScaffold;
 import '../ui2.dart';
+import '../../study/study_audio.dart';
 import 'study_shared.dart';
 
 class FlashcardsScreen extends StatefulWidget {
@@ -22,6 +23,13 @@ class FlashcardsScreen extends StatefulWidget {
 }
 
 class _FlashcardsScreenState extends State<FlashcardsScreen> {
+  // Leaving the screen ends whatever it was reading aloud.
+  @override
+  void dispose() {
+    StudyAudio.stop();
+    super.dispose();
+  }
+
   int _i = 0;
   bool _flipped = false;
   int _ok = 0;
@@ -103,6 +111,11 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
                     textAlign: TextAlign.center,
                     style: F.cap.copyWith(color: p.ink3)),
               ],
+              const SizedBox(height: S.x3),
+              ListenRow([
+                ('اسمع', (a) => [if (a.word(w.word) case final x?) x]),
+                ('ببطء', (a) => [if (a.slow(w.word) case final x?) x]),
+              ]),
               const SizedBox(height: S.x6),
               if (!_flipped)
                 Text('Tap to reveal · اضغط للمعنى',
@@ -117,6 +130,10 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
                   Text('“${w.ex}”',
                       style: F.body.copyWith(
                           color: p.ink2, fontStyle: FontStyle.italic)),
+                  const SizedBox(height: S.x2),
+                  ListenRow([
+                    ('المثال', (a) => [if (a.example(w.word) case final x?) x]),
+                  ], alignment: WrapAlignment.start),
                 ],
                 if (w.syn.isNotEmpty || w.ant.isNotEmpty) ...[
                   const SizedBox(height: S.x4),

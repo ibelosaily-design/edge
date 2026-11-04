@@ -8,6 +8,7 @@ import '../../study/study_data.dart';
 import '../../study/study_progress.dart';
 import '../screens/metric_detail.dart' show detailScaffold;
 import '../ui2.dart';
+import '../../study/study_audio.dart';
 import 'study_shared.dart';
 
 class PassageListScreen extends StatefulWidget {
@@ -106,6 +107,13 @@ class PassageScreen extends StatefulWidget {
 }
 
 class _PassageScreenState extends State<PassageScreen> {
+  // Leaving the screen ends whatever it was reading aloud.
+  @override
+  void dispose() {
+    StudyAudio.stop();
+    super.dispose();
+  }
+
   int? _chosen;
   bool _showTr = false;
 
@@ -137,6 +145,9 @@ class _PassageScreenState extends State<PassageScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              ListenRow([('اسمع القطعة', (a) => a.passage(b.id))],
+                  alignment: WrapAlignment.start),
+              const SizedBox(height: S.x2),
               Text(b.passage,
                   style: F.body.copyWith(color: p.ink, height: 1.6)),
               if (b.q.isNotEmpty) ...[

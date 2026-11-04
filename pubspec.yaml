@@ -661,6 +661,9 @@ dependencies:
   notification_listener_service: ^1.0.0
   flutter_secure_storage: ^10.3.1
   gpt_markdown: ^1.1.7
+  # Study audio: asset clips (ClippingAudioSource) for pronunciation and
+  # read-aloud. Offline; plays only bundled files.
+  just_audio: ^0.10.4
   firebase_core: ^4.11.0
   firebase_crashlytics: ^5.2.4
   firebase_performance: ^0.11.4+3
@@ -743,6 +746,10 @@ flutter:
     - assets/icons/
     # Elosaily build: the SAT study pack (vocabulary, stories, passages).
     - assets/study/
+    # Pronunciation, example sentences, stories and passages read aloud
+    # (Kokoro TTS, generated for the Kalimat SAT pack): one sprite per file,
+    # clipped by the start/end seconds in index.json.
+    - assets/study/audio/
   # Both families are bundled, not fetched. google_fonts resolves a missing
   # family over HTTP to fonts.gstatic.com on first launch — before the user
   # has seen the consent screen, and contrary to PRIVACY.md. It also lets the

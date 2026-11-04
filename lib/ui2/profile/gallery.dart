@@ -841,6 +841,12 @@ Map<String, Widget> extraCases() => {
           'كلمة اليوم: ubiquitous — موجود في كل مكان.',
           style: F.body),
       'study_ask_tutor': const AskTutorButton(prompt: 'Explain "ubiquitous".'),
+      // Renders nothing until the bundled audio index has loaded, and only
+      // the buttons the pack has recordings for.
+      'study_listen': ListenRow([
+        ('اسمع', (a) => [if (a.word('ubiquitous') case final x?) x]),
+        ('ببطء', (a) => [if (a.slow('ubiquitous') case final x?) x]),
+      ]),
       // THE ABSENCE THAT KNOWS WHY. `wearGapWhy` reads the day's off-wrist
       // stretches — written on every derive, read by nothing until now — and
       // hands the card the reason as a measurement. Both rankings, because the

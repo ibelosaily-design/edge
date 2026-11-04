@@ -28,3 +28,13 @@ Rules for this fork:
 2. Record every upstream re-sync here (new SHAs + date).
 3. Never switch the band back and forth with the official WHOOP app once in
    use (a firmware push from there can change the records this app decodes).
+
+## Study audio (assets/study/audio)
+
+Copied byte-for-byte from the owner's Kalimat SAT artifact
+(claude.ai/artifact/MRuVxo3PzsjqMynNVX56zK, version 1793045414-24f8) on
+2026-11-04: 120 MP3 sprites plus index.json, each file matched against the
+artifact's published SHA-256 before it was committed. Generated with Kokoro
+TTS (Apache-2.0), voice af_heart. The text they read (words, stories,
+passages) is the same pack already in assets/study/, unchanged
+(words/stories/reading SHA-256 identical to the earlier import).

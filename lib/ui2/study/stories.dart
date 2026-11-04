@@ -9,6 +9,7 @@ import '../../study/study_data.dart';
 import '../../study/study_progress.dart';
 import '../screens/metric_detail.dart' show detailScaffold;
 import '../ui2.dart';
+import '../../study/study_audio.dart';
 import 'study_shared.dart';
 
 class StoryListScreen extends StatefulWidget {
@@ -86,6 +87,13 @@ class StoryScreen extends StatefulWidget {
 }
 
 class _StoryScreenState extends State<StoryScreen> {
+  // Leaving the screen ends whatever it was reading aloud.
+  @override
+  void dispose() {
+    StudyAudio.stop();
+    super.dispose();
+  }
+
   bool _showAr = false;
   final Map<int, int> _chosen = {};
 
@@ -144,6 +152,8 @@ class _StoryScreenState extends State<StoryScreen> {
           Wrap(spacing: S.x2, runSpacing: S.x2, children: [
             for (final t in s.targets) Pill(t.word, C.yellow),
           ]),
+        const SizedBox(height: S.x3),
+        ListenRow([('اسمع القصة', (a) => a.story(s.id))]),
         const SizedBox(height: S.x4),
         Surface(
           child: Column(
