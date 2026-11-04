@@ -250,11 +250,11 @@ double hsLogHazard(HsKey key, double value, {required int age, required String s
   }
 }
 
-/// Years a contributor adds, after the overlap shrink. Rounded to a tenth so
-/// the nine lines on screen add up to the headline.
+/// Years a contributor adds, after the overlap shrink. Unrounded: the screen
+/// rounds each line to a tenth, and the headline is rounded once from the
+/// sum, so no tenth is lost between the two.
 double hsYears(HsKey key, double value, {required int age, required String sex}) =>
-    (10 * kHsShrink * hsLogHazard(key, value, age: age, sex: sex) * 10).round() /
-    10;
+    10 * kHsShrink * hsLogHazard(key, value, age: age, sex: sex);
 
 /// WHOOP's unlock: 21 recoveries in 31 days.
 const int kHsUnlockDays = 21, kHsUnlockWindow = 31;
@@ -295,18 +295,17 @@ class HsWindow {
 }
 
 /// Averages over [days] (any order; sorted here). [span] is the calendar
-/// stretch from the first scored day to [today], so weekly rates are per
-/// calendar week, not per worn week — a band worn three days in seven did
-/// three days of strength, not seven.
-HsWindow hsWindow(List<HsDay> days, DateTime today) {
+/// stretch from the first scored day to the last, inclusive, so weekly rates
+/// are per calendar week, not per worn week — a band worn three days in seven
+/// did three days of strength, not seven. A day nothing scored, today
+/// included, is outside the span: it is not evidence of anything.
+HsWindow hsWindow(List<HsDay> days) {
   final sorted = [...days]..sort((a, b) => a.date.compareTo(b.date));
   final scored = sorted.where((d) => d.scored).toList();
   if (scored.isEmpty) return const HsWindow();
   final first = DateTime.parse(scored.first.date);
-  final span = DateTime(today.year, today.month, today.day)
-          .difference(DateTime(first.year, first.month, first.day))
-          .inDays +
-      1;
+  final last = DateTime.parse(scored.last.date);
+  final span = last.difference(first).inDays + 1;
   double? mean(Iterable<double> xs) {
     final list = xs.toList();
     if (list.isEmpty) return null;
@@ -385,8 +384,8 @@ HealthspanResult computeHealthspan({
   final recentScored = recent.where((d) => d.scored).length;
   final unlocked = recentScored >= kHsUnlockDays;
 
-  final w = hsWindow(long, today);
-  final w30 = hsWindow(days.where((d) => within(d, kHsPaceWindow)).toList(), today);
+  final w = hsWindow(long);
+  final w30 = hsWindow(days.where((d) => within(d, kHsPaceWindow)).toList());
 
   HsContributor c(HsKey k, double? v, double target, int evidence) =>
       HsContributor(

@@ -54,15 +54,22 @@ class HealthspanView {
 
 String _tenths(double v) => v.toStringAsFixed(1);
 
+/// A contributor's years to the tenth the row prints — so a line that would
+/// print 0.0 reads as on target, in either sign.
+double _roundTenth(double v) => (v * 10).round() / 10;
+
 /// "+1.2 y" / "−0.8 y" / on target. Shared by the rows and the door.
 String yearsLabel(AppLocalizations? l, double years) {
-  if (years > 0) return l?.healthspanYearsPlus(_tenths(years)) ?? '+${_tenths(years)} y';
-  if (years < 0) return l?.healthspanYearsMinus(_tenths(-years)) ?? '−${_tenths(-years)} y';
+  final y = _roundTenth(years);
+  if (y > 0) return l?.healthspanYearsPlus(_tenths(y)) ?? '+${_tenths(y)} y';
+  if (y < 0) return l?.healthspanYearsMinus(_tenths(-y)) ?? '−${_tenths(-y)} y';
   return l?.healthspanYearsZero ?? 'On target';
 }
 
-Color yearsColor(double years) =>
-    years > 0 ? C.orange : (years < 0 ? C.green : C.blue);
+Color yearsColor(double years) {
+  final y = _roundTenth(years);
+  return y > 0 ? C.orange : (y < 0 ? C.green : C.blue);
+}
 
 /// One line on the pace, by WHOOP's bands: under 0 reversing, 0-1 slowing,
 /// 1 steady, over 1 faster.

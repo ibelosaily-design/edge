@@ -98,7 +98,7 @@ void main() {
     );
     expect(r.unlocked, isTrue);
     expect(r.delta, closeTo(-1.6, 1.0));
-    // The lines add up to the headline.
+    // The headline is the age plus the nine lines, rounded once.
     final sum = r.contributors.fold<double>(0, (s, c) => s + c.years);
     expect(r.whoopAge, closeTo(30 + sum, 0.051));
   });
@@ -171,7 +171,7 @@ void main() {
       for (var i = 1; i <= 60; i += 2)
         HsDay(_date(i), tstMin: 480, rhr: 60, strengthMin: 20),
     ];
-    final w = hsWindow(days, _today);
+    final w = hsWindow(days);
     expect(w.scored, 30);
     expect(w.span, 59);
     expect(w.strengthWk, closeTo(30 * 20 * 7 / 59, 0.01));
@@ -184,7 +184,7 @@ void main() {
       HsDay(_date(3), tstMin: 480, onsetSec: 7200, midsleepSec: 7200),
       HsDay(_date(4), tstMin: 480, onsetSec: 7200, midsleepSec: 7200),
     ];
-    final w = hsWindow(days, _today);
+    final w = hsWindow(days);
     expect(w.consistencyPairs, 1);
     expect(w.consistency, 100);
   });
