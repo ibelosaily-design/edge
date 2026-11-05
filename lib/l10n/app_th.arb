@@ -16642,5 +16642,31 @@
       }
     }
   },
-  "strainFrontActiveKcal": "ที่ใช้ไป, กิโลแคลอรี"
+  "strainFrontActiveKcal": "ที่ใช้ไป, กิโลแคลอรี",
+  "healthMonitorBrMin": "ครั้ง/นาที",
+  "healthMonitorSpo2": "ออกซิเจนในเลือด (SpO₂)",
+  "healthMonitorSpo2Refused": "ไม่คำนวณที่นี่: สายรัดส่งแสงสีแดงและอินฟราเรดเป็นสัญญาณเดียว แต่ค่าความอิ่มตัวต้องแยกทั้งสอง",
+  "healthMonitorSkinTemp": "อุณหภูมิผิว (จากค่าปกติ)",
+  "healthMonitorCalibrate": "สวมสายรัดนอนอีก {n} คืนเพื่อตั้งค่าช่วงของคุณ",
+  "@healthMonitorCalibrate": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "healthMonitorCalibrating": "กำลังตั้งค่าช่วง",
+  "healthMonitorNightsLeft": "กำลังตั้งค่าช่วง · อีก {n} คืน",
+  "@healthMonitorNightsLeft": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "healthMonitorInside": "อยู่ในช่วงของคุณ",
+  "healthMonitorAbove": "สูงกว่าช่วงของคุณ",
+  "healthMonitorBelow": "ต่ำกว่าช่วงของคุณ",
+  "healthMonitorNotMeasured": "ไม่ได้วัด",
+  "healthMonitorNotComputed": "ไม่คำนวณ"
 }

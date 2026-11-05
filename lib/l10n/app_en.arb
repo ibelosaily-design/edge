@@ -16762,5 +16762,34 @@
       }
     }
   },
-  "strainFrontActiveKcal": "active, kcal"
+  "strainFrontActiveKcal": "active, kcal",
+  "healthMonitorBrMin": "br/min",
+  "@healthMonitorBrMin": {
+    "description": "Respiratory rate unit."
+  },
+  "healthMonitorSpo2": "Blood oxygen (SpO₂)",
+  "healthMonitorSpo2Refused": "Not computed here: the band sends its red and infrared light as one signal, and a saturation needs the two apart.",
+  "healthMonitorSkinTemp": "Skin temperature (from your usual)",
+  "healthMonitorCalibrate": "Wear the band to sleep {n} more nights to set your ranges.",
+  "@healthMonitorCalibrate": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "healthMonitorCalibrating": "Setting your range",
+  "healthMonitorNightsLeft": "Setting your range · {n} nights to go",
+  "@healthMonitorNightsLeft": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "healthMonitorInside": "In your range",
+  "healthMonitorAbove": "Above your range",
+  "healthMonitorBelow": "Below your range",
+  "healthMonitorNotMeasured": "Not measured",
+  "healthMonitorNotComputed": "Not computed"
 }

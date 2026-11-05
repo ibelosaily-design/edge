@@ -844,6 +844,10 @@ Map<String, Widget> extraCases() => {
           'كلمة اليوم: ubiquitous — موجود في كل مكان.',
           style: F.body),
       'study_ask_tutor': const AskTutorButton(prompt: 'Explain "ubiquitous".'),
+      // HEALTH MONITOR — the vitals grid: ranges set, and still calibrating.
+      'health_monitor': HealthMonitorGrid(_healthMonitorSample(calibrated: true)),
+      'health_monitor_calibrating':
+          HealthMonitorGrid(_healthMonitorSample(calibrated: false)),
       // STRAIN FRONT — the Activity tab's top: the ring with its target,
       // steps and calories, today's sessions, time in zones.
       'strain_front': StrainFront(_strainFrontSample()),
@@ -2778,6 +2782,34 @@ StrainFrontData _strainFrontSample() {
         strain: 5.1,
       ),
     ],
+  );
+}
+
+HealthData _healthMonitorSample({required bool calibrated}) {
+  Map<String, dynamic> block(double baseline, double spread, double z) => {
+        'baseline': baseline,
+        'spread': spread,
+        'n_valid': calibrated ? 20 : 6,
+        'z': z,
+        'in_normal_range': z.abs() <= 1,
+        'status': z.abs() <= 1 ? 'normal' : 'outside',
+      };
+  return HealthData(
+    today: {
+      'daily': {
+        'resting_hr': {'value': 58, 'confidence': .8, 'tier': 'HIGH'},
+      },
+      'hrv': {'rmssd': 64, 'confidence': .7, 'tier': 'HIGH'},
+      'resp': {'value': 15.8, 'confidence': .7, 'tier': 'ESTIMATE'},
+      'skin_temp': {'value': 0.4, 'dev_c': 0.2},
+      'spo2': {'disabled': true, 'value': null},
+    },
+    baselines: {
+      'resting_hr': block(60, 2.1, -0.9),
+      'hrv': block(58, 9, 0.7),
+      'resp': block(15.1, 0.5, 1.4),
+      'skin_temp': block(0, 1, 0.4),
+    },
   );
 }
 

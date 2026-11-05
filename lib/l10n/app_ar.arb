@@ -3714,5 +3714,31 @@
       }
     }
   },
-  "strainFrontActiveKcal": "نشطة، كيلوكالوري"
+  "strainFrontActiveKcal": "نشطة، كيلوكالوري",
+  "healthMonitorBrMin": "نفس/د",
+  "healthMonitorSpo2": "الأكسجين في الدم (SpO₂)",
+  "healthMonitorSpo2Refused": "مش بيتحسب هنا: السوار بيبعت الضوء الأحمر وتحت الأحمر كإشارة واحدة، والتشبع محتاجهم منفصلين.",
+  "healthMonitorSkinTemp": "حرارة الجلد (عن معتادك)",
+  "healthMonitorCalibrate": "البس السوار وأنت نايم {n} ليالي كمان عشان نطاقاتك تتحدد.",
+  "@healthMonitorCalibrate": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "healthMonitorCalibrating": "بيحدد نطاقك",
+  "healthMonitorNightsLeft": "بيحدد نطاقك · متبقي {n} ليالي",
+  "@healthMonitorNightsLeft": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "healthMonitorInside": "ضمن نطاقك",
+  "healthMonitorAbove": "فوق نطاقك",
+  "healthMonitorBelow": "تحت نطاقك",
+  "healthMonitorNotMeasured": "متقاسش",
+  "healthMonitorNotComputed": "مش بيتحسب"
 }

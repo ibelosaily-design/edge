@@ -8221,5 +8221,31 @@
       }
     }
   },
-  "strainFrontActiveKcal": "активных, ккал"
+  "strainFrontActiveKcal": "активных, ккал",
+  "healthMonitorBrMin": "вд/мин",
+  "healthMonitorSpo2": "Кислород в крови (SpO₂)",
+  "healthMonitorSpo2Refused": "Здесь не вычисляется: браслет передаёт красный и инфракрасный свет одним сигналом, а сатурации нужны оба раздельно.",
+  "healthMonitorSkinTemp": "Температура кожи (от обычной)",
+  "healthMonitorCalibrate": "Поспите с браслетом ещё {n} ночей, чтобы задать ваши диапазоны.",
+  "@healthMonitorCalibrate": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "healthMonitorCalibrating": "Задаётся диапазон",
+  "healthMonitorNightsLeft": "Задаётся диапазон · ещё {n} ночей",
+  "@healthMonitorNightsLeft": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "healthMonitorInside": "В вашем диапазоне",
+  "healthMonitorAbove": "Выше вашего диапазона",
+  "healthMonitorBelow": "Ниже вашего диапазона",
+  "healthMonitorNotMeasured": "Не измерено",
+  "healthMonitorNotComputed": "Не вычисляется"
 }

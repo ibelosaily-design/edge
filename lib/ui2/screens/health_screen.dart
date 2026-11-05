@@ -29,6 +29,7 @@ import '../ui2.dart';
 import 'advanced.dart';
 import 'ecg.dart' show EcgEntryCard, pairedIsMaverickOf;
 import 'findings_log.dart';
+import 'health_monitor.dart' show HealthMonitorGrid;
 import 'healthspan_screen.dart' show HealthspanDoor;
 import 'home_screen.dart';
 import 'investigate.dart';
@@ -903,6 +904,11 @@ class _HealthScreenState extends State<HealthScreen> with RevisionReload {
             style: F.cap.copyWith(color: p.ink3)),
         const SizedBox(height: S.x2),
       ],
+      // HEALTH MONITOR — one card per vital with the pipeline's own range
+      // verdict, and the nights left until the ranges exist. The rows under
+      // it keep their sparklines and doors.
+      HealthMonitorGrid(d),
+      const SizedBox(height: S.x4),
       if (rows.isNotEmpty)
         Surface(
           pad: const EdgeInsets.symmetric(horizontal: S.x4),
