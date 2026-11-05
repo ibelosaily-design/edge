@@ -1195,7 +1195,13 @@ class _TrioRing extends StatelessWidget {
             const SizedBox(width: 2),
             Icon(LucideIcons.chevronRight, size: 13, color: p.ink3),
           ]),
-          if (r.calibrating && r.have != null && r.need != null)
+          // The qualifier the ring has always carried — "Sleeping…",
+          // "Finishing up", "of 8h 46m", nights banked — under the name.
+          if (r.sub.isNotEmpty)
+            Text(presentationText(l, r.sub),
+                textAlign: TextAlign.center,
+                style: F.over.copyWith(color: p.ink3))
+          else if (r.calibrating && r.have != null && r.need != null)
             Text('${r.have}/${r.need}',
                 style: F.over.copyWith(color: p.ink3)),
         ]),
@@ -1222,12 +1228,26 @@ class HomeWeekCard extends StatelessWidget {
     final h = bigText(c) ? 110.0 : 150.0;
     const strainMax = 21.0;
     final axis = F.over.copyWith(color: p.ink3);
+    // Each tick gets a quarter of the plot's height and shrinks into it, so
+    // a large text size cannot push the axis past the plot.
     Widget axisCol(List<String> ticks, Color ink) => SizedBox(
           height: h,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [for (final t in ticks) Text(t, style: axis.copyWith(color: ink))],
-          ),
+          child: Column(children: [
+            for (final (i, t) in ticks.indexed)
+              Expanded(
+                child: Align(
+                  alignment: i == 0
+                      ? Alignment.topCenter
+                      : i == ticks.length - 1
+                          ? Alignment.bottomCenter
+                          : Alignment.center,
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(t, style: axis.copyWith(color: ink)),
+                  ),
+                ),
+              ),
+          ]),
         );
     return Surface(
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
@@ -1668,11 +1688,7 @@ class HomeData {
       // was "No target yet" on every day but today.
       sleepNeedMin: metricOf(sleep['need_min']),
       stepGoal: (profile['step_goal'] as num?)?.toInt() ?? kDefaultStepGoal,
-      week: homeWeekOf(
-        strain: pointsOf(await repo.getChart('strain')),
-        recovery: pointsOf(await repo.getChart('recovery')),
-        upToNoon: _noonOfDay(date),
-      ),
+      week: await _weekOf(repo, date),
     );
   }
 
@@ -1751,12 +1767,23 @@ class HomeData {
           ? (strain['strain_target'] as Map).cast<String, dynamic>()
           : null,
       insightsStale: staleReasonOf(cd),
-      week: homeWeekOf(
+      week: await _weekOf(
+          repo, (today['status'] as Map?)?['today_day']?.toString()),
+    );
+  }
+
+  /// The week's two series, or nothing from a repository without charts.
+  static Future<List<HomeWeekDay>> _weekOf(
+      LocalRepository repo, String? day) async {
+    try {
+      return homeWeekOf(
         strain: pointsOf(await repo.getChart('strain')),
         recovery: pointsOf(await repo.getChart('recovery')),
-        upToNoon: _noonOfDay((today['status'] as Map?)?['today_day']?.toString()),
-      ),
-    );
+        upToNoon: _noonOfDay(day),
+      );
+    } on UnimplementedError {
+      return const [];
+    }
   }
 }
 
