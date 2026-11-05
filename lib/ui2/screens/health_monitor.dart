@@ -15,7 +15,6 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../l10n/app_localizations.dart';
 import '../../l10n/decimal_text.dart';
-import '../trend.dart' show kUsualMinDays;
 import '../ui2.dart';
 import 'health_screen.dart' show HealthData;
 import 'home_screen.dart' show go;
@@ -74,8 +73,6 @@ List<VitalRead> vitalReads(HealthData d, AppLocalizations? l) {
   final temp = d.today['skin_temp'];
   final tempDevC = temp is Map ? (temp['dev_c'] as num?)?.toDouble() : null;
   final tempZ = temp is Map ? (temp['value'] as num?)?.toDouble() : null;
-  final spo2 = d.today['spo2'];
-  final spo2Note = spo2 is Map ? spo2['note']?.toString() : null;
 
   final (rs, rn) = vitalStatusOf(block('resp'), hasValue: resp != null);
   final (hs, hn) = vitalStatusOf(block('resting_hr'), hasValue: rhr != null);
