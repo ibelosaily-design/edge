@@ -3679,5 +3679,7 @@
   "sleepFrontAwakenings": "مرات الاستيقاظ (أقل تقدير)",
   "sleepFrontLongestStretch": "أطول نوم متواصل",
   "sleepFrontLatency": "وقت الدخول في النوم",
-  "sleepFrontLatencyNote": "بيتحسب بس لو حددت وقت السرير بنفسك"
+  "sleepFrontLatencyNote": "بيتحسب بس لو حددت وقت السرير بنفسك",
+  "homeWeekTitle": "الجهد والتعافي",
+  "homeWeekSub": "آخر 7 أيام، الأحدث على اليمين"
 }

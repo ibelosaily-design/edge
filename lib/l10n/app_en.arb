@@ -16720,5 +16720,10 @@
   "sleepFrontAwakenings": "Times awake (at least)",
   "sleepFrontLongestStretch": "Longest unbroken sleep",
   "sleepFrontLatency": "Time to fall asleep",
-  "sleepFrontLatencyNote": "counted only from a bedtime you set"
+  "sleepFrontLatencyNote": "counted only from a bedtime you set",
+  "homeWeekTitle": "Strain and recovery",
+  "@homeWeekTitle": {
+    "description": "Home week chart title."
+  },
+  "homeWeekSub": "The last seven days, newest at the right"
 }

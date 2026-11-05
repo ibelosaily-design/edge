@@ -16607,5 +16607,7 @@
   "sleepFrontAwakenings": "จำนวนครั้งที่ตื่น (อย่างน้อย)",
   "sleepFrontLongestStretch": "หลับต่อเนื่องนานที่สุด",
   "sleepFrontLatency": "เวลาที่ใช้ในการหลับ",
-  "sleepFrontLatencyNote": "นับเฉพาะเมื่อคุณตั้งเวลานอนเอง"
+  "sleepFrontLatencyNote": "นับเฉพาะเมื่อคุณตั้งเวลานอนเอง",
+  "homeWeekTitle": "ความหนักและการฟื้นตัว",
+  "homeWeekSub": "เจ็ดวันล่าสุด ล่าสุดอยู่ทางขวา"
 }

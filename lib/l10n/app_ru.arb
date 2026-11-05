@@ -8186,5 +8186,7 @@
   "sleepFrontAwakenings": "Пробуждений (не меньше)",
   "sleepFrontLongestStretch": "Самый долгий непрерывный сон",
   "sleepFrontLatency": "Время засыпания",
-  "sleepFrontLatencyNote": "считается только от заданного вами отбоя"
+  "sleepFrontLatencyNote": "считается только от заданного вами отбоя",
+  "homeWeekTitle": "Нагрузка и восстановление",
+  "homeWeekSub": "Последние семь дней, новейший справа"
 }

@@ -842,6 +842,8 @@ Map<String, Widget> extraCases() => {
           'كلمة اليوم: ubiquitous — موجود في كل مكان.',
           style: F.body),
       'study_ask_tutor': const AskTutorButton(prompt: 'Explain "ubiquitous".'),
+      // HOME WEEK — strain columns with the day's recovery as a dot.
+      'home_week': HomeWeekCard(_homeWeekSample(), selected: '2026-11-05'),
       // SLEEP FRONT — the tab's top, as WHOOP's Sleep page is shaped: ring,
       // four lines, the night with its stages, hours, efficiency, the week.
       // One full night with a learned need, and one first night with no
@@ -2726,5 +2728,20 @@ SleepData _sleepFrontSample({required bool learned}) {
       SleepTrendDay(d(0), tstMin: 413, deepMin: 144, remMin: 80, effPct: 98),
     ],
   );
+}
+
+/// A week of strain and recovery, one day without a recovery and one
+/// without a strain, so both absences are drawn as absences.
+List<HomeWeekDay> _homeWeekSample() {
+  String d(int back) => dayLabelOf(DateTime(2026, 11, 5 - back));
+  return [
+    HomeWeekDay(d(6), strain: 12.4, recovery: 71),
+    HomeWeekDay(d(5), strain: 15.9, recovery: 44),
+    HomeWeekDay(d(4), strain: 6.2, recovery: 88),
+    HomeWeekDay(d(3), strain: 9.8),
+    HomeWeekDay(d(2), recovery: 62),
+    HomeWeekDay(d(1), strain: 18.1, recovery: 29),
+    HomeWeekDay(d(0), strain: 4.0, recovery: 77),
+  ];
 }
 

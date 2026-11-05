@@ -28,7 +28,6 @@ import '../../l10n/date_text.dart';
 // only three of them and they are read together.
 
 import 'dart:async';
-import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -878,11 +877,8 @@ class RingTrio extends StatelessWidget {
             _RingRow(rings[i], onTap: _open(rings[i].kind)),
           ]
         else
-          // ONE FACE, not three rings in a row. Recovery is the dial, strain
-          // and sleep are its two sub-dials — the way a chronograph puts the
-          // minute and hour registers inside the main face. The same three
-          // states, the same three doors; only the geometry changed.
-          _Face(rings, open: _open),
+          // Three rings in a row — sleep, recovery, strain — each a door.
+          _Trio(rings, open: _open),
         for (final r in gaps) ...[
           const SizedBox(height: S.x2),
           Divider(color: p.line, height: 1),
@@ -1124,317 +1120,251 @@ _RingState _gap(HomeRingKind k, String label, IconData icon, Color color,
 /// Geometry is in units of the face's half-side so one set of constants
 /// serves every width. Sub-dial centres sit at (±[_subX], [_subY]); each is a
 /// door of its own, on top of the face so its tap wins over the face's.
-class _Face extends StatelessWidget {
+/// THREE RINGS IN A ROW — sleep, recovery, strain — the way WHOOP's Today
+/// page opens, and in that order so the night comes first. Each is a door;
+/// the figure sits inside its ring and the name under it.
+class _Trio extends StatelessWidget {
   final List<_RingState> rings;
   final VoidCallback? Function(HomeRingKind) open;
 
-  const _Face(this.rings, {required this.open});
+  const _Trio(this.rings, {required this.open});
 
-  /// Widest the face gets. Past this the hero numeral stops reading as a
-  /// number on a dial and starts reading as a poster.
-  static const _maxSide = 272.0;
-  static const _subX = .40, _subY = .36, _subR = .20;
-
-  /// The hero block's box, as fractions of the side: a band across the upper
-  /// face, bottom-aligned so the figure sits just above centre and its band
-  /// word ends clear of the sub-dials below.
-  static const _numInset = .19, _numTop = .10, _numH = .46;
+  static const _order = [HomeRingKind.sleep, HomeRingKind.recovery, HomeRingKind.strain];
 
   @override
   Widget build(BuildContext c) {
-    final p = P.of(c);
-    final rec = rings[HomeRingKind.recovery.index];
-    final strain = rings[HomeRingKind.strain.index];
-    final sleep = rings[HomeRingKind.sleep.index];
-    return Center(
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: _maxSide),
-        child: AspectRatio(
-          aspectRatio: 1,
-          child: LayoutBuilder(builder: (c, box) {
-            final side = box.maxWidth;
-            final sub = _subR * side; // sub-dial diameter
-            return Stack(children: [
-              Positioned.fill(
-                child: Pressable(
-                  onTap: open(rec.kind),
-                  semanticLabel: rec.spoken,
-                  child: CustomPaint(
-                    size: Size.infinite,
-                    painter: _FacePainter(
-                      p: p,
-                      recovery: rec,
-                      strain: strain,
-                      sleep: sleep,
-                      t: animate(c, 1),
-                    ),
-                  ),
-                ),
-              ),
-              Positioned(
-                left: _numInset * side,
-                right: _numInset * side,
-                top: _numTop * side,
-                height: _numH * side,
-                // A FittedBox so the block can only ever shrink, never spill:
-                // at the top of the non-accessibility scale range the figure
-                // plus a two-line band word is a hair taller than the box.
-                child: IgnorePointer(
-                  child: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    alignment: Alignment.bottomCenter,
-                    child: SizedBox(
-                      width: (1 - 2 * _numInset) * side,
-                      child: _FaceNumber(rec),
-                    ),
-                  ),
-                ),
-              ),
-              Align(
-                alignment: const Alignment(-_subX, _subY),
-                child: _SubDial(strain, side: sub, onTap: open(strain.kind)),
-              ),
-              Align(
-                alignment: const Alignment(_subX, _subY),
-                child: _SubDial(sleep, side: sub, onTap: open(sleep.kind)),
-              ),
-            ]);
-          }),
-        ),
-      ),
-    );
-  }
-}
-
-/// The hero figure and its one-word band under it. Absent reads as words in
-/// the sentence weight, the same rule as [_RingText].
-class _FaceNumber extends StatelessWidget {
-  final _RingState r;
-
-  const _FaceNumber(this.r);
-
-  @override
-  Widget build(BuildContext c) {
-    final p = P.of(c);
-    final l = AppLocalizations.of(c);
-    final measured = r.measured;
-    return Column(mainAxisSize: MainAxisSize.min, children: [
-      Text(
-        presentationText(l, r.value),
-        textAlign: TextAlign.center,
-        style: measured
-            ? F.n64.copyWith(color: r.provisional ? p.ink3 : p.ink)
-            : F.body.copyWith(color: p.ink2),
-      ),
-      if (r.sub.isNotEmpty) ...[
-        const SizedBox(height: S.x1),
-        Text(
-          presentationText(l, r.sub),
-          // The band word in the dial's own metal: the one piece of type on
-          // Home in the index colour, so it reads as the verdict, not a label.
-          style: F.cap.copyWith(
-              color: measured && !r.provisional ? p.on(C.yellow) : p.ink3,
-              fontWeight: FontWeight.w600),
-          textAlign: TextAlign.center,
-        ),
-      ],
+    final byKind = {for (final r in rings) r.kind: r};
+    return Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      for (final k in _order)
+        if (byKind[k] case final r?)
+          Expanded(child: _TrioRing(r, onTap: open(k))),
     ]);
   }
 }
 
-/// One register: the label above, the figure below, inside the ring the
-/// painter drew under it. Short by construction — a register is too small
-/// for a duration, so sleep shows the share of its need when it has one.
-class _SubDial extends StatelessWidget {
+class _TrioRing extends StatelessWidget {
   final _RingState r;
-  final double side;
   final VoidCallback? onTap;
-
-  const _SubDial(this.r, {required this.side, this.onTap});
+  const _TrioRing(this.r, {this.onTap});
 
   @override
   Widget build(BuildContext c) {
     final p = P.of(c);
     final l = AppLocalizations.of(c);
-    return SizedBox(
-      width: side,
-      height: side,
-      child: Pressable(
-        onTap: onTap,
-        semanticLabel: r.spoken,
-        child: Center(
-          // Both lines scale down rather than spill: "Нагрузка" is wider
-          // than a register on a 320 pt phone, and the register's size is
-          // the face's, not the word's.
-          child: Column(mainAxisSize: MainAxisSize.min, children: [
-            FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(r.label, style: F.over.copyWith(color: p.ink3)),
-            ),
-            const SizedBox(height: 2),
-            FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(
-                presentationText(l, _subValue(r)),
-                style: F.n17.copyWith(color: r.ink(p)),
+    final value = presentationText(l, r.value);
+    return Pressable(
+      onTap: onTap,
+      semanticLabel: r.spoken,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: S.x2, horizontal: S.x1),
+        child: Column(mainAxisSize: MainAxisSize.min, children: [
+          SizedBox(
+            width: 92,
+            height: 92,
+            child: Stack(alignment: Alignment.center, children: [
+              CustomPaint(
+                size: Size.infinite,
+                painter: r.calibrating
+                    ? DashedRing(r.frac ?? 0, r.arc(p), p.track,
+                        stroke: 7, segments: r.need ?? 24)
+                    : Ring(r.frac ?? 0, r.arc(p), p.track,
+                        stroke: 7, t: animate(c, 1), solid: r.measured),
               ),
+              Padding(
+                padding: const EdgeInsets.all(S.x3),
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    r.measured || r.calibrating ? value : '—',
+                    textAlign: TextAlign.center,
+                    style: r.measured
+                        ? F.n24.copyWith(color: r.provisional ? p.ink3 : p.ink)
+                        : F.n17.copyWith(color: p.ink3),
+                  ),
+                ),
+              ),
+            ]),
+          ),
+          const SizedBox(height: S.x2),
+          Row(mainAxisSize: MainAxisSize.min, children: [
+            Flexible(
+              child: Text(r.label,
+                  textAlign: TextAlign.center,
+                  style: F.cap.copyWith(color: p.ink2)),
             ),
+            const SizedBox(width: 2),
+            Icon(LucideIcons.chevronRight, size: 13, color: p.ink3),
           ]),
-        ),
+          if (r.calibrating && r.have != null && r.need != null)
+            Text('${r.have}/${r.need}',
+                style: F.over.copyWith(color: p.ink3)),
+        ]),
       ),
     );
   }
+}
 
-  /// The figure a register can hold: strain as is, calibration as
-  /// "have/need", sleep as the share of its need (or h:mm with no need),
-  /// absence as nothing — the gap row under the face carries the words.
-  static String _subValue(_RingState r) {
-    if (r.why != null) return '';
-    if (r.calibrating) return '${r.have}/${r.need}';
-    if (r.kind == HomeRingKind.sleep) {
-      final f = r.frac;
-      if (f != null) return '${(f * 100).round()}%';
-      if (r.minutes case final num m) {
-        final min = m.round();
-        return '${min ~/ 60}:${(min % 60).toString().padLeft(2, '0')}';
-      }
-    }
-    return r.value;
+/// STRAIN AND RECOVERY, THE WEEK — WHOOP's Today page carries this chart
+/// under the rings: a strain column per day on a 0-21 axis and the day's
+/// recovery as a dot on a 0-100 axis, so a hard day on a low recovery is one
+/// glance. Both come off `metric_series`; the card draws, it does not judge.
+class HomeWeekCard extends StatelessWidget {
+  final List<HomeWeekDay> week;
+
+  /// The day the screen is on, highlighted.
+  final String? selected;
+  const HomeWeekCard(this.week, {super.key, this.selected});
+
+  @override
+  Widget build(BuildContext c) {
+    final p = P.of(c);
+    final l = AppLocalizations.of(c);
+    final h = bigText(c) ? 110.0 : 150.0;
+    const strainMax = 21.0;
+    final axis = F.over.copyWith(color: p.ink3);
+    Widget axisCol(List<String> ticks, Color ink) => SizedBox(
+          height: h,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [for (final t in ticks) Text(t, style: axis.copyWith(color: ink))],
+          ),
+        );
+    return Surface(
+      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        Text(l?.homeWeekTitle ?? 'Strain and recovery',
+            style: F.head.copyWith(color: p.ink)),
+        Text(l?.homeWeekSub ?? 'The last seven days, newest at the right',
+            style: F.cap.copyWith(color: p.ink3)),
+        const SizedBox(height: S.x4),
+        Directionality(
+          textDirection: TextDirection.ltr,
+          child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            axisCol(const ['21', '14', '7', '0'], p.on(C.purple)),
+            const SizedBox(width: S.x2),
+            Expanded(
+              child: Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
+                for (final d in week)
+                  Expanded(
+                    child: _WeekColumn(
+                      d,
+                      height: h,
+                      strainMax: strainMax,
+                      selected: d.date == selected,
+                      weekday: weekdayShortName(DateTime.parse(d.date).weekday, l),
+                      dayNum: DateTime.parse(d.date).day.toString(),
+                    ),
+                  ),
+              ]),
+            ),
+            const SizedBox(width: S.x2),
+            axisCol(const ['100%', '67%', '33%', '0%'], p.on(C.green)),
+          ]),
+        ),
+        const SizedBox(height: S.x3),
+        Wrap(spacing: S.x4, runSpacing: S.x1, children: [
+          _Key(p.on(C.purple), l?.homeRingStrain ?? 'Strain', bar: true),
+          _Key(p.on(C.green), l?.homeRingRecovery ?? 'Recovery'),
+        ]),
+      ]),
+    );
   }
 }
 
-/// The instrument: a disc with a hairline bezel and sixty ticks, a gold index
-/// at twelve, the recovery ring, and the two registers' tracks and arcs. Text
-/// is NOT painted here — it is laid out by [_Face] over the painting so it
-/// scales and localises like every other piece of type.
-class _FacePainter extends CustomPainter {
-  final P p;
-  final _RingState recovery, strain, sleep;
-  final double t;
-
-  _FacePainter(
-      {required this.p,
-      required this.recovery,
-      required this.strain,
-      required this.sleep,
-      required this.t});
+class _Key extends StatelessWidget {
+  final Color color;
+  final String text;
+  final bool bar;
+  const _Key(this.color, this.text, {this.bar = false});
 
   @override
-  void paint(Canvas cv, Size s) {
-    final c = Offset(s.width / 2, s.height / 2);
-    final h = math.min(s.width, s.height) / 2;
-    if (h <= 0) return;
-    final gold = C.yellow;
-
-    // Disc and bezel.
-    cv.drawCircle(
-      c,
-      h * .98,
-      Paint()
-        ..shader = RadialGradient(
-          center: const Alignment(0, -.1),
-          colors: [p.card2, p.card],
-        ).createShader(Rect.fromCircle(center: c, radius: h)),
-    );
-    cv.drawCircle(
-      c,
-      h * .98,
-      Paint()
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 1
-        ..color = gold.withValues(alpha: .55),
-    );
-
-    // Sixty ticks, every fifth longer, in the muted ink.
-    final tick = Paint()
-      ..strokeWidth = 1
-      ..strokeCap = StrokeCap.round
-      ..color = p.ink3.withValues(alpha: .55);
-    for (var i = 0; i < 60; i++) {
-      final a = i * math.pi / 30 - math.pi / 2;
-      final inner = i % 5 == 0 ? .86 : .885;
-      cv.drawLine(_at(c, h * inner, a), _at(c, h * .92, a), tick);
-    }
-    // The index at twelve, in the metal.
-    cv.drawLine(
-      _at(c, h * .905, -math.pi / 2),
-      _at(c, h * .845, -math.pi / 2),
-      Paint()
-        ..strokeWidth = 2.5
-        ..strokeCap = StrokeCap.round
-        ..color = gold,
-    );
-
-    _ring(cv, c, h * .80, h * .07, recovery);
-    _ring(cv, c + Offset(-_Face._subX * h, _Face._subY * h), _Face._subR * h,
-        h * .035, strain);
-    _ring(cv, c + Offset(_Face._subX * h, _Face._subY * h), _Face._subR * h,
-        h * .035, sleep);
+  Widget build(BuildContext c) {
+    final p = P.of(c);
+    return Row(mainAxisSize: MainAxisSize.min, children: [
+      Container(
+        width: bar ? S.x2 : S.x3,
+        height: S.x3,
+        decoration: BoxDecoration(
+          color: color,
+          shape: bar ? BoxShape.rectangle : BoxShape.circle,
+          borderRadius: bar ? R.rSm : null,
+        ),
+      ),
+      const SizedBox(width: S.x2),
+      Text(text, style: F.cap.copyWith(color: p.ink2)),
+    ]);
   }
-
-  /// One track and whatever arc is honest on it: solid for a measurement,
-  /// faded for a provisional one, dashes filling night by night while a
-  /// baseline calibrates, nothing at all for an absence.
-  void _ring(Canvas cv, Offset c, double r, double stroke, _RingState s) {
-    cv.drawCircle(
-      c,
-      r,
-      Paint()
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = stroke
-        ..color = p.track,
-    );
-    final f = s.frac;
-    if (f == null) return;
-    final rect = Rect.fromCircle(center: c, radius: r);
-    final paint = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = stroke
-      ..strokeCap = StrokeCap.round
-      ..color = s.arc(p);
-    if (s.calibrating && s.need != null && s.need! > 0) {
-      // One dash per night the baseline needs, [have] of them filled. Butt
-      // caps: round ones would eat the gap between dashes at this size.
-      paint.strokeCap = StrokeCap.butt;
-      final n = s.need!;
-      final gap = math.min(.08, math.pi / n / 3);
-      final span = 2 * math.pi / n - gap;
-      for (var i = 0; i < (s.have ?? 0).clamp(0, n); i++) {
-        cv.drawArc(rect, -math.pi / 2 + i * (span + gap), span, false, paint);
-      }
-      return;
-    }
-    final sweep = 2 * math.pi * f.clamp(0.0, 1.0) * t.clamp(0.0, 1.0);
-    if (sweep <= 0) return;
-    if (!s.measured || s.provisional) {
-      paint.color = s.arc(p).withValues(alpha: .55);
-    }
-    cv.drawArc(rect, -math.pi / 2, sweep, false, paint);
-  }
-
-  static Offset _at(Offset c, double r, double a) =>
-      c + Offset(r * math.cos(a), r * math.sin(a));
-
-  @override
-  bool shouldRepaint(covariant _FacePainter o) =>
-      o.p.dark != p.dark ||
-      o.t != t ||
-      !_same(o.recovery, recovery) ||
-      !_same(o.strain, strain) ||
-      !_same(o.sleep, sleep);
-
-  static bool _same(_RingState a, _RingState b) =>
-      a.frac == b.frac &&
-      a.calibrating == b.calibrating &&
-      a.provisional == b.provisional &&
-      a.have == b.have &&
-      a.need == b.need &&
-      a.color == b.color &&
-      a.why == b.why;
 }
 
-/// The dial itself. An empty [frac] draws the track and nothing else — which is
-/// exactly what [Ring] already does with a zero sweep.
+class _WeekColumn extends StatelessWidget {
+  final HomeWeekDay d;
+  final double height, strainMax;
+  final bool selected;
+  final String weekday, dayNum;
+  const _WeekColumn(
+    this.d, {
+    required this.height,
+    required this.strainMax,
+    required this.selected,
+    required this.weekday,
+    required this.dayNum,
+  });
+
+  @override
+  Widget build(BuildContext c) {
+    final p = P.of(c);
+    final l = AppLocalizations.of(c);
+    final strain = d.strain;
+    final rec = d.recovery;
+    final recColor = rec == null ? p.ink3 : p.on(readinessBand(rec, l).color);
+    final labelStyle = F.over.copyWith(color: selected ? p.ink : p.ink3);
+    return Semantics(
+      label: '$weekday $dayNum, '
+          '${strain == null ? '—' : displayFixed(strain, 1)}, '
+          '${rec == null ? '—' : '${rec.round()}%'}',
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 2),
+        padding: const EdgeInsets.symmetric(vertical: S.x1),
+        decoration: BoxDecoration(
+          color: selected ? p.card2 : null,
+          borderRadius: R.rMd,
+        ),
+        child: Column(mainAxisSize: MainAxisSize.min, children: [
+          SizedBox(
+            height: height,
+            child: Stack(alignment: Alignment.bottomCenter, children: [
+              if (strain != null)
+                Container(
+                  width: S.x3,
+                  height: height * (strain / strainMax).clamp(0.0, 1.0),
+                  decoration: BoxDecoration(
+                    color: p.on(C.purple),
+                    borderRadius: R.rSm,
+                  ),
+                ),
+              if (rec != null)
+                Positioned(
+                  bottom: (height - S.x3) * (rec / 100).clamp(0.0, 1.0),
+                  child: Container(
+                    width: S.x3,
+                    height: S.x3,
+                    decoration: BoxDecoration(
+                      color: recColor,
+                      shape: BoxShape.circle,
+                      border: Border.all(color: p.card, width: 2),
+                    ),
+                  ),
+                ),
+            ]),
+          ),
+          const SizedBox(height: S.x1),
+          FittedBox(fit: BoxFit.scaleDown, child: Text(dayNum, style: labelStyle)),
+          FittedBox(fit: BoxFit.scaleDown, child: Text(weekday, style: labelStyle)),
+        ]),
+      ),
+    );
+  }
+}
+
 class _Dial extends StatelessWidget {
   final _RingState r;
   final double stroke, icon;
@@ -1636,6 +1566,10 @@ class HomeData {
   /// `{from, to, at}` when today's final recovery changed after it was shown.
   final Map<String, dynamic>? readinessUpdate;
 
+  /// The last seven scored days up to this one, oldest first, for the
+  /// strain-and-recovery columns. Empty in a fixture.
+  final List<HomeWeekDay> week;
+
   const HomeData({
     this.name,
     this.dayId,
@@ -1659,6 +1593,7 @@ class HomeData {
     this.absentDiag,
     this.recoveryState,
     this.readinessUpdate,
+    this.week = const [],
   });
 
   /// The three illness fields, replaced together. Test-facing sugar, and they
@@ -1687,6 +1622,7 @@ class HomeData {
         absentDiag: absentDiag,
         recoveryState: recoveryState,
         readinessUpdate: readinessUpdate,
+        week: week,
       );
 
   /// A day OTHER than today, for the Home day switcher.
@@ -1732,6 +1668,11 @@ class HomeData {
       // was "No target yet" on every day but today.
       sleepNeedMin: metricOf(sleep['need_min']),
       stepGoal: (profile['step_goal'] as num?)?.toInt() ?? kDefaultStepGoal,
+      week: homeWeekOf(
+        strain: pointsOf(await repo.getChart('strain')),
+        recovery: pointsOf(await repo.getChart('recovery')),
+        upToNoon: _noonOfDay(date),
+      ),
     );
   }
 
@@ -1810,8 +1751,60 @@ class HomeData {
           ? (strain['strain_target'] as Map).cast<String, dynamic>()
           : null,
       insightsStale: staleReasonOf(cd),
+      week: homeWeekOf(
+        strain: pointsOf(await repo.getChart('strain')),
+        recovery: pointsOf(await repo.getChart('recovery')),
+        upToNoon: _noonOfDay((today['status'] as Map?)?['today_day']?.toString()),
+      ),
     );
   }
+}
+
+/// One day's column on Home's week chart: the day's strain (0-21) and its
+/// recovery (0-100), either null when that day did not score it.
+class HomeWeekDay {
+  final String date;
+  final double? strain, recovery;
+  const HomeWeekDay(this.date, {this.strain, this.recovery});
+}
+
+/// Local noon of a day label, as `metric_series` stamps its points; null
+/// for no label.
+int? _noonOfDay(String? day) {
+  if (day == null) return null;
+  final d = DateTime.tryParse(day);
+  if (d == null) return null;
+  return DateTime(d.year, d.month, d.day, 12).millisecondsSinceEpoch ~/ 1000;
+}
+
+/// The last seven dated points up to [upToNoon] (inclusive), merged by
+/// their noon stamp. Pure, so a test can hand it points.
+@visibleForTesting
+List<HomeWeekDay> homeWeekOf({
+  required List<ChartPoint> strain,
+  required List<ChartPoint> recovery,
+  required int? upToNoon,
+}) {
+  final byNoon = <int, Map<String, double>>{};
+  void take(List<ChartPoint> pts, String k) {
+    for (final p in pts) {
+      if (upToNoon != null && p.t > upToNoon) continue;
+      (byNoon[p.t] ??= {})[k] = p.v;
+    }
+  }
+
+  take(strain, 'strain');
+  take(recovery, 'recovery');
+  final noons = byNoon.keys.toList()..sort();
+  final last = noons.length <= 7 ? noons : noons.sublist(noons.length - 7);
+  return [
+    for (final t in last)
+      HomeWeekDay(
+        dayLabelOf(DateTime.fromMillisecondsSinceEpoch(t * 1000)),
+        strain: byNoon[t]!['strain'],
+        recovery: byNoon[t]!['recovery'],
+      ),
+  ];
 }
 
 class HomeScreen extends StatefulWidget {
@@ -2436,6 +2429,10 @@ class _HomeScreenState extends State<HomeScreen> with RevisionReload {
             );
           }),
 
+        if (d.week.isNotEmpty) ...[
+          const SizedBox(height: S.x3),
+          HomeWeekCard(d.week, selected: _day ?? d.dayId),
+        ],
         const SizedBox(height: S.x3),
         const DetectedActivitiesCard(),
         const CommunityNudge(),
