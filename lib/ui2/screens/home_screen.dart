@@ -1312,7 +1312,7 @@ class _Key extends StatelessWidget {
         ),
       ),
       const SizedBox(width: S.x2),
-      Text(text, style: F.cap.copyWith(color: p.ink2)),
+      Flexible(child: Text(text, style: F.cap.copyWith(color: p.ink2))),
     ]);
   }
 }

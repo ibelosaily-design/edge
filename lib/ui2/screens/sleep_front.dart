@@ -395,7 +395,7 @@ class _Line extends StatelessWidget {
     final right = value != null
         ? Text(value!, style: F.n24.copyWith(color: p.ink))
         : Text(pending ?? (l?.sleepFrontNoNight ?? 'No night scored'),
-            style: F.cap.copyWith(color: p.ink3));
+            textAlign: TextAlign.end, style: F.cap.copyWith(color: p.ink3));
     final seg = band == null ? _Seg3Empty() : _Seg3(band!);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: S.x3),
@@ -422,12 +422,14 @@ class _Line extends StatelessWidget {
           : Row(children: [
               Icon(icon, size: 20, color: p.ink2),
               const SizedBox(width: S.x3),
-              Expanded(child: title),
+              Expanded(flex: 3, child: title),
               const SizedBox(width: S.x3),
               seg,
               const SizedBox(width: S.x3),
-              ConstrainedBox(
-                constraints: const BoxConstraints(minWidth: S.x12),
+              // Bounded, so a long pending line ("3 nights to go") wraps
+              // under itself instead of pushing past the card.
+              Flexible(
+                flex: 2,
                 child: Align(
                     alignment: AlignmentDirectional.centerEnd, child: right),
               ),
