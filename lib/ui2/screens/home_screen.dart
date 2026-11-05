@@ -41,7 +41,7 @@ import '../../compute/findings.dart'
         kReadinessEasyBelow,
         kReadinessGoodFrom,
         kReadinessRestBelow;
-import '../../data/day_label.dart' show todayLabel, calendarDaysBetween;
+import '../../data/day_label.dart' show todayLabel, calendarDaysBetween, dayLabelOf;
 import '../../compute/onehz_pipeline.dart'
     show readinessInputShortfallNote, readinessUnstableBaselineNote;
 import '../../data/db.dart' show DbRebuild, LocalDb;
@@ -52,7 +52,7 @@ import '../../l10n/presentation_text.dart';
 import '../../l10n/display_text.dart';
 import '../../l10n/decimal_text.dart';
 import '../../state/locale_controller.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' show NumberFormat;
 import 'package:openstrap_analytics/onehz.dart'
     show quietHrrMinDays, readinessCompositeMinBaseline;
 import '../../models/metric.dart';
