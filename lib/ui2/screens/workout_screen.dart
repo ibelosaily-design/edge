@@ -36,6 +36,7 @@ import '../activity/day_strain.dart';
 import '../activity/live.dart';
 import '../activity/picker.dart';
 import '../activity/poster.dart' show PosterStatRow;
+import '../activity/strain_front.dart';
 import '../activity/setup.dart';
 import '../activity/summary.dart';
 import '../charts.dart';
@@ -164,6 +165,11 @@ class _WorkoutScreenState extends State<WorkoutScreen> with RevisionReload {
     final p = P.of(c);
     final loc = AppLocalizations.of(c);
     return [
+      // The tab opens the way WHOOP's Strain page does: the day's strain as
+      // a ring with its target, steps and calories, today's activities and
+      // time in zones. It reads on its own (strain_front.dart).
+      const StrainFrontLoader(),
+      const SizedBox(height: S.x3),
       StartCard(
         label: loc?.workoutStartSessionLabel ?? 'START A SESSION',
         count: allActivities.length,

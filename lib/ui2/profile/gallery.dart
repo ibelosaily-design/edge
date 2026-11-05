@@ -53,6 +53,7 @@ import '../activity/picker.dart' show ActivityPicker, ActivityRow;
 import '../activity/poster.dart'
     show PosterCard, PosterFormat, PosterStatRow, kPosterMapH, kPosterMapW;
 import '../activity/setup.dart' show ActivitySetup;
+import '../activity/strain_front.dart';
 import '../activity/tiles.dart';
 import '../activity/share.dart' show ShareSheet, shareOrigin;
 import '../activity/summary.dart';
@@ -842,6 +843,9 @@ Map<String, Widget> extraCases() => {
           'كلمة اليوم: ubiquitous — موجود في كل مكان.',
           style: F.body),
       'study_ask_tutor': const AskTutorButton(prompt: 'Explain "ubiquitous".'),
+      // STRAIN FRONT — the Activity tab's top: the ring with its target,
+      // steps and calories, today's sessions, time in zones.
+      'strain_front': StrainFront(_strainFrontSample()),
       // HOME WEEK — strain columns with the day's recovery as a dot.
       'home_week': HomeWeekCard(_homeWeekSample(), selected: '2026-11-05'),
       // SLEEP FRONT — the tab's top, as WHOOP's Sleep page is shaped: ring,
@@ -2743,5 +2747,36 @@ List<HomeWeekDay> _homeWeekSample() {
     HomeWeekDay(d(1), strain: 18.1, recovery: 29),
     HomeWeekDay(d(0), strain: 4.0, recovery: 77),
   ];
+}
+
+StrainFrontData _strainFrontSample() {
+  final start = DateTime(2026, 11, 5, 17, 10).millisecondsSinceEpoch ~/ 1000;
+  return StrainFrontData(
+    day: const DayStrainData(
+      strain: 11.4,
+      zoneMin: [48, 31, 22, 9, 2],
+      zoneSource: 'observed',
+      zoneMaxHr: 196,
+      zoneLowerBpm: [98, 118, 137, 157, 176],
+    ),
+    target: const {'value': 12.6, 'low': 10.2, 'high': 14.1, 'estimated': true},
+    steps: const Metric(value: 6420, confidence: .8, tier: MetricTier.high),
+    calories: const Metric(value: 540, confidence: .6, tier: MetricTier.estimate),
+    sessions: [
+      StrainSession(
+        type: 'tennis',
+        startTs: start,
+        durationMin: 72,
+        strain: 9.8,
+        avgHr: 138,
+      ),
+      StrainSession(
+        type: 'swimming',
+        startTs: start - 7 * 3600,
+        durationMin: 35,
+        strain: 5.1,
+      ),
+    ],
+  );
 }
 

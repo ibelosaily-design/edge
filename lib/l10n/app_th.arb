@@ -16609,5 +16609,38 @@
   "sleepFrontLatency": "เวลาที่ใช้ในการหลับ",
   "sleepFrontLatencyNote": "นับเฉพาะเมื่อคุณตั้งเวลานอนเอง",
   "homeWeekTitle": "ความหนักและการฟื้นตัว",
-  "homeWeekSub": "เจ็ดวันล่าสุด ล่าสุดอยู่ทางขวา"
+  "homeWeekSub": "เจ็ดวันล่าสุด ล่าสุดอยู่ทางขวา",
+  "strainFrontDayStrain": "ความหนักของวัน",
+  "strainFrontToday": "กิจกรรมวันนี้",
+  "strainFrontTarget": "เป้าหมาย {lo}–{hi} ตามการฟื้นตัว",
+  "@strainFrontTarget": {
+    "placeholders": {
+      "lo": {
+        "type": "String"
+      },
+      "hi": {
+        "type": "String"
+      }
+    }
+  },
+  "strainFrontInTarget": "อยู่ในเป้าหมายของวันนี้",
+  "strainFrontOverTarget": "เกิน {hi} ที่การฟื้นตัวแนะนำ",
+  "@strainFrontOverTarget": {
+    "placeholders": {
+      "hi": {
+        "type": "String"
+      }
+    }
+  },
+  "strainFrontNoTarget": "เป้าหมายจะแสดงเมื่อประเมินการฟื้นตัวแล้ว",
+  "strainFrontNotYet": "ยังไม่ได้วัด",
+  "strainFrontOfGoal": "จาก {s}",
+  "@strainFrontOfGoal": {
+    "placeholders": {
+      "s": {
+        "type": "String"
+      }
+    }
+  },
+  "strainFrontActiveKcal": "ที่ใช้ไป, กิโลแคลอรี"
 }

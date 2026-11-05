@@ -3681,5 +3681,38 @@
   "sleepFrontLatency": "وقت الدخول في النوم",
   "sleepFrontLatencyNote": "بيتحسب بس لو حددت وقت السرير بنفسك",
   "homeWeekTitle": "الجهد والتعافي",
-  "homeWeekSub": "آخر 7 أيام، الأحدث على اليمين"
+  "homeWeekSub": "آخر 7 أيام، الأحدث على اليمين",
+  "strainFrontDayStrain": "جهد اليوم",
+  "strainFrontToday": "نشاط النهارده",
+  "strainFrontTarget": "الهدف {lo}–{hi} حسب تعافيك",
+  "@strainFrontTarget": {
+    "placeholders": {
+      "lo": {
+        "type": "String"
+      },
+      "hi": {
+        "type": "String"
+      }
+    }
+  },
+  "strainFrontInTarget": "جوه هدفك النهارده",
+  "strainFrontOverTarget": "عدّيت الـ{hi} اللي تعافيك اقترحها",
+  "@strainFrontOverTarget": {
+    "placeholders": {
+      "hi": {
+        "type": "String"
+      }
+    }
+  },
+  "strainFrontNoTarget": "الهدف بيظهر لما التعافي يتقيّم",
+  "strainFrontNotYet": "لسه متقاسش",
+  "strainFrontOfGoal": "من {s}",
+  "@strainFrontOfGoal": {
+    "placeholders": {
+      "s": {
+        "type": "String"
+      }
+    }
+  },
+  "strainFrontActiveKcal": "نشطة، كيلوكالوري"
 }

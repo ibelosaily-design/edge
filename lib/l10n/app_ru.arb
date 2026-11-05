@@ -8188,5 +8188,38 @@
   "sleepFrontLatency": "Время засыпания",
   "sleepFrontLatencyNote": "считается только от заданного вами отбоя",
   "homeWeekTitle": "Нагрузка и восстановление",
-  "homeWeekSub": "Последние семь дней, новейший справа"
+  "homeWeekSub": "Последние семь дней, новейший справа",
+  "strainFrontDayStrain": "Нагрузка за день",
+  "strainFrontToday": "Активности сегодня",
+  "strainFrontTarget": "Цель {lo}–{hi} по вашему восстановлению",
+  "@strainFrontTarget": {
+    "placeholders": {
+      "lo": {
+        "type": "String"
+      },
+      "hi": {
+        "type": "String"
+      }
+    }
+  },
+  "strainFrontInTarget": "В пределах цели на сегодня",
+  "strainFrontOverTarget": "Выше {hi}, что предлагало восстановление",
+  "@strainFrontOverTarget": {
+    "placeholders": {
+      "hi": {
+        "type": "String"
+      }
+    }
+  },
+  "strainFrontNoTarget": "Цель появится, когда будет оценено восстановление",
+  "strainFrontNotYet": "Ещё не измерено",
+  "strainFrontOfGoal": "из {s}",
+  "@strainFrontOfGoal": {
+    "placeholders": {
+      "s": {
+        "type": "String"
+      }
+    }
+  },
+  "strainFrontActiveKcal": "активных, ккал"
 }

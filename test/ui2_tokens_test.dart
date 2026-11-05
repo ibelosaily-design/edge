@@ -287,6 +287,9 @@ const _notComponents = {
   // A Scaffold route that reads the repo and the profile on open; its pure
   // half, HealthspanBody, is in the gallery in all four states.
   'HealthspanScreen',
+  // Reads the repo on open and draws nothing without one; its pure half,
+  // StrainFront, is in the gallery.
+  'StrainFrontLoader',
   'ZonesDetail',
   // Reads the day bundle AND the raw beat store to draw one night's Poincaré
   // cloud — a gallery case would have to mock 27 000 beat intervals.

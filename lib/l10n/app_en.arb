@@ -16725,5 +16725,42 @@
   "@homeWeekTitle": {
     "description": "Home week chart title."
   },
-  "homeWeekSub": "The last seven days, newest at the right"
+  "homeWeekSub": "The last seven days, newest at the right",
+  "strainFrontDayStrain": "Day strain",
+  "@strainFrontDayStrain": {
+    "description": "Label under the strain ring figure."
+  },
+  "strainFrontToday": "Today's activities",
+  "strainFrontTarget": "Target {lo}–{hi} from your recovery",
+  "@strainFrontTarget": {
+    "placeholders": {
+      "lo": {
+        "type": "String"
+      },
+      "hi": {
+        "type": "String"
+      }
+    }
+  },
+  "strainFrontInTarget": "Inside your target for today",
+  "strainFrontOverTarget": "Past the {hi} your recovery suggested",
+  "@strainFrontOverTarget": {
+    "placeholders": {
+      "hi": {
+        "type": "String"
+      }
+    }
+  },
+  "strainFrontNoTarget": "A target appears once recovery is scored",
+  "strainFrontNotYet": "Not measured yet",
+  "strainFrontOfGoal": "of {s}",
+  "@strainFrontOfGoal": {
+    "description": "Steps against the goal, e.g. \"of 8,000\".",
+    "placeholders": {
+      "s": {
+        "type": "String"
+      }
+    }
+  },
+  "strainFrontActiveKcal": "active, kcal"
 }
