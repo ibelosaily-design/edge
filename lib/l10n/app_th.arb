@@ -16482,5 +16482,130 @@
   "healthspanMethod": "แต่ละนิสัยถูกเทียบกับเป้าหมายด้านสาธารณสุข ช่องว่างกลายเป็นความเสี่ยงการเสียชีวิตจากงานวิจัยที่เชื่อมนิสัยนั้นกับอายุขัย และความเสี่ยงกลายเป็นปี: ความเสี่ยงเพิ่มเป็นสองเท่าทุก 8–10 ปีของวัยผู้ใหญ่ อัตราส่วนความเสี่ยงจึงเป็นส่วนต่างของอายุ ส่วนต่างทั้งเก้ารวมเข้ากับอายุของคุณ อัตราการแก่เทียบ 30 วันล่าสุดกับค่าเฉลี่ยระยะยาว กรอบ ข้อมูลนำเข้า และเป้าหมายเป็นของที่ WHOOP เผยแพร่สำหรับฟีเจอร์ Healthspan น้ำหนักที่แน่นอนไม่ได้เผยแพร่ ค่าของแอปนี้จึงมาจากงานวิจัยที่อ้างอิงและจะไม่ตรงกับตัวเลขของ WHOOP ถึงทศนิยม",
   "healthspanAdultNote": "งานวิจัยเบื้องหลังเป็นกลุ่มผู้ใหญ่ WHOOP จึงปิดฟีเจอร์นี้สำหรับผู้ที่อายุต่ำกว่า 18 หากอายุต่ำกว่า 18 ให้อ่านเป็นคะแนนนิสัย ไม่ใช่อายุทางชีวภาพ",
   "healthspanNeedProfileTitle": "ต้องการอายุและเพศของคุณ",
-  "healthspanNeedProfile": "เพิ่มในโปรไฟล์ ทุกเป้าหมายที่นี่ขึ้นอยู่กับข้อมูลนี้"
+  "healthspanNeedProfile": "เพิ่มในโปรไฟล์ ทุกเป้าหมายที่นี่ขึ้นอยู่กับข้อมูลนี้",
+  "sleepFrontPerformance": "ประสิทธิภาพการนอน",
+  "sleepFrontGuidelineNote": "เกณฑ์ตามอายุ ยังไม่ใช่ความต้องการของคุณ",
+  "sleepFrontLastNight": "เมื่อคืน",
+  "sleepFrontFirstNight": "คืนแรก — ยังไม่มีอะไรให้เปรียบเทียบ",
+  "sleepFrontVsNights": "เทียบกับ {n} คืนล่าสุด",
+  "@sleepFrontVsNights": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "sleepFrontTrends": "สัปดาห์นี้",
+  "sleepFrontTrendsSub": "เจ็ดคืนล่าสุด ล่าสุดอยู่ทางขวา",
+  "sleepFrontHoursVsNeed": "ชั่วโมงนอนเทียบกับที่ต้องการ",
+  "sleepFrontNoNight": "ยังไม่มีคืนที่ประเมิน",
+  "sleepFrontNoTarget": "ตั้งอายุในโปรไฟล์เพื่อให้มีเป้าหมาย",
+  "sleepFrontMetTarget": "ครบตามที่ต้องการ",
+  "sleepFrontShortOfNeed": "ขาดอีก {s} จากที่ต้องการ",
+  "@sleepFrontShortOfNeed": {
+    "placeholders": {
+      "s": {
+        "type": "String"
+      }
+    }
+  },
+  "sleepFrontShortOfGuideline": "ขาดอีก {s} จากเกณฑ์ตามอายุ",
+  "@sleepFrontShortOfGuideline": {
+    "placeholders": {
+      "s": {
+        "type": "String"
+      }
+    }
+  },
+  "sleepFrontConsistency": "ความสม่ำเสมอของการนอน",
+  "sleepFrontConsistencyHow": "เวลานอนและตื่นใกล้เคียงกันแค่ไหน",
+  "sleepFrontConsistencyOf": "เวลานอนและตื่น คืนต่อคืน",
+  "sleepFrontNightsLeft": "อีก {n} คืน",
+  "@sleepFrontNightsLeft": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "sleepFrontEfficiency": "ประสิทธิภาพการหลับ",
+  "sleepFrontAwakeOfBed": "ตื่น {awake} จาก {bed} บนเตียง",
+  "@sleepFrontAwakeOfBed": {
+    "placeholders": {
+      "awake": {
+        "type": "String"
+      },
+      "bed": {
+        "type": "String"
+      }
+    }
+  },
+  "sleepFrontEfficiencyHow": "เวลาหลับจากเวลาบนเตียง",
+  "sleepFrontRestorative": "การนอนฟื้นฟู",
+  "sleepFrontRestorativeHow": "หลับลึก + REM จากการนอนทั้งหมด",
+  "sleepFrontRestorativeHours": "การนอนฟื้นฟู (ชั่วโมง)",
+  "sleepFrontBandPoor": "น้อย",
+  "sleepFrontBandFair": "พอใช้",
+  "sleepFrontBandOptimal": "ดีที่สุด",
+  "sleepFrontHoursOfSleep": "ชั่วโมงการนอน",
+  "sleepFrontFromTo": "{a} ถึง {b}",
+  "@sleepFrontFromTo": {
+    "placeholders": {
+      "a": {
+        "type": "String"
+      },
+      "b": {
+        "type": "String"
+      }
+    }
+  },
+  "sleepFrontTypicalRange": "ช่วงปกติของผู้ใหญ่",
+  "sleepFrontInBed": "บนเตียง {s}",
+  "@sleepFrontInBed": {
+    "placeholders": {
+      "s": {
+        "type": "String"
+      }
+    }
+  },
+  "sleepFrontStageRange": "น่าจะ {s}",
+  "@sleepFrontStageRange": {
+    "placeholders": {
+      "s": {
+        "type": "String"
+      }
+    }
+  },
+  "sleepFrontYourNeed": "ความต้องการนอนของคุณ",
+  "sleepFrontGuidelineForAge": "เกณฑ์ตามอายุ",
+  "sleepFrontLearnedNeed": "เรียนรู้จากคืนของคุณ",
+  "sleepFrontDebt": "หนี้การนอนสะสม",
+  "sleepFrontGapOnly": "ขาด {gap}",
+  "@sleepFrontGapOnly": {
+    "placeholders": {
+      "gap": {
+        "type": "String"
+      }
+    }
+  },
+  "sleepFrontGapHint": "ขาด {gap} หลับก่อน {bed} ตื่น {wake} ตามปกติ ก็ครบพอดี",
+  "@sleepFrontGapHint": {
+    "placeholders": {
+      "gap": {
+        "type": "String"
+      },
+      "bed": {
+        "type": "String"
+      },
+      "wake": {
+        "type": "String"
+      }
+    }
+  },
+  "sleepFrontAsleep": "หลับ",
+  "sleepFrontAwake": "ตื่น",
+  "sleepFrontAwakenings": "จำนวนครั้งที่ตื่น (อย่างน้อย)",
+  "sleepFrontLongestStretch": "หลับต่อเนื่องนานที่สุด",
+  "sleepFrontLatency": "เวลาที่ใช้ในการหลับ",
+  "sleepFrontLatencyNote": "นับเฉพาะเมื่อคุณตั้งเวลานอนเอง"
 }

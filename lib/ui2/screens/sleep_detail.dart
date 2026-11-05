@@ -37,6 +37,7 @@ import 'investigate.dart';
 import 'metric_detail.dart';
 import 'naps.dart';
 import 'rough_night.dart';
+import 'sleep_front.dart';
 
 /// Nights of history before a personal normal is claimed at all. Below this the
 /// quartiles of three or four nights are noise wearing a band's clothing.
@@ -167,7 +168,7 @@ String sleepReadingText(AppLocalizations? l, num value, int places,
 /// observed floor gets a wide one. A missing confidence is the widest case, not
 /// the narrowest: we do not know how well we saw the night, so we say the least.
 ({ana.StageInterval light, ana.StageInterval deep, ana.StageInterval rem})?
-    _ranges(Map<String, dynamic> n) {
+    sleepStageRanges(Map<String, dynamic> n) {
   final l = (n['light_min'] as num?)?.round();
   final d = (n['deep_min'] as num?)?.round();
   final r = (n['rem_min'] as num?)?.round();
@@ -227,6 +228,19 @@ class SleepData {
   ///   * [solMin] — sleep-onset latency, and ONLY on a user-set window.
   final double? unobservedMin, awakenings, longestSleepMin, solMin;
 
+  /// The sleep-regularity index from today's cross-day rollup (0-100, or
+  /// absent with a `need_baseline` note while nights are still banking).
+  /// Today's figure whichever night is shown, like [need].
+  final Metric regularity;
+
+  /// Profile age, for the age-band sleep guideline the front falls back to
+  /// while the personal need is still being learned. Null when not set.
+  final int? age;
+
+  /// The last seven scored nights up to and including [day], oldest first,
+  /// for the weekly columns. Empty in a fixture.
+  final List<SleepTrendDay> trend;
+
   const SleepData({
     this.day,
     this.latestDay,
@@ -245,6 +259,9 @@ class SleepData {
     this.longestSleepMin,
     this.solMin,
     this.deviceNights = const [],
+    this.regularity = Metric.empty,
+    this.age,
+    this.trend = const [],
   });
 
   bool get hasNight => night['duration_min'] is num;
@@ -372,6 +389,25 @@ class SleepData {
         if (w['onset_ts'] is num) (w['onset_ts'] as num).round(),
     ];
 
+    // The weekly columns: the seven scored nights up to this one, from the
+    // same scalar series (one row per day per key), dated by their noon
+    // stamp. REM is read here and nowhere else on the screen.
+    final regEnv = cd['regularity'];
+    final regV = envValue(regEnv) ?? const {};
+    var profile = const <String, dynamic>{};
+    try {
+      profile = await repo.getProfile();
+    } on UnimplementedError {
+      // A repository without a profile: no age, so no guideline target.
+    }
+    final trend = sleepTrendOf(
+      tst: pointsOf(await repo.getChart('sleep')),
+      deep: pointsOf(await repo.getChart('deep')),
+      rem: pointsOf(await repo.getChart('rem')),
+      eff: pointsOf(await repo.getChart('efficiency')),
+      upToNoon: cut,
+    );
+
     return SleepData(
       day: day,
       latestDay: latest,
@@ -391,8 +427,56 @@ class SleepData {
       longestSleepMin: longest,
       solMin: sol,
       deviceNights: deviceNights,
+      regularity: envMetric(regEnv, regV['sri'] as num?),
+      age: (profile['age'] as num?)?.round(),
+      trend: trend,
     );
   }
+}
+
+/// One night's column on the weekly chart. Minutes; efficiency whole percent.
+/// A null is a night that series did not score.
+class SleepTrendDay {
+  final String date;
+  final double? tstMin, deepMin, remMin, effPct;
+  const SleepTrendDay(this.date,
+      {this.tstMin, this.deepMin, this.remMin, this.effPct});
+}
+
+/// The last seven dated points up to [upToNoon] (inclusive), merged across
+/// the four series by their noon stamp. Pure, so a test can hand it points.
+@visibleForTesting
+List<SleepTrendDay> sleepTrendOf({
+  required List<ChartPoint> tst,
+  required List<ChartPoint> deep,
+  required List<ChartPoint> rem,
+  required List<ChartPoint> eff,
+  required int? upToNoon,
+}) {
+  final byNoon = <int, Map<String, double>>{};
+  void take(List<ChartPoint> pts, String k) {
+    for (final p in pts) {
+      if (upToNoon != null && p.t > upToNoon) continue;
+      (byNoon[p.t] ??= {})[k] = p.v;
+    }
+  }
+
+  take(tst, 'tst');
+  take(deep, 'deep');
+  take(rem, 'rem');
+  take(eff, 'eff');
+  final noons = byNoon.keys.toList()..sort();
+  final last = noons.length <= 7 ? noons : noons.sublist(noons.length - 7);
+  return [
+    for (final t in last)
+      SleepTrendDay(
+        dayLabelOf(DateTime.fromMillisecondsSinceEpoch(t * 1000)),
+        tstMin: byNoon[t]!['tst'],
+        deepMin: byNoon[t]!['deep'],
+        remMin: byNoon[t]!['rem'],
+        effPct: byNoon[t]!['eff'],
+      ),
+  ];
 }
 
 /// What the Sleep stepper stores for [day]: null when it is the newest night
@@ -800,7 +884,15 @@ class _SleepDetailState extends State<SleepDetail> with RevisionReload {
       ...dayNavRow(_day ?? d.day, d.days, _goDay),
 
       // ── 1 · THE ANSWER ──
-      _answer(c, p, d, n),
+      // The tab opens the way WHOOP's Sleep page does — the ring, the four
+      // lines, the night with its stages, the hours, the efficiency and the
+      // week — and the sections below carry what that page has no place for
+      // (the hypnogram, the window, the comparisons, the signals). A pushed
+      // copy keeps the original answer card.
+      if (widget.embedded)
+        SleepFront(d)
+      else
+        _answer(c, p, d, n),
 
       // ── 2 · THE NIGHT ITSELF ──
       const SizedBox(height: S.x3),
@@ -839,7 +931,9 @@ class _SleepDetailState extends State<SleepDetail> with RevisionReload {
       ..._napsButton(c, l, d.day),
 
       // ── 3 · WHAT IT WAS MADE OF ──
-      Section(l?.sleepDetailStagesSection ?? 'Stages', _stages(c, p, n)),
+      // On the tab the front already carries the stages, with their ranges.
+      if (!widget.embedded)
+        Section(l?.sleepDetailStagesSection ?? 'Stages', _stages(c, p, n)),
 
       // ── 4 · AGAINST THE USER'S OWN NIGHTS ──
       if (_versusUsual(c, p, d, n) case final versus?)
@@ -1737,7 +1831,7 @@ class _SleepDetailState extends State<SleepDetail> with RevisionReload {
       };
     }
     final vendor = n['sleep_source'] == 'vendor_staged';
-    final r = vendor ? null : _ranges(n);
+    final r = vendor ? null : sleepStageRanges(n);
     String? exact(String k) =>
         vendor && n[k] is num ? hm((n[k] as num).toDouble()) : null;
     final awake = n['awake_min'] as num?;
@@ -1803,7 +1897,7 @@ class _SleepDetailState extends State<SleepDetail> with RevisionReload {
     final l = AppLocalizations.of(c);
     // A device-staged night: the device counted its stages, so its own
     // minutes, not our estimator's ranges.
-    final r = n['sleep_source'] == 'vendor_staged' ? null : _ranges(n);
+    final r = n['sleep_source'] == 'vendor_staged' ? null : sleepStageRanges(n);
     // The same figures, and the same colours, as the lanes on the chart.
     final totals = _stageTotals(n);
     final ink = Hypnogram.cols(P.of(c));
@@ -1889,7 +1983,7 @@ class _SleepDetailState extends State<SleepDetail> with RevisionReload {
     // size of a gap between one fuzzy number and a band of fuzzy numbers is the
     // most confident thing on the card and the least supported.
     final deepRange =
-        n['sleep_source'] == 'vendor_staged' ? null : _ranges(n)?.deep;
+        n['sleep_source'] == 'vendor_staged' ? null : sleepStageRanges(n)?.deep;
     if (n['sleep_source'] == 'vendor_staged' && n['deep_min'] is num) {
       // The device's own count: no estimator interval to blur it by.
       final deep = (n['deep_min'] as num).toDouble();

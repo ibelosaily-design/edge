@@ -16583,5 +16583,142 @@
   "healthspanNeedProfile": "Add them in Profile; every target here depends on them.",
   "@healthspanNeedProfile": {
     "description": "Empty state body."
-  }
+  },
+  "sleepFrontPerformance": "Sleep performance",
+  "@sleepFrontPerformance": {
+    "description": "Label under the ring figure: hours slept over the need."
+  },
+  "sleepFrontGuidelineNote": "age guideline, not yet your need",
+  "@sleepFrontGuidelineNote": {
+    "description": "Under the ring while the personal need is unlearned."
+  },
+  "sleepFrontLastNight": "Last night",
+  "@sleepFrontLastNight": {
+    "description": "Section heading."
+  },
+  "sleepFrontFirstNight": "First night — nothing to compare it with yet",
+  "sleepFrontVsNights": "Against your last {n} nights",
+  "@sleepFrontVsNights": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "sleepFrontTrends": "This week",
+  "sleepFrontTrendsSub": "Your last seven nights, newest at the right",
+  "sleepFrontHoursVsNeed": "Hours vs need",
+  "sleepFrontNoNight": "No night scored",
+  "sleepFrontNoTarget": "Set your age in Profile for a target",
+  "sleepFrontMetTarget": "Need met",
+  "sleepFrontShortOfNeed": "{s} short of your need",
+  "@sleepFrontShortOfNeed": {
+    "description": "s is a duration like 1h 53m.",
+    "placeholders": {
+      "s": {
+        "type": "String"
+      }
+    }
+  },
+  "sleepFrontShortOfGuideline": "{s} short of the guideline for your age",
+  "@sleepFrontShortOfGuideline": {
+    "placeholders": {
+      "s": {
+        "type": "String"
+      }
+    }
+  },
+  "sleepFrontConsistency": "Sleep consistency",
+  "sleepFrontConsistencyHow": "How alike your bed and wake times are",
+  "sleepFrontConsistencyOf": "Bed and wake times, night to night",
+  "sleepFrontNightsLeft": "{n} nights to go",
+  "@sleepFrontNightsLeft": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "sleepFrontEfficiency": "Sleep efficiency",
+  "sleepFrontAwakeOfBed": "{awake} awake of {bed} in bed",
+  "@sleepFrontAwakeOfBed": {
+    "placeholders": {
+      "awake": {
+        "type": "String"
+      },
+      "bed": {
+        "type": "String"
+      }
+    }
+  },
+  "sleepFrontEfficiencyHow": "Time asleep of time in bed",
+  "sleepFrontRestorative": "Restorative sleep",
+  "sleepFrontRestorativeHow": "Deep and REM, of all sleep",
+  "sleepFrontRestorativeHours": "Restorative sleep (hours)",
+  "sleepFrontBandPoor": "Poor",
+  "sleepFrontBandFair": "Sufficient",
+  "sleepFrontBandOptimal": "Optimal",
+  "sleepFrontHoursOfSleep": "Hours of sleep",
+  "sleepFrontFromTo": "{a} to {b}",
+  "@sleepFrontFromTo": {
+    "description": "Clock times: fell asleep at a, woke at b.",
+    "placeholders": {
+      "a": {
+        "type": "String"
+      },
+      "b": {
+        "type": "String"
+      }
+    }
+  },
+  "sleepFrontTypicalRange": "Typical adult range",
+  "sleepFrontInBed": "In bed {s}",
+  "@sleepFrontInBed": {
+    "placeholders": {
+      "s": {
+        "type": "String"
+      }
+    }
+  },
+  "sleepFrontStageRange": "Likely {s}",
+  "@sleepFrontStageRange": {
+    "description": "The stage minutes as a likely range, e.g. 2h 05m–2h 45m.",
+    "placeholders": {
+      "s": {
+        "type": "String"
+      }
+    }
+  },
+  "sleepFrontYourNeed": "Your sleep need",
+  "sleepFrontGuidelineForAge": "Guideline for your age",
+  "sleepFrontLearnedNeed": "Learned from your nights",
+  "sleepFrontDebt": "Sleep debt carried",
+  "sleepFrontGapOnly": "{gap} short.",
+  "@sleepFrontGapOnly": {
+    "placeholders": {
+      "gap": {
+        "type": "String"
+      }
+    }
+  },
+  "sleepFrontGapHint": "{gap} short. Asleep by {bed}, up at {wake} as usual, closes it.",
+  "@sleepFrontGapHint": {
+    "placeholders": {
+      "gap": {
+        "type": "String"
+      },
+      "bed": {
+        "type": "String"
+      },
+      "wake": {
+        "type": "String"
+      }
+    }
+  },
+  "sleepFrontAsleep": "Asleep",
+  "sleepFrontAwake": "Awake",
+  "sleepFrontAwakenings": "Times awake (at least)",
+  "sleepFrontLongestStretch": "Longest unbroken sleep",
+  "sleepFrontLatency": "Time to fall asleep",
+  "sleepFrontLatencyNote": "counted only from a bedtime you set"
 }

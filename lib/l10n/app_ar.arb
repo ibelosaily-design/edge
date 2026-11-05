@@ -3554,5 +3554,130 @@
   "healthspanMethod": "كل عادة بتتقارن بهدف من إرشادات الصحة العامة. الفرق بيتحوّل لخطر وفيات من الدراسات اللي بتربط العادة دي بطول العمر، والخطر بيتحوّل لسنين: الخطر بيتضاعف كل 8 لـ10 سنين تقريبًا من عمر البالغ، فنسبة الخطر هي فرق في العمر. الـ9 فروق بتتجمع على عمرك؛ والسرعة بتقارن آخر 30 يوم بمتوسطك الطويل. الإطار والمدخلات والأهداف هي اللي WHOOP ناشرها لخاصية Healthspan. الأوزان الدقيقة مش منشورة، فأوزان التطبيق ده جاية من الدراسات المذكورة ومش هتطابق رقم WHOOP للعُشر.",
   "healthspanAdultNote": "الدراسات ورا الحساب ده على بالغين، وعشان كده WHOOP بتقفلها تحت 18. تحت 18، اقراها كمؤشر عادات مش عمر بيولوجي.",
   "healthspanNeedProfileTitle": "محتاج عمرك ونوعك",
-  "healthspanNeedProfile": "ضيفهم في الملف الشخصي؛ كل هدف هنا بيعتمد عليهم."
+  "healthspanNeedProfile": "ضيفهم في الملف الشخصي؛ كل هدف هنا بيعتمد عليهم.",
+  "sleepFrontPerformance": "أداء النوم",
+  "sleepFrontGuidelineNote": "هدف سنّك — لسه مش احتياجك المقاس",
+  "sleepFrontLastNight": "نوم الليلة الماضية",
+  "sleepFrontFirstNight": "أول ليلة — لسه مفيش حاجة نقارن بيها",
+  "sleepFrontVsNights": "مقارنة بآخر {n} ليلة",
+  "@sleepFrontVsNights": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "sleepFrontTrends": "الأسبوع ده",
+  "sleepFrontTrendsSub": "آخر 7 ليالي، الأحدث على اليمين",
+  "sleepFrontHoursVsNeed": "ساعات النوم مقارنة باحتياجي",
+  "sleepFrontNoNight": "مفيش ليلة متقيّمة",
+  "sleepFrontNoTarget": "حط عمرك في الملف الشخصي عشان يبقى فيه هدف",
+  "sleepFrontMetTarget": "وصلت لاحتياجك",
+  "sleepFrontShortOfNeed": "ناقص {s} عن احتياجك",
+  "@sleepFrontShortOfNeed": {
+    "placeholders": {
+      "s": {
+        "type": "String"
+      }
+    }
+  },
+  "sleepFrontShortOfGuideline": "ناقص {s} عن هدف سنّك",
+  "@sleepFrontShortOfGuideline": {
+    "placeholders": {
+      "s": {
+        "type": "String"
+      }
+    }
+  },
+  "sleepFrontConsistency": "انتظام النوم",
+  "sleepFrontConsistencyHow": "قد إيه مواعيد نومك وصحيانك متشابهة",
+  "sleepFrontConsistencyOf": "مواعيد النوم والصحيان من ليلة لليلة",
+  "sleepFrontNightsLeft": "متبقي {n} ليالي",
+  "@sleepFrontNightsLeft": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "sleepFrontEfficiency": "كفاءة النوم",
+  "sleepFrontAwakeOfBed": "{awake} صاحي من {bed} في السرير",
+  "@sleepFrontAwakeOfBed": {
+    "placeholders": {
+      "awake": {
+        "type": "String"
+      },
+      "bed": {
+        "type": "String"
+      }
+    }
+  },
+  "sleepFrontEfficiencyHow": "وقت النوم من وقت السرير",
+  "sleepFrontRestorative": "النوم المجدِّد",
+  "sleepFrontRestorativeHow": "عميق + REM من إجمالي النوم",
+  "sleepFrontRestorativeHours": "النوم المجدِّد (ساعات)",
+  "sleepFrontBandPoor": "ضعيف",
+  "sleepFrontBandFair": "كافٍ",
+  "sleepFrontBandOptimal": "مثالي",
+  "sleepFrontHoursOfSleep": "ساعات النوم",
+  "sleepFrontFromTo": "من {a} لـ {b}",
+  "@sleepFrontFromTo": {
+    "placeholders": {
+      "a": {
+        "type": "String"
+      },
+      "b": {
+        "type": "String"
+      }
+    }
+  },
+  "sleepFrontTypicalRange": "النطاق المعتاد للبالغين",
+  "sleepFrontInBed": "في السرير {s}",
+  "@sleepFrontInBed": {
+    "placeholders": {
+      "s": {
+        "type": "String"
+      }
+    }
+  },
+  "sleepFrontStageRange": "على الأرجح {s}",
+  "@sleepFrontStageRange": {
+    "placeholders": {
+      "s": {
+        "type": "String"
+      }
+    }
+  },
+  "sleepFrontYourNeed": "احتياجك من النوم",
+  "sleepFrontGuidelineForAge": "هدف سنّك",
+  "sleepFrontLearnedNeed": "متعلَّم من لياليك",
+  "sleepFrontDebt": "دين النوم المتراكم",
+  "sleepFrontGapOnly": "ناقص {gap}.",
+  "@sleepFrontGapOnly": {
+    "placeholders": {
+      "gap": {
+        "type": "String"
+      }
+    }
+  },
+  "sleepFrontGapHint": "ناقص {gap}. لو نمت {bed} وصحيت {wake} زي عادتك، تقفل الفرق.",
+  "@sleepFrontGapHint": {
+    "placeholders": {
+      "gap": {
+        "type": "String"
+      },
+      "bed": {
+        "type": "String"
+      },
+      "wake": {
+        "type": "String"
+      }
+    }
+  },
+  "sleepFrontAsleep": "نايم",
+  "sleepFrontAwake": "صاحي",
+  "sleepFrontAwakenings": "مرات الاستيقاظ (أقل تقدير)",
+  "sleepFrontLongestStretch": "أطول نوم متواصل",
+  "sleepFrontLatency": "وقت الدخول في النوم",
+  "sleepFrontLatencyNote": "بيتحسب بس لو حددت وقت السرير بنفسك"
 }

@@ -8061,5 +8061,130 @@
   "healthspanMethod": "Каждая привычка сравнивается с целью из рекомендаций общественного здравоохранения. Разрыв становится риском смертности по исследованиям, связывающим эту привычку с продолжительностью жизни, а риск — годами: риск удваивается примерно каждые 8–10 лет взрослой жизни, поэтому отношение рисков — это сдвиг возраста. Девять сдвигов складываются с вашим возрастом; темп сравнивает последние 30 дней с вашим длинным средним. Структура, входные данные и цели — те, что WHOOP публикует для функции Healthspan. Точные веса не опубликованы, поэтому веса этого приложения взяты из приведённых исследований и не совпадут с числом WHOOP до десятых.",
   "healthspanAdultNote": "Исследования за этим расчётом — взрослые когорты, поэтому WHOOP не показывает его до 18 лет. До 18 читайте это как оценку привычек, а не биологический возраст.",
   "healthspanNeedProfileTitle": "Нужны ваш возраст и пол",
-  "healthspanNeedProfile": "Укажите их в профиле; каждая цель здесь зависит от них."
+  "healthspanNeedProfile": "Укажите их в профиле; каждая цель здесь зависит от них.",
+  "sleepFrontPerformance": "Показатель сна",
+  "sleepFrontGuidelineNote": "норма для возраста, ещё не ваша потребность",
+  "sleepFrontLastNight": "Прошлая ночь",
+  "sleepFrontFirstNight": "Первая ночь — сравнивать пока не с чем",
+  "sleepFrontVsNights": "На фоне последних {n} ночей",
+  "@sleepFrontVsNights": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "sleepFrontTrends": "Эта неделя",
+  "sleepFrontTrendsSub": "Последние семь ночей, новейшая справа",
+  "sleepFrontHoursVsNeed": "Часы против потребности",
+  "sleepFrontNoNight": "Ночь не оценена",
+  "sleepFrontNoTarget": "Укажите возраст в профиле, чтобы появилась цель",
+  "sleepFrontMetTarget": "Потребность покрыта",
+  "sleepFrontShortOfNeed": "на {s} меньше потребности",
+  "@sleepFrontShortOfNeed": {
+    "placeholders": {
+      "s": {
+        "type": "String"
+      }
+    }
+  },
+  "sleepFrontShortOfGuideline": "на {s} меньше нормы для возраста",
+  "@sleepFrontShortOfGuideline": {
+    "placeholders": {
+      "s": {
+        "type": "String"
+      }
+    }
+  },
+  "sleepFrontConsistency": "Регулярность сна",
+  "sleepFrontConsistencyHow": "Насколько похожи время отбоя и подъёма",
+  "sleepFrontConsistencyOf": "Отбой и подъём от ночи к ночи",
+  "sleepFrontNightsLeft": "ещё {n} ночей",
+  "@sleepFrontNightsLeft": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "sleepFrontEfficiency": "Эффективность сна",
+  "sleepFrontAwakeOfBed": "{awake} бодрствования из {bed} в постели",
+  "@sleepFrontAwakeOfBed": {
+    "placeholders": {
+      "awake": {
+        "type": "String"
+      },
+      "bed": {
+        "type": "String"
+      }
+    }
+  },
+  "sleepFrontEfficiencyHow": "Доля сна от времени в постели",
+  "sleepFrontRestorative": "Восстанавливающий сон",
+  "sleepFrontRestorativeHow": "Глубокий и REM от всего сна",
+  "sleepFrontRestorativeHours": "Восстанавливающий сон (часы)",
+  "sleepFrontBandPoor": "Мало",
+  "sleepFrontBandFair": "Достаточно",
+  "sleepFrontBandOptimal": "Оптимально",
+  "sleepFrontHoursOfSleep": "Часы сна",
+  "sleepFrontFromTo": "с {a} до {b}",
+  "@sleepFrontFromTo": {
+    "placeholders": {
+      "a": {
+        "type": "String"
+      },
+      "b": {
+        "type": "String"
+      }
+    }
+  },
+  "sleepFrontTypicalRange": "Типичный диапазон у взрослых",
+  "sleepFrontInBed": "В постели {s}",
+  "@sleepFrontInBed": {
+    "placeholders": {
+      "s": {
+        "type": "String"
+      }
+    }
+  },
+  "sleepFrontStageRange": "Вероятно {s}",
+  "@sleepFrontStageRange": {
+    "placeholders": {
+      "s": {
+        "type": "String"
+      }
+    }
+  },
+  "sleepFrontYourNeed": "Ваша потребность во сне",
+  "sleepFrontGuidelineForAge": "Норма для вашего возраста",
+  "sleepFrontLearnedNeed": "Выучено по вашим ночам",
+  "sleepFrontDebt": "Накопленный недосып",
+  "sleepFrontGapOnly": "Не хватает {gap}.",
+  "@sleepFrontGapOnly": {
+    "placeholders": {
+      "gap": {
+        "type": "String"
+      }
+    }
+  },
+  "sleepFrontGapHint": "Не хватает {gap}. Заснуть к {bed}, встать в {wake} как обычно — и разрыв закрыт.",
+  "@sleepFrontGapHint": {
+    "placeholders": {
+      "gap": {
+        "type": "String"
+      },
+      "bed": {
+        "type": "String"
+      },
+      "wake": {
+        "type": "String"
+      }
+    }
+  },
+  "sleepFrontAsleep": "Сон",
+  "sleepFrontAwake": "Бодрствование",
+  "sleepFrontAwakenings": "Пробуждений (не меньше)",
+  "sleepFrontLongestStretch": "Самый долгий непрерывный сон",
+  "sleepFrontLatency": "Время засыпания",
+  "sleepFrontLatencyNote": "считается только от заданного вами отбоя"
 }

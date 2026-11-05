@@ -842,6 +842,12 @@ Map<String, Widget> extraCases() => {
           'كلمة اليوم: ubiquitous — موجود في كل مكان.',
           style: F.body),
       'study_ask_tutor': const AskTutorButton(prompt: 'Explain "ubiquitous".'),
+      // SLEEP FRONT — the tab's top, as WHOOP's Sleep page is shaped: ring,
+      // four lines, the night with its stages, hours, efficiency, the week.
+      // One full night with a learned need, and one first night with no
+      // need yet (the ring reads against the age guideline, labelled so).
+      'sleep_front': SleepFront(_sleepFrontSample(learned: true)),
+      'sleep_front_first_night': SleepFront(_sleepFrontSample(learned: false)),
       // HEALTHSPAN — the three states the body can be in: unlocked (a real
       // computation over 40 synthetic days, so the nine lines carry the
       // values and pills a real one does), still locked (the unlock bar), and
@@ -2651,6 +2657,74 @@ HealthspanView _healthspanSample({required int days, int age = 30}) {
       leanPct: 78,
     ),
     vo2maxSource: 'session',
+  );
+}
+
+/// A night like the first one the band scored: 6:53 asleep of 7:07 in bed,
+/// 33 % deep, an hour's heart-rate trace, and a week of columns behind it.
+SleepData _sleepFrontSample({required bool learned}) {
+  const day = '2026-11-05';
+  final wake = DateTime(2026, 11, 5, 4, 34).millisecondsSinceEpoch ~/ 1000;
+  final onset = wake - 427 * 60;
+  final night = <String, dynamic>{
+    'duration_min': 413,
+    'in_bed_min': 427,
+    'awake_min': 14,
+    'efficiency': .98,
+    'onset_ts': onset,
+    'wake_ts': wake,
+    'light_min': 189,
+    'deep_min': 144,
+    'rem_min': 80,
+    'stages_confidence': .6,
+    'hypnogram': [
+      {'t': onset, 'stage': 'light'},
+      {'t': onset + 40 * 60, 'stage': 'deep'},
+      {'t': onset + 130 * 60, 'stage': 'light'},
+      {'t': onset + 150 * 60, 'stage': 'awake'},
+      {'t': onset + 156 * 60, 'stage': 'rem'},
+      {'t': onset + 200 * 60, 'stage': 'light'},
+      {'t': onset + 260 * 60, 'stage': 'deep'},
+      {'t': onset + 300 * 60, 'stage': 'awake'},
+      {'t': onset + 308 * 60, 'stage': 'rem'},
+      {'t': onset + 350 * 60, 'stage': 'light'},
+      {'t': wake, 'stage': 'awake'},
+    ],
+  };
+  final hr = [
+    for (var i = 0; i <= 427; i += 3)
+      {'t': onset + i * 60, 'v': 58 + (i % 17 == 0 ? 22 : (i % 5))},
+  ];
+  String d(int back) => dayLabelOf(DateTime(2026, 11, 5 - back));
+  return SleepData(
+    day: day,
+    latestDay: day,
+    night: night,
+    timeline: {'hr': hr},
+    need: learned
+        ? const Metric(value: 526, unit: 'min', confidence: .7, tier: MetricTier.estimate)
+        : Metric.empty,
+    debt: learned
+        ? const Metric(value: 56, unit: 'min', confidence: .7, tier: MetricTier.estimate)
+        : Metric.empty,
+    regularity: learned
+        ? const Metric(value: 72, confidence: .7, tier: MetricTier.estimate)
+        : const Metric(note: 'need_baseline:have=1,need=4'),
+    age: 17,
+    tstHistory: learned ? [for (var i = 0; i < 12; i++) 400.0 + i * 6] : const [],
+    awakenings: 8,
+    longestSleepMin: 161,
+    trend: [
+      if (learned) ...[
+        SleepTrendDay(d(6), tstMin: 455, deepMin: 100, remMin: 95, effPct: 93),
+        SleepTrendDay(d(5), tstMin: 372, deepMin: 88, remMin: 70, effPct: 90),
+        SleepTrendDay(d(4), tstMin: 480, deepMin: 120, remMin: 110, effPct: 95),
+        SleepTrendDay(d(3)),
+        SleepTrendDay(d(2), tstMin: 426, deepMin: 96, remMin: 84, effPct: 91),
+        SleepTrendDay(d(1), tstMin: 398, deepMin: 90, remMin: 76, effPct: 89),
+      ],
+      SleepTrendDay(d(0), tstMin: 413, deepMin: 144, remMin: 80, effPct: 98),
+    ],
   );
 }
 
