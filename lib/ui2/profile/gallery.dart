@@ -53,6 +53,7 @@ import '../activity/picker.dart' show ActivityPicker, ActivityRow;
 import '../activity/poster.dart'
     show PosterCard, PosterFormat, PosterStatRow, kPosterMapH, kPosterMapW;
 import '../activity/setup.dart' show ActivitySetup;
+import '../activity/day_strain.dart' show DayStrainData;
 import '../activity/strain_front.dart';
 import '../activity/tiles.dart';
 import '../activity/share.dart' show ShareSheet, shareOrigin;

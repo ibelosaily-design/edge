@@ -136,20 +136,24 @@ class P {
 
   static P of(BuildContext c) => P(Theme.of(c).brightness == Brightness.dark);
 
-  Color get bg => dark ? const Color(0xFF0D0E11) : C.n50;
-  Color get card => dark ? const Color(0xFF17181D) : const Color(0xFFFFFDF9);
-  Color get card2 => dark ? const Color(0xFF1F2127) : C.n100;
-  Color get line => dark ? const Color(0xFF2B2E36) : C.n200;
-  Color get track => dark ? const Color(0xFF2B2E36) : C.n200;
+  // The dark surfaces are cool — charcoal, not warm black — so the page
+  // reads like the band's own app and the stage pinks and sleep blues sit
+  // on it without a cast. Every ink below clears 4.5:1 on card2, the
+  // lightest of the three (design/palette.py has the check).
+  Color get bg => dark ? const Color(0xFF0F1215) : C.n50;
+  Color get card => dark ? const Color(0xFF1A1E23) : const Color(0xFFFFFDF9);
+  Color get card2 => dark ? const Color(0xFF232830) : C.n100;
+  Color get line => dark ? const Color(0xFF2C323B) : C.n200;
+  Color get track => dark ? const Color(0xFF2C323B) : C.n200;
 
-  Color get ink => dark ? const Color(0xFFF2EDE3) : C.n900;
-  Color get ink2 => dark ? const Color(0xFFB9B2A5) : C.n600;
+  Color get ink => dark ? const Color(0xFFF2F4F6) : C.n900;
+  Color get ink2 => dark ? const Color(0xFFB6BCC4) : C.n600;
 
   /// The muted caption ink. Hand-solved to clear 4.5:1 on [card2], the darkest
   /// (light theme) / lightest (dark theme) surface it can sit on — so it is
   /// legible on every surface, not just the one it was eyeballed against.
   /// The values it replaces measured 4.34:1 and 3.21:1 respectively.
-  Color get ink3 => dark ? const Color(0xFF8E887C) : const Color(0xFF6B665C);
+  Color get ink3 => dark ? const Color(0xFF8B929B) : const Color(0xFF6B665C);
 
   /// The ink that goes on top of a [fill]. White by construction — [fill]
   /// darkens the accent until white clears AA on it.
@@ -262,15 +266,6 @@ class F {
   // face have none, and a system Arabic fallback would not match the rest.
   static const _fb = ['Manrope', 'IBM Plex Sans Arabic'];
   static const _tab = [FontFeature.tabularFigures()];
-  /// The hero numerals' face: a bundled serif (assets/fonts/CormorantGaramond,
-  /// OFL) so the readiness / strain / sleep figures read like a watch dial
-  /// rather than a dashboard. Lining + tabular figures: Cormorant's default
-  /// numerals are oldstyle and would bounce on the baseline.
-  static const _serif = 'Cormorant Garamond';
-  static const _serifNum = [
-    FontFeature.liningFigures(),
-    FontFeature.tabularFigures(),
-  ];
 
   // The 7 steps.
   static const display = TextStyle(
@@ -324,29 +319,29 @@ class F {
   /// number, and the dial is the one place the app spends this much on a
   /// figure.
   static const n64 = TextStyle(
-      fontFamily: _serif,
+      fontFamily: _f,
       fontFamilyFallback: _fb,
       fontSize: 64,
       height: 1,
-      fontWeight: FontWeight.w700,
+      fontWeight: FontWeight.w800,
       letterSpacing: -1,
-      fontFeatures: _serifNum);
+      fontFeatures: _tab);
   static const n48 = TextStyle(
-      fontFamily: _serif,
+      fontFamily: _f,
       fontFamilyFallback: _fb,
       fontSize: 48,
       height: 1,
-      fontWeight: FontWeight.w700,
+      fontWeight: FontWeight.w800,
       letterSpacing: -.5,
-      fontFeatures: _serifNum);
+      fontFeatures: _tab);
   static const n34 = TextStyle(
-      fontFamily: _serif,
+      fontFamily: _f,
       fontFamilyFallback: _fb,
       fontSize: 34,
       height: 1,
-      fontWeight: FontWeight.w700,
+      fontWeight: FontWeight.w800,
       letterSpacing: -.3,
-      fontFeatures: _serifNum);
+      fontFeatures: _tab);
   static const n24 = TextStyle(
       fontFamily: _f,
       fontFamilyFallback: _fb,
