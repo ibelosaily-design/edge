@@ -481,8 +481,9 @@ class _ContributorRow extends StatelessWidget {
             if (c.key == HsKey.vo2max && vo2maxSource == 'typed')
               l?.healthspanVo2Typed ?? 'typed in',
           ].join(' · ');
+    // An absent contributor has its reason in the sub-line; no dash.
     final pill = c.absent
-        ? Text('—', style: F.body.copyWith(color: p.ink3))
+        ? const SizedBox.shrink()
         : Pill(yearsLabel(l, c.years), yearsColor(c.years));
     final title = Column(
       crossAxisAlignment: CrossAxisAlignment.start,

@@ -16791,5 +16791,9 @@
   "healthMonitorAbove": "Above your range",
   "healthMonitorBelow": "Below your range",
   "healthMonitorNotMeasured": "Not measured",
-  "healthMonitorNotComputed": "Not computed"
+  "healthMonitorNotComputed": "Not computed",
+  "sleepFrontNotMeasured": "Not measured",
+  "@sleepFrontNotMeasured": {
+    "description": "A sleep figure the night did not carry."
+  }
 }

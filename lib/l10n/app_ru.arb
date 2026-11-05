@@ -8247,5 +8247,6 @@
   "healthMonitorAbove": "Выше вашего диапазона",
   "healthMonitorBelow": "Ниже вашего диапазона",
   "healthMonitorNotMeasured": "Не измерено",
-  "healthMonitorNotComputed": "Не вычисляется"
+  "healthMonitorNotComputed": "Не вычисляется",
+  "sleepFrontNotMeasured": "Не измерено"
 }

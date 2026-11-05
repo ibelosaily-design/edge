@@ -192,13 +192,17 @@ class HealthMonitorGrid extends StatelessWidget {
       else
         for (var i = 0; i < cards.length; i += 2) ...[
           if (i > 0) const SizedBox(height: S.x3),
-          Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-            Expanded(child: cards[i]),
-            const SizedBox(width: S.x3),
-            Expanded(
-              child: i + 1 < cards.length ? cards[i + 1] : const SizedBox.shrink(),
-            ),
-          ]),
+          // IntrinsicHeight bounds the row, so both cards take the taller
+          // one's height; a stretched row in a column has no height to give.
+          IntrinsicHeight(
+            child: Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+              Expanded(child: cards[i]),
+              const SizedBox(width: S.x3),
+              Expanded(
+                child: i + 1 < cards.length ? cards[i + 1] : const SizedBox.shrink(),
+              ),
+            ]),
+          ),
         ],
     ]);
   }
@@ -236,6 +240,7 @@ class _VitalCard extends StatelessWidget {
           Expanded(child: Text(r.name, style: F.cap.copyWith(color: p.ink2))),
         ]),
         const SizedBox(height: S.x3),
+        // An absent value is the status pill below, in words — never a dash.
         if (r.value.isNotEmpty)
           Wrap(
             crossAxisAlignment: WrapCrossAlignment.end,
@@ -244,9 +249,7 @@ class _VitalCard extends StatelessWidget {
               Text(r.value, style: F.n34.copyWith(color: p.ink)),
               Text(r.unit, style: F.cap.copyWith(color: p.ink3)),
             ],
-          )
-        else
-          Text('—', style: F.n34.copyWith(color: p.ink3)),
+          ),
         if (r.refusal != null) ...[
           const SizedBox(height: S.x2),
           Text(r.refusal!, style: F.over.copyWith(color: p.ink3)),

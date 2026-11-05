@@ -213,12 +213,15 @@ class _RingCard extends StatelessWidget {
           frac: perf,
           color: ringColor,
           label: l?.sleepFrontPerformance ?? 'Sleep performance',
-          big: perf == null ? '—' : _pct(perf),
-          under: tst == null
-              ? ''
-              : target == null
+          // No target yet: the hours are the hero. No night: say so.
+          big: perf != null
+              ? _pct(perf)
+              : tst != null
                   ? hm(tst)
-                  : '${hm(tst)} / ${hm(target.min)}',
+                  : (l?.sleepFrontNoNight ?? 'No night scored'),
+          under: tst == null || target == null
+              ? ''
+              : '${hm(tst)} / ${hm(target.min)}',
           underNote: target != null && !target.learned
               ? (l?.sleepFrontGuidelineNote ?? 'age guideline, not yet your need')
               : null,
@@ -381,6 +384,7 @@ class _Line extends StatelessWidget {
   @override
   Widget build(BuildContext c) {
     final p = P.of(c);
+    final l = AppLocalizations.of(c);
     final title = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -390,7 +394,8 @@ class _Line extends StatelessWidget {
     );
     final right = value != null
         ? Text(value!, style: F.n24.copyWith(color: p.ink))
-        : Text(pending ?? '—', style: F.cap.copyWith(color: p.ink3));
+        : Text(pending ?? (l?.sleepFrontNoNight ?? 'No night scored'),
+            style: F.cap.copyWith(color: p.ink3));
     final seg = band == null ? _Seg3Empty() : _Seg3(band!);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: S.x3),
@@ -1073,8 +1078,14 @@ class _EfficiencyCard extends StatelessWidget {
           ),
           const SizedBox(width: S.x2),
           Flexible(
-            child: Text(awake == null ? '—' : hm(awake),
-                textAlign: TextAlign.end, style: F.n17.copyWith(color: p.ink)),
+            child: Text(
+                awake == null
+                    ? (l?.sleepFrontNotMeasured ?? 'Not measured')
+                    : hm(awake),
+                textAlign: TextAlign.end,
+                style: awake == null
+                    ? F.cap.copyWith(color: p.ink3)
+                    : F.n17.copyWith(color: p.ink)),
           ),
         ]),
         const SizedBox(height: S.x3),
@@ -1082,17 +1093,21 @@ class _EfficiencyCard extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: S.x3, vertical: S.x2),
           decoration: BoxDecoration(color: p.card2, borderRadius: R.rMd),
           child: Column(children: [
-            _Fact(
-              l?.sleepFrontAwakenings ?? 'Times awake (at least)',
-              d.awakenings == null ? '—' : d.awakenings!.round().toString(),
-            ),
-            _Fact(
-              l?.sleepFrontLongestStretch ?? 'Longest unbroken sleep',
-              d.longestSleepMin == null ? '—' : hm(d.longestSleepMin),
-            ),
+            if (d.awakenings != null)
+              _Fact(
+                l?.sleepFrontAwakenings ?? 'Times awake (at least)',
+                d.awakenings!.round().toString(),
+              ),
+            if (d.longestSleepMin != null)
+              _Fact(
+                l?.sleepFrontLongestStretch ?? 'Longest unbroken sleep',
+                hm(d.longestSleepMin),
+              ),
             _Fact(
               l?.sleepFrontLatency ?? 'Time to fall asleep',
-              d.solMin == null ? '—' : hm(d.solMin),
+              d.solMin == null
+                  ? (l?.sleepFrontNotMeasured ?? 'Not measured')
+                  : hm(d.solMin),
               note: d.solMin == null
                   ? (l?.sleepFrontLatencyNote ?? 'counted only from a bedtime you set')
                   : null,

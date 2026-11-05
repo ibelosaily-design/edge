@@ -3740,5 +3740,6 @@
   "healthMonitorAbove": "فوق نطاقك",
   "healthMonitorBelow": "تحت نطاقك",
   "healthMonitorNotMeasured": "متقاسش",
-  "healthMonitorNotComputed": "مش بيتحسب"
+  "healthMonitorNotComputed": "مش بيتحسب",
+  "sleepFrontNotMeasured": "متقاسش"
 }

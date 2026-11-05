@@ -16668,5 +16668,6 @@
   "healthMonitorAbove": "สูงกว่าช่วงของคุณ",
   "healthMonitorBelow": "ต่ำกว่าช่วงของคุณ",
   "healthMonitorNotMeasured": "ไม่ได้วัด",
-  "healthMonitorNotComputed": "ไม่คำนวณ"
+  "healthMonitorNotComputed": "ไม่คำนวณ",
+  "sleepFrontNotMeasured": "ไม่ได้วัด"
 }

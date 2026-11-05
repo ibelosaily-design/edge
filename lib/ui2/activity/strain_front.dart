@@ -247,9 +247,13 @@ class _RingCard extends StatelessWidget {
                   width: side - 2 * S.x8,
                   child: Column(mainAxisSize: MainAxisSize.min, children: [
                     Text(
-                      strain == null ? '—' : displayFixed(strain, 1),
+                      strain == null
+                          ? (l?.strainFrontNotYet ?? 'Not measured yet')
+                          : displayFixed(strain, 1),
                       textAlign: TextAlign.center,
-                      style: F.n64.copyWith(color: strain == null ? p.ink3 : p.ink),
+                      style: strain == null
+                          ? F.cap.copyWith(color: p.ink2)
+                          : F.n64.copyWith(color: p.ink),
                     ),
                     Text(l?.strainFrontDayStrain ?? 'Day strain',
                         textAlign: TextAlign.center,
@@ -337,7 +341,7 @@ class _MoveRow extends StatelessWidget {
         icon: LucideIcons.footprints,
         color: C.green,
         name: l?.homeSteps ?? 'Steps',
-        value: steps == null ? '—' : thousands(steps),
+        value: steps == null ? '' : thousands(steps),
         sub: steps == null
             ? (l?.strainFrontNotYet ?? 'Not measured yet')
             : (l?.strainFrontOfGoal(thousands(d.stepGoal)) ?? 'of ${thousands(d.stepGoal)}'),
@@ -348,7 +352,7 @@ class _MoveRow extends StatelessWidget {
         icon: LucideIcons.flame,
         color: C.orange,
         name: l?.workoutCaloriesStatLabel ?? 'Calories',
-        value: cal == null ? '—' : thousands(cal),
+        value: cal == null ? '' : thousands(cal),
         sub: cal == null
             ? (l?.strainFrontNotYet ?? 'Not measured yet')
             : (l?.strainFrontActiveKcal ?? 'active, kcal'),
@@ -400,7 +404,8 @@ class _MoveTile extends StatelessWidget {
           Expanded(child: Text(name, style: F.cap.copyWith(color: p.ink2))),
         ]),
         const SizedBox(height: S.x2),
-        Text(value, style: F.n24.copyWith(color: p.ink)),
+        // Absent is the sub-line in words; no dash stands in for a number.
+        if (value.isNotEmpty) Text(value, style: F.n24.copyWith(color: p.ink)),
         const SizedBox(height: S.x1),
         Text(sub, style: F.over.copyWith(color: p.ink3)),
         if (frac != null) ...[
@@ -450,11 +455,11 @@ class _SessionRow extends StatelessWidget {
           ]),
         ),
         const SizedBox(width: S.x3),
-        Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-          Text(s.strain == null ? '—' : displayFixed(s.strain!, 1),
-              style: F.n17.copyWith(color: p.ink)),
-          Text(l?.homeRingStrain ?? 'Strain', style: F.over.copyWith(color: p.ink3)),
-        ]),
+        if (s.strain != null)
+          Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
+            Text(displayFixed(s.strain!, 1), style: F.n17.copyWith(color: p.ink)),
+            Text(l?.homeRingStrain ?? 'Strain', style: F.over.copyWith(color: p.ink3)),
+          ]),
       ]),
     );
   }

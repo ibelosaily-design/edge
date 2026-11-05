@@ -1174,12 +1174,14 @@ class _TrioRing extends StatelessWidget {
                 padding: const EdgeInsets.all(S.x3),
                 child: FittedBox(
                   fit: BoxFit.scaleDown,
+                  // Absent reads as words, never as a dash and never as a
+                  // zero — the same rule _RingText keeps.
                   child: Text(
-                    r.measured || r.calibrating ? value : '—',
+                    value,
                     textAlign: TextAlign.center,
                     style: r.measured
                         ? F.n24.copyWith(color: r.provisional ? p.ink3 : p.ink)
-                        : F.n17.copyWith(color: p.ink3),
+                        : F.cap.copyWith(color: p.ink2),
                   ),
                 ),
               ),
