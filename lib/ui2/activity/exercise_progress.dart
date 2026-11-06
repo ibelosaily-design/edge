@@ -14,7 +14,6 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../data/db.dart';
 import '../../l10n/app_localizations.dart';
-import '../charts.dart';
 import '../onboarding/profile_setup.dart' show formatDay;
 import '../screens/metric_detail.dart' show detailScaffold;
 import '../ui2.dart';

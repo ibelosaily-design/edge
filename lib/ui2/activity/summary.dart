@@ -1872,7 +1872,7 @@ class _ActivitySummaryState extends State<ActivitySummary> {
           // 0–21 scale, beside strain and never added into it
           // (compute/muscular_load.dart). Needs a body weight; without one
           // the card says what to enter rather than assuming a body.
-          if (muscularLoadOf(r.strength, weightKg) case final ml?)
+          if (muscularLoadOf(r.strength, widget.weightKg) case final ml?)
             Padding(
               padding: const EdgeInsets.only(top: S.x4),
               child: Section(
@@ -1915,7 +1915,7 @@ class _ActivitySummaryState extends State<ActivitySummary> {
                 ),
               ),
             )
-          else if (!r.strength.isEmpty && weightKg == null)
+          else if (!r.strength.isEmpty && widget.weightKg == null)
             Padding(
               padding: const EdgeInsets.only(top: S.x4),
               child: StatusCard(
