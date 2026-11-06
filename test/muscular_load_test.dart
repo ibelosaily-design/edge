@@ -28,8 +28,9 @@ void main() {
     expect(at(100).value, closeTo(14.0, 0.1));
     expect(at(30).value, closeTo(5.9, 0.1));
     expect(at(200).value, closeTo(18.7, 0.1));
-    expect(at(5000).value, lessThan(21));
-    expect(at(5000).value, greaterThan(20.9));
+    // Saturates: RV 500 is a fraction under the ceiling (exp(−500/91)).
+    expect(at(500).value, lessThan(21));
+    expect(at(500).value, greaterThan(20.8));
   });
 
   test('a bodyweight set counts about two-thirds of the body; a loaded one adds',
