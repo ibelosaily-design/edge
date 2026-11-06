@@ -20,7 +20,6 @@ import '../../data/local_repository.dart';
 import '../../l10n/app_localizations.dart';
 import '../../l10n/decimal_text.dart';
 import '../../state/clock_format.dart' show formatClockOf;
-import '../revision.dart';
 import '../ui2.dart';
 import 'calm_breathing.dart' show CalmBreathing;
 import 'home_screen.dart' show go, pointsOf, repoOf;
@@ -138,13 +137,13 @@ class _StressMonitorLoaderState extends State<StressMonitorLoader>
       _d == null ? const SizedBox.shrink() : StressMonitorCard(_d!);
 }
 
-String bandWord(String band, AppLocalizations? l) => switch (band) {
+String stressBandWord(String band, AppLocalizations? l) => switch (band) {
       'low' => l?.stressBandLow ?? 'Calm',
       'medium' => l?.stressBandMedium ?? 'Alert',
       _ => l?.stressBandHigh ?? 'High',
     };
 
-Color bandColor(String band) => switch (band) {
+Color stressBandColor(String band) => switch (band) {
       'low' => C.green,
       'medium' => C.orange,
       _ => C.red,
@@ -260,9 +259,9 @@ class _Latest extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: S.x2, vertical: 2),
                 decoration: BoxDecoration(
-                    color: p.wash(bandColor(band)), borderRadius: R.rPill),
-                child: Text(bandWord(band, l),
-                    style: F.over.copyWith(color: p.on(bandColor(band)))),
+                    color: p.wash(stressBandColor(band)), borderRadius: R.rPill),
+                child: Text(stressBandWord(band, l),
+                    style: F.over.copyWith(color: p.on(stressBandColor(band)))),
               ),
               Text(l?.stressLatestAt(at) ?? 'at $at',
                   style: F.cap.copyWith(color: p.ink3)),
@@ -462,7 +461,7 @@ class StressMonitorBody extends StatelessWidget {
         Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Expanded(
             child: _Tile(l?.stressDayAverageLabel ?? 'Day average',
-                displayFixed(d.mean, 1), bandWord(stressBand(d.mean), l)),
+                displayFixed(d.mean, 1), stressBandWord(stressBand(d.mean), l)),
           ),
           const SizedBox(width: S.x3),
           Expanded(
@@ -530,10 +529,10 @@ class _Legend extends StatelessWidget {
             width: S.x2,
             height: S.x2,
             decoration: BoxDecoration(
-                color: p.on(bandColor(band)), shape: BoxShape.circle),
+                color: p.on(stressBandColor(band)), shape: BoxShape.circle),
           ),
           const SizedBox(width: S.x1),
-          Text('$range ${bandWord(band, l)}',
+          Text('$range ${stressBandWord(band, l)}',
               style: F.over.copyWith(color: p.ink3)),
         ]),
     ]);
