@@ -5,22 +5,25 @@
 //
 // The range verdict is the pipeline's own (`baselines` block: in_normal_range
 // / z / n_valid); this card never draws a second one. Under kUsualMinDays
-// nights a vital is calibrating and says how many nights are left. SpO₂ is
-// listed and refused with the pipeline's reason: the band's red and infrared
-// channels arrive as one signal and this app does not invent a saturation
-// from it.
+// nights a vital is calibrating and says how many nights are left. SpO₂ has
+// no measured path here (the band's red and infrared channels arrive as one
+// signal), so its card shows, in this order, what IS there: the band's own
+// nightly SpO₂ byte (gen5, `spo2_band`, labelled as the band's report with
+// its encoding unconfirmed), else WHOOP's own value for the night from an
+// import (`spo2` series), else the refusal and why.
 
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
+import '../../data/day_label.dart' show dayLabelOf;
 import '../../l10n/app_localizations.dart';
 import '../../l10n/decimal_text.dart';
 import '../ui2.dart';
 import 'health_screen.dart' show HealthData;
-import 'home_screen.dart' show go;
+import 'home_screen.dart' show ChartPoint, go;
 import 'metric_detail.dart' show MetricDetail;
 
-enum VitalStatus { calibrating, inside, above, below, absent }
+enum VitalStatus { calibrating, inside, above, below, absent, reported }
 
 /// One vital's read-out, resolved from the day's envelopes.
 class VitalRead {
@@ -33,6 +36,8 @@ class VitalRead {
   final VitalStatus status;
   final int nightsLeft; // while calibrating
   final String? refusal; // a vital this app does not compute, and why
+  final String? note; // where a reported (not measured) value came from
+  final bool opens; // tapping goes to MetricDetail(key)
 
   const VitalRead({
     required this.key,
@@ -44,7 +49,21 @@ class VitalRead {
     required this.status,
     this.nightsLeft = 0,
     this.refusal,
+    this.note,
+    this.opens = true,
   });
+}
+
+/// The imported WHOOP SpO₂ value for the night labelled [day], or null: an
+/// older point is a different night, not this one's vital.
+int? importedSpo2For(List<ChartPoint> points, String? day) {
+  if (day == null) return null;
+  for (final p in points.reversed) {
+    if (dayLabelOf(DateTime.fromMillisecondsSinceEpoch(p.t * 1000)) == day) {
+      return p.v.round();
+    }
+  }
+  return null;
 }
 
 /// The status of a vital from its pipeline baseline block. Calibrating until
@@ -80,6 +99,16 @@ List<VitalRead> vitalReads(HealthData d, AppLocalizations? l) {
   final (ts, tn) = vitalStatusOf(block('skin_temp'),
       hasValue: tempDevC != null || tempZ != null);
 
+  // SpO₂: the band's own byte for the served night, else WHOOP's imported
+  // value for that same night, else the refusal.
+  final band = d.today['spo2_band'];
+  final bandV = band is Map ? (band['value'] as num?)?.toInt() : null;
+  final status = d.today['status'];
+  final nightDay = status is Map
+      ? (status['overnight_day'] ?? status['today_day'])?.toString()
+      : null;
+  final importedV = importedSpo2For(d.points('spo2'), nightDay);
+
   return [
     VitalRead(
       key: 'resp_rate',
@@ -91,18 +120,46 @@ List<VitalRead> vitalReads(HealthData d, AppLocalizations? l) {
       status: rs,
       nightsLeft: rn,
     ),
-    VitalRead(
-      key: 'spo2',
-      icon: LucideIcons.droplet,
-      color: C.blue,
-      name: l?.healthMonitorSpo2 ?? 'Blood oxygen (SpO₂)',
-      value: '',
-      unit: '%',
-      status: VitalStatus.absent,
-      refusal: l?.healthMonitorSpo2Refused ??
-          'Not computed here: the band sends its red and infrared light as '
-              'one signal, and a saturation needs the two apart.',
-    ),
+    if (bandV != null)
+      VitalRead(
+        key: 'spo2',
+        icon: LucideIcons.droplet,
+        color: C.blue,
+        name: l?.healthMonitorSpo2 ?? 'Blood oxygen (SpO₂)',
+        value: bandV.toString(),
+        unit: '%',
+        status: VitalStatus.reported,
+        note: l?.healthMonitorSpo2BandNote ??
+            'The band\'s own overnight reading, shown as sent. Its encoding '
+                'is not yet confirmed, so treat it as a guide.',
+        opens: importedV != null,
+      )
+    else if (importedV != null)
+      VitalRead(
+        key: 'spo2',
+        icon: LucideIcons.droplet,
+        color: C.blue,
+        name: l?.healthMonitorSpo2 ?? 'Blood oxygen (SpO₂)',
+        value: importedV.toString(),
+        unit: '%',
+        status: VitalStatus.reported,
+        note: l?.healthMonitorSpo2ImportedNote ??
+            'WHOOP\'s own value for this night, from your export.',
+      )
+    else
+      VitalRead(
+        key: 'spo2',
+        icon: LucideIcons.droplet,
+        color: C.blue,
+        name: l?.healthMonitorSpo2 ?? 'Blood oxygen (SpO₂)',
+        value: '',
+        unit: '%',
+        status: VitalStatus.absent,
+        refusal: l?.healthMonitorSpo2Refused ??
+            'Not computed here: the band sends its red and infrared light as '
+                'one signal, and a saturation needs the two apart.',
+        opens: false,
+      ),
     VitalRead(
       key: 'resting_hr',
       icon: LucideIcons.heart,
@@ -230,9 +287,14 @@ class _VitalCard extends StatelessWidget {
               : (l?.healthMonitorNotComputed ?? 'Not computed'),
           p.ink3
         ),
+      VitalStatus.reported => (
+          l?.healthMonitorReported ?? 'Reported, not measured here',
+          p.on(C.blue)
+        ),
     };
+    final small = r.refusal ?? r.note;
     return Surface(
-      onTap: r.refusal == null ? () => go(c, MetricDetail(r.key)) : null,
+      onTap: r.opens ? () => go(c, MetricDetail(r.key)) : null,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Icon(r.icon, size: 16, color: p.on(r.color)),
@@ -250,9 +312,9 @@ class _VitalCard extends StatelessWidget {
               Text(r.unit, style: F.cap.copyWith(color: p.ink3)),
             ],
           ),
-        if (r.refusal != null) ...[
+        if (small != null) ...[
           const SizedBox(height: S.x2),
-          Text(r.refusal!, style: F.over.copyWith(color: p.ink3)),
+          Text(small, style: F.over.copyWith(color: p.ink3)),
         ],
         const SizedBox(height: S.x3),
         Container(

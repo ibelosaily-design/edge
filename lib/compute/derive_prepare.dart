@@ -549,6 +549,7 @@ class _PrepareAccumulator {
   final List<int> stepCount = [];
   final List<int> hrValid = [];
   final List<int> bandSleepState = [];
+  final List<int> spo2Cand = [];
 
   /// The DISTINCT non-null `device_family` stamps seen across every page fed in
   /// (see [Substrate.deviceFamily]). Exactly one ⇒ that is the substrate's
@@ -661,6 +662,9 @@ class _PrepareAccumulator {
     bandSleepState.addAll(sub.bandSleepState.length == sub.length
         ? sub.bandSleepState
         : List<int>.filled(sub.length, -1));
+    spo2Cand.addAll(sub.spo2Cand.length == sub.length
+        ? sub.spo2Cand
+        : List<int>.filled(sub.length, -1));
   }
 
   void addDecodedPage(
@@ -763,6 +767,8 @@ class _PrepareAccumulator {
       // second this is the hr1Hz owner's row (composeOneHzFrames keeps base
       // columns) — fine for one WHOOP 5.
       bandSleepState.add(_num(row?['band_sleep_state'])?.toInt() ?? -1);
+      // The band's SpO2 byte: NULL (gen4, or a second it read 0) is ABSENT.
+      spo2Cand.add(_num(row?['spo2_cand'])?.toInt() ?? -1);
       final beats = rrByRecTs[recTs];
       if (beats == null) continue;
       for (final beat in beats) {
@@ -822,6 +828,7 @@ class _PrepareAccumulator {
       stepCount: stepCount,
       hrValid: hrValid,
       bandSleepState: bandSleepState,
+      spo2Cand: spo2Cand,
       deviceFamily: deviceFamily,
       deviceIds: _deviceIds,
     );

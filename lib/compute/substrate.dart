@@ -265,6 +265,12 @@ class Substrate {
   /// analytics band_offset.dart. Read it through [bandSleepStateSlice].
   final List<int> bandSleepState;
 
+  /// The band's SpO2 estimate/status byte per second (gen5/MG only), -1 where
+  /// absent — a gen4 second, a legacy empty list, or a second the byte read
+  /// 0 (no sample). Raw, not a percentage; see Sample.spo2Cand and
+  /// compute/spo2_band.dart for the one reader and its gates.
+  final List<int> spo2Cand;
+
   /// WHICH STRAP MEASURED THIS SUBSTRATE — `'gen4'`, `'gen5'`, or null.
   ///
   /// Stamped at ingest into `decoded_onehz.device_family` and carried here so
@@ -327,6 +333,7 @@ class Substrate {
     List<int> stepCount = const [],
     List<int> hrValid = const [],
     List<int> bandSleepState = const [],
+    List<int> spo2Cand = const [],
     String? deviceFamily,
     Set<String> deviceIds = const {},
   }) =>
@@ -347,6 +354,7 @@ class Substrate {
         stepCount: stepCount,
         hrValid: hrValid,
         bandSleepState: bandSleepState,
+        spo2Cand: spo2Cand,
       );
 
   const Substrate._({
@@ -364,6 +372,7 @@ class Substrate {
     this.stepCount = const [],
     this.hrValid = const [],
     this.bandSleepState = const [],
+    this.spo2Cand = const [],
     this.deviceFamily,
     this.deviceIds = const {},
   });
@@ -494,6 +503,12 @@ class Substrate {
           ? bandSleepState.sublist(lo, hi)
           : List<int>.filled(hi - lo, -1);
 
+  /// Positional band SpO2 byte for [lo, hi), -1 where absent.
+  List<int> spo2CandSlice(int lo, int hi) =>
+      spo2Cand.length == length
+          ? spo2Cand.sublist(lo, hi)
+          : List<int>.filled(hi - lo, -1);
+
   /// Slice to the half-open window [startSec, endSec) by record time. Returns a
   /// new Substrate with the 1 Hz arrays sliced and the sparse RR arrays filtered
   /// to beats whose end time falls in the window.
@@ -519,6 +534,7 @@ class Substrate {
       stepCount: _stepSlice(lo, hi),
       hrValid: _perSecSlice(hrValid, lo, hi),
       bandSleepState: _perSecSlice(bandSleepState, lo, hi),
+      spo2Cand: _perSecSlice(spo2Cand, lo, hi),
       deviceFamily: deviceFamily,
       deviceIds: deviceIds,
       rrTsMs: rr.$1,
@@ -549,6 +565,7 @@ class Substrate {
       stepCount: _stepSlice(lo, hi),
       hrValid: _perSecSlice(hrValid, lo, hi),
       bandSleepState: _perSecSlice(bandSleepState, lo, hi),
+      spo2Cand: _perSecSlice(spo2Cand, lo, hi),
       deviceFamily: deviceFamily,
       deviceIds: deviceIds,
       rrTsMs: rr.$1,
@@ -616,6 +633,7 @@ class Substrate {
         'step_count': stepCount,
         'hr_valid': hrValid,
         'band_sleep_state': bandSleepState,
+        'spo2_cand': spo2Cand,
         // Null (unknown provenance) is a real answer — emit the key regardless.
         'device_family': deviceFamily,
         'device_ids': deviceIds.toList(),
@@ -677,6 +695,11 @@ class Substrate {
       // Same reason again: absent is -1, and 0 is a real "wake".
       bandSleepState: () {
         final l = ints(m, 'band_sleep_state');
+        return l.length == n ? l : List<int>.filled(n, -1);
+      }(),
+      // Absent is -1 here too; the byte itself is never 0 once stored.
+      spo2Cand: () {
+        final l = ints(m, 'spo2_cand');
         return l.length == n ? l : List<int>.filled(n, -1);
       }(),
       deviceFamily: m['device_family'] as String?,
@@ -830,6 +853,7 @@ Substrate decodeSubstrate(List<String> hexes) {
     hrValid: List<int>.filled(n, -1),
     // Raw-hex replay carries no band envelope either: ABSENT.
     bandSleepState: List<int>.filled(n, -1),
+    spo2Cand: List<int>.filled(n, -1),
   );
 }
 

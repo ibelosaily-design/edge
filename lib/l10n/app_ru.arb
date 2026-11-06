@@ -8248,5 +8248,8 @@
   "healthMonitorBelow": "Ниже вашего диапазона",
   "healthMonitorNotMeasured": "Не измерено",
   "healthMonitorNotComputed": "Не вычисляется",
-  "sleepFrontNotMeasured": "Не измерено"
+  "sleepFrontNotMeasured": "Не измерено",
+  "healthMonitorReported": "Передано браслетом, не измерено здесь",
+  "healthMonitorSpo2BandNote": "Собственное ночное значение браслета, как он его передал. Кодировка пока не подтверждена — ориентир, не точная цифра.",
+  "healthMonitorSpo2ImportedNote": "Собственное значение WHOOP за эту ночь, из вашего экспорта."
 }

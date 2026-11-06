@@ -3741,5 +3741,8 @@
   "healthMonitorBelow": "تحت نطاقك",
   "healthMonitorNotMeasured": "متقاسش",
   "healthMonitorNotComputed": "مش بيتحسب",
-  "sleepFrontNotMeasured": "متقاسش"
+  "sleepFrontNotMeasured": "متقاسش",
+  "healthMonitorReported": "كما يبلّغه السوار، مش محسوب هنا",
+  "healthMonitorSpo2BandNote": "قراءة السوار نفسه بالليل، معروضة زي ما بعتها. ترميزها لسه مش مؤكد، فخدها كإشارة مش رقم نهائي.",
+  "healthMonitorSpo2ImportedNote": "رقم WHOOP نفسه لليلة دي، من ملف التصدير بتاعك."
 }

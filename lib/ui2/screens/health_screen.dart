@@ -156,6 +156,7 @@ class HealthData {
       'sleep',
       'stress',
       'resp_rate',
+      'spo2', // WHOOP's own nightly value, present only after an import
     ]) {
       charts[k] = pointsOf(await repo.getChart(k));
     }

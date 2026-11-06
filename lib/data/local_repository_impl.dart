@@ -628,6 +628,10 @@ class LocalRepositoryImpl extends LocalRepository {
         ),
       if (sleepBundle != null && sleepBundle['spo2'] is Map)
         'spo2': sleepBundle['spo2'],
+      // The band's own SpO2 bytes over the served night (gen5 only; see
+      // compute/spo2_band.dart). No key when the night had none to report.
+      if (sleepBundle != null && sleepBundle['spo2_band'] is Map)
+        'spo2_band': sleepBundle['spo2_band'],
       if (activityBundle != null && activityBundle['activity'] is Map)
         'activity': activityBundle['activity'],
       if (activityBundle == null && wakeFeatures?['activity'] is Map)
@@ -1165,6 +1169,7 @@ class LocalRepositoryImpl extends LocalRepository {
       // a general daytime heart metric. Pure re-exposure of the same bundle
       // field getDayHeart already read; no new computation.
       'spo2': b['spo2'],
+      'spo2_band': ?b['spo2_band'],
       // Sleep need, and the debt against it — both only when the need was
       // actually learned (`sleep_coach.need`, see [_sleepNeedMin]; it is the
       // current personal estimate, and the artifact behind it is refused once

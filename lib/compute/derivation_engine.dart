@@ -66,6 +66,7 @@ import 'inputs/garmin_inputs.dart'
         methodFamily;
 import 'inputs/oura_inputs.dart' show kOuraFamily, ouraStrapOwnsNight;
 import 'inputs/ultrahuman_inputs.dart' show ultrahumanDayBlock;
+import 'spo2_band.dart' show spo2BandNight;
 import 'hr_max.dart'
     show estimatedMaxHr, kHrFloorBpm, smoothedMaxHr, smoothedMinHr;
 import 'movement_floor_policy.dart' as mfp;
@@ -1848,6 +1849,11 @@ import 'vendor_sleep.dart';
 // temperature rhythm and alertness forecast use local time. Steps: the live
 // pedometer counts from stride periodicity. Workouts: a 5-15 min rest with HR
 // still raised stays inside one suggested workout.
+// (no bump) Band-reported SpO2 (`spo2_band`, compute/spo2_band.dart): a gen5
+// night whose seconds carry the new `spo2_cand` column gets one summary block;
+// nothing drained before the column existed has the byte, so no stored day can
+// recompute differently, and a day without readable samples gets no key. WHOOP
+// output is unchanged, pinned by test/whoop_freeze_golden_test.dart.
 const int kAlgoVersion = 119;
 /// The sibling SHAs this version was derived against, asserted against
 /// pubspec.yaml in test/db_serve_version_and_reads_test.dart.
@@ -6019,6 +6025,11 @@ class DerivationEngine {
         day.sleepOffsetSec, _localNextDayLabelToSec(day.date),
         tonightOnsetSec: day.tonightSleepOnsetSec);
     if (ringDay != null) bundle['ring_day'] = ringDay;
+    // The band's own SpO2 bytes over this night (gen5 only; see
+    // compute/spo2_band.dart). Written ONLY when the night has readable
+    // samples, so every other day's payload is byte-identical to before.
+    final bandSpo2 = spo2BandNight(sleepSub.spo2Cand);
+    if (bandSpo2 != null) bundle['spo2_band'] = bandSpo2.toJson();
 
     final scMap = (bundle['scalars'] as Map?)?.cast<String, dynamic>();
 
@@ -6993,6 +7004,9 @@ class DerivationEngine {
     'wrist_orientation',
     'advanced_sleep',
     'daytime_hrv',
+    // First-half key, but computed over the main sleep window all the same:
+    // a retimed night must not inherit the old window's band SpO2 bytes.
+    'spo2_band',
   };
 
   /// Whether the main sleep window in [next] (isolate 1's, always present)

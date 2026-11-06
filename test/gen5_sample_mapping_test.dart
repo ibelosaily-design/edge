@@ -195,6 +195,23 @@ void main() {
       // than defaulting to 0 — which is `wake`, a claim, not an absence.
       expect(Sample(tsEpoch: 1, counter: 1, hr: 60).bandSleepState, isNull);
     });
+
+    test('the SpO2 estimate/status byte beside it: 0 is null, else raw', () {
+      // Patch inner[74] on a real record: the byte is 0 on the wake-state
+      // fixture, as the protocol says it is outside band-declared sleep.
+      final base = hex(real[0]!);
+      expect(base[74], 0);
+      expect(sampleFromGen5Historical(parseGen5Historical(base))!.spo2Cand,
+          isNull);
+      for (final b in [96, 128 + 97]) {
+        final inner = Uint8List.fromList(base)..[74] = b;
+        expect(sampleFromGen5Historical(parseGen5Historical(inner))!.spo2Cand,
+            b,
+            reason: 'the mapper neither strips the flag nor reads a percent');
+      }
+      // gen4 has no such byte.
+      expect(Sample(tsEpoch: 1, counter: 1, hr: 60).spo2Cand, isNull);
+    });
   });
 
   group('sampleFromGen5Historical — v18 skin-temp sentinel', () {

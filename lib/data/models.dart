@@ -152,6 +152,20 @@ class Sample {
   /// (analytics `band_offset.dart`) — never to create, extend or stage one.
   final int? bandSleepState;
 
+  /// The band's SpO2 estimate/status byte for this second — GEN5/MG ONLY,
+  /// raw, and NULL whenever it read 0 (the band sends 0 outside its sampling
+  /// moments, which is almost every second; 0 is "no sample", not 0 %).
+  ///
+  /// NOT A PERCENTAGE. protocol (gen5_records.dart, `spo2CandidateRaw`)
+  /// establishes the family — identically zero outside band-declared sleep,
+  /// firing on a small fraction of sleep seconds clustering at 95-99, bit 7
+  /// behaving as a flag — and refuses to publish a number because the
+  /// encoding is not pinned. This app stores the byte so the nightly
+  /// read-out in `compute/spo2_band.dart` can be checked against the band's
+  /// own app on the same wrist; what reaches a screen is labelled as the
+  /// band's report, never as a measurement this app made.
+  final int? spo2Cand;
+
   Sample({
     required this.tsEpoch,
     required this.counter,
@@ -177,6 +191,7 @@ class Sample {
     this.dynAccelG,
     this.tsSubsec,
     this.bandSleepState,
+    this.spo2Cand,
   });
 
   /// Copy with an overridden [tsEpoch] — used by the clock-offset salvage path
@@ -208,6 +223,7 @@ class Sample {
     dynAccelG: dynAccelG,
     tsSubsec: tsSubsec,
     bandSleepState: bandSleepState,
+    spo2Cand: spo2Cand,
   );
 
   bool get hasDecodedOneHz =>
@@ -253,6 +269,7 @@ class Sample {
       dynAccelG: (m['dyn_accel_g'] as num?)?.toDouble(),
       tsSubsec: (m['ts_subsec'] as num?)?.toInt(),
       bandSleepState: (m['band_sleep_state'] as num?)?.toInt(),
+      spo2Cand: (m['spo2_cand'] as num?)?.toInt(),
     );
   }
 }

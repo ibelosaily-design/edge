@@ -848,6 +848,12 @@ Map<String, Widget> extraCases() => {
       'health_monitor': HealthMonitorGrid(_healthMonitorSample(calibrated: true)),
       'health_monitor_calibrating':
           HealthMonitorGrid(_healthMonitorSample(calibrated: false)),
+      // The SpO₂ card's two "reported" states: the band's own nightly byte,
+      // and WHOOP's imported value for the same night.
+      'health_monitor_band_spo2':
+          HealthMonitorGrid(_healthMonitorSample(calibrated: true, spo2: 'band')),
+      'health_monitor_imported_spo2': HealthMonitorGrid(
+          _healthMonitorSample(calibrated: true, spo2: 'imported')),
       // STRAIN FRONT — the Activity tab's top: the ring with its target,
       // steps and calories, today's sessions, time in zones.
       'strain_front': StrainFront(_strainFrontSample()),
@@ -2785,7 +2791,7 @@ StrainFrontData _strainFrontSample() {
   );
 }
 
-HealthData _healthMonitorSample({required bool calibrated}) {
+HealthData _healthMonitorSample({required bool calibrated, String? spo2}) {
   Map<String, dynamic> block(double baseline, double spread, double z) => {
         'baseline': baseline,
         'spread': spread,
@@ -2803,6 +2809,13 @@ HealthData _healthMonitorSample({required bool calibrated}) {
       'resp': {'value': 15.8, 'confidence': .7, 'tier': 'ESTIMATE'},
       'skin_temp': {'value': 0.4, 'dev_c': 0.2},
       'spo2': {'disabled': true, 'value': null},
+      if (spo2 == 'band')
+        'spo2_band': {'value': 96, 'min': 93, 'n': 84, 'flagged_n': 3, 'unread_n': 0},
+      'status': {'today_day': '2026-11-05', 'overnight_day': '2026-11-05'},
+    },
+    charts: {
+      if (spo2 == 'imported')
+        'spo2': [(t: DateTime(2026, 11, 5, 12).millisecondsSinceEpoch ~/ 1000, v: 95.0)],
     },
     baselines: {
       'resting_hr': block(60, 2.1, -0.9),

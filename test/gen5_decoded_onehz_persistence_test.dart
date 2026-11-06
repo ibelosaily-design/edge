@@ -149,6 +149,10 @@ void main() {
     // CORROBORATION, never a stage — see Sample.bandSleepState.
     expect(rows.first['ts_subsec'], 18022);
     expect(rows.first['band_sleep_state'], 0);
+    // The SpO2 estimate/status byte travels the same way: raw, or NULL when
+    // the record carried 0 (no sample) — never 0 stored as a reading.
+    expect(rows.first['spo2_cand'], sample.spo2Cand);
+    expect(rows.first['spo2_cand'], isNot(0));
     // The band's own calibrated °C reading is real and is kept…
     expect((rows.first['skin_temp_c'] as num).toDouble(), closeTo(30.57, 1e-9));
     // …but this second stores NO wear state and NO HR-validity claim, even

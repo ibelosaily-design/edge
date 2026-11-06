@@ -1752,6 +1752,13 @@ class LocalDb {
       // See Sample.bandSleepState for the evidence that it varies and means
       // what it says.
       'band_sleep_state': 'INTEGER',
+      // The band's SpO2 estimate/status byte, raw — GEN5/MG ONLY, null when
+      // the byte read 0 (no sample that second). Not a percentage: the
+      // encoding is unpinned (protocol's `spo2CandidateRaw`), so it is stored
+      // as the byte and read out, nightly, as "what the band reported" with
+      // the caveat attached — never as a measurement of this app's own. See
+      // Sample.spo2Cand and compute/spo2_band.dart.
+      'spo2_cand': 'INTEGER',
     };
     final have = await _columnsOf(db, 'decoded_onehz');
     if (have.isEmpty) return; // table not created yet — the DDL carries them
@@ -7258,6 +7265,7 @@ class LocalDb {
             dynAccelG: g.dynamicAccelerationG,
             tsSubsec: g.tsSubsec,
             bandSleepState: g.sleepStateRawNibble,
+            spo2Cand: g.spo2CandidateRaw == 0 ? null : g.spo2CandidateRaw,
           );
         }
       } catch (_) {}
@@ -7431,6 +7439,9 @@ class LocalDb {
       // everything the mid-ladder backfill can replay — but omitted-when-null
       // regardless, for the same reason.
       'band_sleep_state': ?decoded.bandSleepState,
+      // The band's SpO2 byte, already null-when-0 at the mapper. Omitted when
+      // null for the same mid-ladder-backfill reason as the columns above.
+      'spo2_cand': ?decoded.spo2Cand,
       // 0 IS THE ABSENT SENTINEL, NOT A READING. records.dart:501 emits
       // `ambientRaw: optical ? u16@70 : 0`, so every unconfirmed record version
       // reports 0 — writing that through would turn "we did not read the
@@ -9475,7 +9486,8 @@ class LocalDb {
         'SELECT counter, rec_ts, hr, ax, ay, az, '
         'spo2_red_raw, spo2_ir_raw, skin_temp_raw, '
         'step_count, step_cadence, activity_class, skin_temp_c, '
-        'on_wrist, hr_valid, hr_alt, device_family, device_id, band_sleep_state '
+        'on_wrist, hr_valid, hr_alt, device_family, device_id, band_sleep_state, '
+        'spo2_cand '
         'FROM decoded_onehz '
         'WHERE rec_ts >= ? AND rec_ts <= ? AND ${derivableSourceSql()} '
         'ORDER BY rec_ts ASC, counter ASC LIMIT ?',
@@ -9486,7 +9498,8 @@ class LocalDb {
       'SELECT counter, rec_ts, hr, ax, ay, az, '
       'spo2_red_raw, spo2_ir_raw, skin_temp_raw, '
       'step_count, step_cadence, activity_class, skin_temp_c, '
-      'on_wrist, hr_valid, hr_alt, device_family, device_id, band_sleep_state '
+      'on_wrist, hr_valid, hr_alt, device_family, device_id, band_sleep_state, '
+        'spo2_cand '
       'FROM decoded_onehz '
       'WHERE rec_ts >= ? AND rec_ts <= ? AND ${derivableSourceSql()} '
       'AND (rec_ts > ? OR (rec_ts = ? AND counter > ?)) '

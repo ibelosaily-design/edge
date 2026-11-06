@@ -16669,5 +16669,8 @@
   "healthMonitorBelow": "ต่ำกว่าช่วงของคุณ",
   "healthMonitorNotMeasured": "ไม่ได้วัด",
   "healthMonitorNotComputed": "ไม่คำนวณ",
-  "sleepFrontNotMeasured": "ไม่ได้วัด"
+  "sleepFrontNotMeasured": "ไม่ได้วัด",
+  "healthMonitorReported": "รายงานโดยสายรัด ไม่ได้วัดที่นี่",
+  "healthMonitorSpo2BandNote": "ค่าอ่านตอนกลางคืนของสายรัดเอง แสดงตามที่ส่งมา การถอดรหัสยังไม่ยืนยัน จึงใช้เป็นแนวทางเท่านั้น",
+  "healthMonitorSpo2ImportedNote": "ค่าของ WHOOP เองสำหรับคืนนี้ จากไฟล์ส่งออกของคุณ"
 }
