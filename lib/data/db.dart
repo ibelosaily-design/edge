@@ -5629,6 +5629,26 @@ class LocalDb {
     );
   }
 
+  /// Every set of the [sessions] most recent strength sessions (by their
+  /// newest set), for the routine list — which lifts, in which order, last
+  /// time. Rows carry session_id, exercise_key, seq, at_ts.
+  static Future<List<Map<String, Object?>>> recentStrengthSessionSets({
+    int sessions = 12,
+  }) async {
+    final db = await instance;
+    return db.rawQuery('''
+      SELECT session_id, exercise_key, seq, at_ts
+      FROM strength_set
+      WHERE session_id IN (
+        SELECT session_id FROM strength_set
+        GROUP BY session_id
+        ORDER BY MAX(COALESCE(at_ts, 0)) DESC
+        LIMIT ?
+      )
+      ORDER BY session_id, seq
+    ''', [sessions]);
+  }
+
   /// Newest-set and heaviest-set candidates per logged exercise, in two
   /// queries. The caller keeps the first row per key (most reps wins a tie).
   /// No window functions: minSdk 26 can ship SQLite older than 3.25.

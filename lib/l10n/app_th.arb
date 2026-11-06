@@ -16766,5 +16766,12 @@
   },
   "activityMuscularLoadMethod": "น้ำหนัก × จำนวนครั้งในแต่ละเซ็ต ท่าบอดี้เวทนับประมาณสองในสามของน้ำหนักตัว RPE ที่บันทึกปรับขนาดเซ็ต แล้วรวมเทียบกับน้ำหนักตัวบนเส้นโค้งที่ราบลงเหมือนค่าความหนัก สเกลของเราไม่ใช่ของ WHOOP แสดงข้างค่าความหนัก ไม่ได้บวกเข้าไป",
   "activityMuscularLoadNoWeightTitle": "ไม่มีภาระกล้ามเนื้อ",
-  "activityMuscularLoadNoWeightBody": "ค่านี้เทียบกับน้ำหนักตัวของคุณ แต่โปรไฟล์ยังไม่มีน้ำหนัก"
+  "activityMuscularLoadNoWeightBody": "ค่านี้เทียบกับน้ำหนักตัวของคุณ แต่โปรไฟล์ยังไม่มีน้ำหนัก",
+  "routineTitle": "รูทีน",
+  "routineNone": "เลือกไประหว่างทำ",
+  "routineLastTime": "ครั้งก่อน",
+  "routinePush": "ท่าดัน",
+  "routinePull": "ท่าดึง",
+  "routineLegs": "ขา",
+  "routineFullBody": "ทั้งตัว"
 }

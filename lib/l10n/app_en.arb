@@ -16986,5 +16986,33 @@
   "activityMuscularLoadNoWeightBody": "It is read against your body weight, and the profile has none yet.",
   "@activityMuscularLoadNoWeightBody": {
     "description": "Status card body."
+  },
+  "routineTitle": "Routine",
+  "@routineTitle": {
+    "description": "Strength setup: the routine picker heading."
+  },
+  "routineNone": "Pick as you go",
+  "@routineNone": {
+    "description": "Routine option: no preset list, add lifts during the session."
+  },
+  "routineLastTime": "Last time",
+  "@routineLastTime": {
+    "description": "Routine built from one of the user's own recent sessions."
+  },
+  "routinePush": "Push",
+  "@routinePush": {
+    "description": "Preset routine name."
+  },
+  "routinePull": "Pull",
+  "@routinePull": {
+    "description": "Preset routine name."
+  },
+  "routineLegs": "Legs",
+  "@routineLegs": {
+    "description": "Preset routine name."
+  },
+  "routineFullBody": "Full body",
+  "@routineFullBody": {
+    "description": "Preset routine name."
   }
 }

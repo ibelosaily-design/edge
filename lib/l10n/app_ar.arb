@@ -3838,5 +3838,12 @@
   },
   "activityMuscularLoadMethod": "الوزن × التكرارات لكل مجموعة، وتمارين وزن الجسم محسوبة بحوالي ثلثي وزنك، والـRPE لو سجّلته بيكبّر أو يصغّر المجموعة، وبعدين المجموع نسبة لوزن جسمك على منحنى بيتسطّح زي الجهد. المقياس بتاعنا مش بتاع WHOOP، وبيتعرض جنب الجهد مش بيتضاف عليه.",
   "activityMuscularLoadNoWeightTitle": "مافيش حِمل عضلي",
-  "activityMuscularLoadNoWeightBody": "بيتحسب نسبة لوزن جسمك، والملف الشخصي مافيهوش وزن لحد دلوقتي."
+  "activityMuscularLoadNoWeightBody": "بيتحسب نسبة لوزن جسمك، والملف الشخصي مافيهوش وزن لحد دلوقتي.",
+  "routineTitle": "الروتين",
+  "routineNone": "اختار وأنت ماشي",
+  "routineLastTime": "آخر مرة",
+  "routinePush": "دفع",
+  "routinePull": "سحب",
+  "routineLegs": "رجل",
+  "routineFullBody": "الجسم كله"
 }

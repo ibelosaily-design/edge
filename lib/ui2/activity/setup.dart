@@ -20,8 +20,10 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../l10n/app_localizations.dart';
 import '../grammar.dart';
 import '../theme.dart';
+import '../onboarding/profile_setup.dart' show formatDay;
 import 'catalogue.dart';
 import 'live.dart';
+import 'routines.dart';
 
 /// The window the calorie estimate is quoted over — the same one
 /// [ActivityRow] uses in the picker, so a row and this screen agree.
@@ -60,6 +62,21 @@ class _ActivitySetupState extends State<ActivitySetup> {
   bool _starting = false;
   bool _refused = false;
 
+  /// Strength only: the lifts to open the session with. Null = none, the
+  /// picker opens empty as before. The user's recent sessions load in.
+  StrengthRoutine? _routine;
+  List<StrengthRoutine> _recent = const [];
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.a.track == Track.sets) {
+      loadRecentRoutines().then((r) {
+        if (mounted) setState(() => _recent = r);
+      });
+    }
+  }
+
   /// Open the session in the app FIRST, then the screen. The screen used to
   /// be pushed on its own, so a "live" workout ran its own clock while the
   /// app recorded nothing and `sessions` gained no row.
@@ -79,12 +96,17 @@ class _ActivitySetupState extends State<ActivitySetup> {
     // user types from here belongs to the session, and has to survive the
     // screen being minimised or the process being killed.
     if (start != null) {
-      LiveDraft.begin(widget.a,
+      final draft = LiveDraft.begin(widget.a,
           private: private,
           weightKg: widget.weightKg,
           workSec: interval ? _workSec : null,
           restSec: interval ? _restSec : null,
           rounds: interval ? _rounds : null);
+      // The routine is the session's opening exercise list — the same key
+      // the live screen restores a minimised session's plan from.
+      if (_routine case final r?) {
+        draft.put('exercise_plan', List<String>.of(r.exerciseKeys));
+      }
     }
     await Navigator.of(context).pushReplacement(MaterialPageRoute(
       // Passed straight through too, not just via the draft above: a caller
@@ -195,6 +217,10 @@ class _ActivitySetupState extends State<ActivitySetup> {
                         l),
                   ]),
                 ),
+                if (a.track == Track.sets) ...[
+                  const SizedBox(height: S.x4),
+                  _routines(c, p, l),
+                ],
                 if (a.track == Track.interval) ...[
                   const SizedBox(height: S.x4),
                   Surface(
@@ -281,6 +307,60 @@ class _ActivitySetupState extends State<ActivitySetup> {
           ],
         ),
       ),
+    );
+  }
+
+  /// The routine picker: none, the user's last sessions, the presets. One
+  /// line per routine with its lifts, the chosen one marked. An order of
+  /// exercises only — sets, reps and loads stay the user's.
+  Widget _routines(BuildContext c, P p, AppLocalizations? l) {
+    final lang = Localizations.localeOf(c).languageCode;
+    final all = [..._recent, ...kPresetRoutines];
+    Widget row(StrengthRoutine? r) {
+      final on = r?.id == _routine?.id;
+      final title = r == null
+          ? (l?.routineNone ?? 'Pick as you go')
+          : r.lastDone == null
+              ? routineName(r, l)
+              : '${routineName(r, l)} · ${formatDay(r.lastDone!, l)}';
+      return Pressable(
+        semanticLabel: title,
+        onTap: () => setState(() => _routine = r),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: S.x3),
+          child: Row(children: [
+            Icon(on ? LucideIcons.circleCheck : LucideIcons.circle,
+                size: 20, color: on ? p.on(C.purple) : p.line),
+            const SizedBox(width: S.x3),
+            Expanded(
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(title, style: F.body.copyWith(color: p.ink)),
+                    if (r != null)
+                      Text(routineExercises(r, lang),
+                          style: F.over.copyWith(color: p.ink3)),
+                  ]),
+            ),
+          ]),
+        ),
+      );
+    }
+
+    return Surface(
+      pad: const EdgeInsets.symmetric(horizontal: S.x4, vertical: S.x2),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        Padding(
+          padding: const EdgeInsets.only(top: S.x2),
+          child: Text(l?.routineTitle ?? 'Routine',
+              style: F.cap.copyWith(color: p.ink2)),
+        ),
+        row(null),
+        for (final r in all) ...[
+          Divider(color: p.line, height: 1),
+          row(r),
+        ],
+      ]),
     );
   }
 
