@@ -21,7 +21,7 @@ HealthData _data({
     HealthData(
       today: {
         'status': {'today_day': night, 'overnight_day': night},
-        if (band != null) 'spo2_band': band,
+        'spo2_band': ?band,
       },
       charts: {'spo2': imported},
     );

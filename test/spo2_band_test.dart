@@ -45,7 +45,7 @@ void main() {
 
     test('bit 7 is stripped and counted, never read as part of the number',
         () {
-      final bytes = [for (var i = 0; i < 12; i++) 128 + 96]..add(95);
+      final bytes = [for (var i = 0; i < 12; i++) 128 + 96, 95];
       final n = spo2BandNight(bytes)!;
       expect(n.n, 13);
       expect(n.median, 96);
