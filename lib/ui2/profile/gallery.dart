@@ -862,6 +862,11 @@ Map<String, Widget> extraCases() => {
       'stress_monitor_body': StressMonitorBody(_stressSample()),
       'stress_monitor_need_nights': StressMonitorCard(_stressSample(nights: 2)),
       'stress_monitor_no_still': StressMonitorCard(_stressSample(still: false)),
+      // HOME · START — the four doors under the rings; the defaults a first
+      // week shows, and a row shaped by two recent sessions.
+      'home_start': HomeStartRow(activities: homeStartActivities(const [])),
+      'home_start_recent': HomeStartRow(
+          activities: homeStartActivities(const ['weight_training', 'running'])),
       // STRAIN FRONT — the Activity tab's top: the ring with its target,
       // steps and calories, today's sessions, time in zones.
       'strain_front': StrainFront(_strainFrontSample()),
@@ -2827,16 +2832,32 @@ StressMonitorData _stressSample({int nights = 14, bool still = true}) {
       act.add((t: start + m * 60, v: 0.8));
     }
   }
+  // The night 23:30 → 06:40: settled, a little above resting.
+  final night = (start - 30 * 60, start + 6 * 3600 + 40 * 60);
+  if (still) {
+    for (var t = night.$1; t < night.$2; t += 300) {
+      hrv.add((t: t, v: 58.0));
+      hr.add((t: t, v: 61.0));
+    }
+  }
+  final rhr = List.filled(nights, 58.0), rmssd = List.filled(nights, 62.0);
   final (d, why) = stressDay(
     hrv: hrv,
     hr: hr,
     activity: act,
-    exclude: const [],
-    rhrNights: List.filled(nights, 58.0),
-    rmssdNights: List.filled(nights, 62.0),
+    exclude: [night],
+    rhrNights: rhr,
+    rmssdNights: rmssd,
   );
   return StressMonitorData(
-      date: '2026-11-05', dayStart: start, dayEnd: end, day: d, absent: why);
+    date: '2026-11-05',
+    dayStart: start,
+    dayEnd: end,
+    day: d,
+    absent: why,
+    sleep: stressSleep(
+        hrv: hrv, hr: hr, sleep: night, rhrNights: rhr, rmssdNights: rmssd),
+  );
 }
 
 HealthData _healthMonitorSample({required bool calibrated, String? spo2}) {

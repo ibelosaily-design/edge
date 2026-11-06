@@ -124,6 +124,29 @@ void main() {
       expect(why!.note, 'no_still');
     });
 
+    test('stressSleep scores only the night, with no movement gate', () {
+      final hrv = line(day0, 60, (_) => 55);
+      final hr = line(day0, 60, (i) => i < 30 ? 62 : 100);
+      final night = (day0, day0 + 30 * 60);
+      final n = stressSleep(
+          hrv: hrv, hr: hr, sleep: night, rhrNights: rhr, rmssdNights: rmssd)!;
+      expect(n.points.length, 30);
+      expect(n.points.last.t, day0 + 29 * 60);
+      expect(n.activeMin, 0);
+      // 100 bpm at minute 30+ is outside the window, so it is not here —
+      // but inside the window an exertion-level minute would still count.
+      final n2 = stressSleep(
+          hrv: hrv,
+          hr: hr,
+          sleep: (day0, day0 + 60 * 60),
+          rhrNights: rhr,
+          rmssdNights: rmssd)!;
+      expect(n2.points.length, 60);
+      expect(stressSleep(
+              hrv: hrv, hr: hr, sleep: night, rhrNights: const [60], rmssdNights: rmssd),
+          isNull);
+    });
+
     test('band minutes weight each point by its gap, capped at five minutes',
         () {
       // Three points: 0 min (low), 2 min (high), 60 min later (medium).

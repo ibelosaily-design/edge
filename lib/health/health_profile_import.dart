@@ -28,11 +28,17 @@ class HealthProfileSnapshot {
     this.heightCm,
     this.ageYears,
     this.sex,
+    this.bodyFatPct,
   });
 
   final double? weightKg;
   final double? heightCm;
   final int? ageYears;
+
+  /// Body fat %, as a scale or an analysis wrote it to the store. Feeds the
+  /// body-age lean-mass line (compute/healthspan_load.dart) in place of the
+  /// typed value; the store wins the way weight does, because it changes.
+  final double? bodyFatPct;
 
   /// 'm' | 'f', matching the local profile map. Null for unset or for a value
   /// HealthKit reports as "other" — the formulas that read this have exactly
@@ -41,7 +47,11 @@ class HealthProfileSnapshot {
   final String? sex;
 
   bool get isEmpty =>
-      weightKg == null && heightCm == null && ageYears == null && sex == null;
+      weightKg == null &&
+      heightCm == null &&
+      ageYears == null &&
+      sex == null &&
+      bodyFatPct == null;
 
   /// Field names that were found, for a "read your weight and height" message
   /// that says what actually happened.
@@ -50,6 +60,7 @@ class HealthProfileSnapshot {
     if (heightCm != null) 'height',
     if (ageYears != null) 'age',
     if (sex != null) 'sex',
+    if (bodyFatPct != null) 'body fat',
   ];
 }
 
@@ -71,6 +82,7 @@ Map<String, dynamic> mergeHealthProfile(
   final out = Map<String, dynamic>.from(existing ?? const {});
   if (snap.weightKg != null) out['weight_kg'] = snap.weightKg;
   if (snap.heightCm != null) out['height_cm'] = snap.heightCm;
+  if (snap.bodyFatPct != null) out['body_fat_pct'] = snap.bodyFatPct;
   if (snap.ageYears != null && out['age'] == null) out['age'] = snap.ageYears;
   if (snap.sex != null && out['sex'] == null) out['sex'] = snap.sex;
   return out;
@@ -88,6 +100,7 @@ List<String> healthProfileChanges(
   const labels = {
     'weight_kg': 'weight',
     'height_cm': 'height',
+    'body_fat_pct': 'body fat',
     'age': 'age',
     'sex': 'sex',
   };
@@ -110,6 +123,9 @@ class HealthProfileImporter {
   List<HealthDataType> get types => [
     HealthDataType.WEIGHT,
     HealthDataType.HEIGHT,
+    // A scale's body-fat reading, on both stores (HealthKit
+    // bodyFatPercentage, Health Connect BodyFatRecord).
+    HealthDataType.BODY_FAT_PERCENTAGE,
     if (_isApple) ...[HealthDataType.GENDER, HealthDataType.BIRTH_DATE],
   ];
 
@@ -197,6 +213,10 @@ class HealthProfileImporter {
     final weight = numeric(HealthDataType.WEIGHT);
     // The plugin normalises HEIGHT to METRES; the profile stores centimetres.
     final heightM = numeric(HealthDataType.HEIGHT);
+    // PERCENTAGE on both platforms (HealthKit stores a 0–1 fraction and the
+    // plugin converts). A fraction that slipped through reads under 1 and is
+    // refused with the other out-of-range values below.
+    final fat = numeric(HealthDataType.BODY_FAT_PERCENTAGE);
 
     int? age;
     final dob = newest(HealthDataType.BIRTH_DATE)?.value;
@@ -241,6 +261,7 @@ class HealthProfileImporter {
           : null,
       ageYears: age,
       sex: sex,
+      bodyFatPct: (fat != null && fat >= 2 && fat <= 70) ? fat : null,
     );
   }
 }

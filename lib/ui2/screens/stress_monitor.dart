@@ -24,6 +24,7 @@ import '../ui2.dart';
 import 'calm_breathing.dart' show CalmBreathing;
 import 'home_screen.dart' show go, pointsOf, repoOf;
 import 'metric_detail.dart' show detailScaffold;
+import '../profile/devices.dart' show formatDayTime;
 
 /// Everything the card and the screen draw, loaded once from the repository.
 class StressMonitorData {
@@ -32,12 +33,16 @@ class StressMonitorData {
   final StressDay? day;
   final StressAbsent? absent;
 
+  /// The same scale over the night that ended on this day, or null.
+  final StressDay? sleep;
+
   const StressMonitorData({
     required this.date,
     required this.dayStart,
     required this.dayEnd,
     this.day,
     this.absent,
+    this.sleep,
   });
 
   static Future<StressMonitorData> load(LocalRepository repo,
@@ -56,9 +61,11 @@ class StressMonitorData {
               (t: (e['t'] as num).round(), v: (e['v'] as num).toDouble()),
         ];
     final exclude = <(int, int)>[];
+    (int, int)? night;
     for (final s in (heart['sleep'] is List ? heart['sleep'] as List : const [])) {
       if (s is Map && s['onset_ts'] is num && s['wake_ts'] is num) {
-        exclude.add(((s['onset_ts'] as num).toInt(), (s['wake_ts'] as num).toInt()));
+        night = ((s['onset_ts'] as num).toInt(), (s['wake_ts'] as num).toInt());
+        exclude.add(night);
       }
     }
     for (final n in (heart['naps'] is List ? heart['naps'] as List : const [])) {
@@ -84,16 +91,32 @@ class StressMonitorData {
     final rhr = nights(await repo.getChart('resting_hr'));
     final rmssd = nights(await repo.getChart('hrv'));
 
+    final hrvLine = line(heart['hrv']), hrLine = line(heart['hr']);
     final (day, absent) = stressDay(
-      hrv: line(heart['hrv']),
-      hr: line(heart['hr']),
+      hrv: hrvLine,
+      hr: hrLine,
       activity: line(heart['activity']),
       exclude: exclude,
       rhrNights: rhr,
       rmssdNights: rmssd,
     );
+    final sleep = night == null
+        ? null
+        : stressSleep(
+            hrv: hrvLine,
+            hr: hrLine,
+            sleep: night,
+            rhrNights: rhr,
+            rmssdNights: rmssd,
+          );
     return StressMonitorData(
-        date: shown, dayStart: dayStart, dayEnd: dayEnd, day: day, absent: absent);
+      date: shown,
+      dayStart: dayStart,
+      dayEnd: dayEnd,
+      day: day,
+      absent: absent,
+      sleep: sleep,
+    );
   }
 }
 
@@ -242,8 +265,12 @@ class _Latest extends StatelessWidget {
     final p = P.of(c);
     final l = AppLocalizations.of(c);
     final band = stressBand(d.latest.v);
-    final at = formatClockOf(
-        DateTime.fromMillisecondsSinceEpoch(d.latest.t * 1000));
+    // A line served from an earlier day (today not derived yet) says which
+    // day it is: "at 22:10" alone would read as tonight.
+    final latest = DateTime.fromMillisecondsSinceEpoch(d.latest.t * 1000);
+    final at = dayLabelOf(latest) == todayLabel()
+        ? formatClockOf(latest)
+        : formatDayTime(latest, l);
     return Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
       Text(displayFixed(d.latest.v, 1),
           style: (big ? F.n64 : F.n34).copyWith(color: p.ink)),
@@ -474,6 +501,27 @@ class StressMonitorBody extends StatelessWidget {
                 l?.stressMinutesLeftOut ?? 'min left out'),
           ),
         ]),
+      ],
+      // The night, on the same scale, when it was scored. Shown apart from
+      // the day because WHOOP reports it apart: how settled the sleep was.
+      if (data.sleep case final n?) ...[
+        const SizedBox(height: S.x3),
+        Surface(
+          child: Row(children: [
+            Icon(LucideIcons.moon, size: 16, color: p.on(C.indigo)),
+            const SizedBox(width: S.x3),
+            Expanded(
+              child: Text(l?.stressSleepLabel ?? 'Sleep stress',
+                  style: F.body.copyWith(color: p.ink)),
+            ),
+            Text(displayFixed(n.mean, 1), style: F.n24.copyWith(color: p.ink)),
+            const SizedBox(width: S.x2),
+            Text(stressBandWord(stressBand(n.mean), l),
+                style: F.cap.copyWith(color: p.on(stressBandColor(stressBand(n.mean))))),
+          ]),
+        ),
+      ],
+      if (d != null) ...[
         const SizedBox(height: S.x3),
         Surface(
           color: p.card2,

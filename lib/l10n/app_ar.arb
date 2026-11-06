@@ -3814,5 +3814,14 @@
     }
   },
   "stressBreatheTitle": "اتنفّس",
-  "stressBreatheSub": "كام دقيقة تنفّس بطيء، والأثر بيظهر بعدها."
+  "stressBreatheSub": "كام دقيقة تنفّس بطيء، والأثر بيظهر بعدها.",
+  "stressSleepLabel": "توتر النوم",
+  "homeStartSession": "ابدأ",
+  "homeStartBreathe": "اتنفّس",
+  "homeStartTennis": "تنس",
+  "homeStartSwimming": "سباحة",
+  "homeStartStrength": "قوة",
+  "homeStartRunning": "جري",
+  "homeStartWalking": "مشي",
+  "homeStartCycling": "عجلة"
 }

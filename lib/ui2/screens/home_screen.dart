@@ -74,6 +74,7 @@ import 'ai_briefing.dart' show AiBriefingScreen;
 import 'coach.dart';
 import 'detected_activities.dart';
 import 'day_timeline.dart' show DayTimelineScreen;
+import 'home_start.dart' show HomeStartLoader;
 import 'metric_detail.dart';
 import 'readiness_detail.dart';
 import 'sleep_detail.dart';
@@ -2458,6 +2459,13 @@ class _HomeScreenState extends State<HomeScreen> with RevisionReload {
             );
           }),
 
+        // ── start ──
+        // Four doors, no numbers: begin a session, the two activities this
+        // person does, breathe. Today only — a past day has nothing to start.
+        if (isToday) ...[
+          const SizedBox(height: S.x3),
+          const HomeStartLoader(),
+        ],
         if (d.week.isNotEmpty) ...[
           const SizedBox(height: S.x3),
           HomeWeekCard(d.week, selected: _day ?? d.dayId),

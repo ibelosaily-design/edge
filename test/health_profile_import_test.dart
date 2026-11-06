@@ -72,6 +72,13 @@ void main() {
       expect(t, contains(HealthDataType.WEIGHT));
       expect(t, contains(HealthDataType.HEIGHT));
     });
+
+    test('both ask for body fat, which both stores record', () {
+      for (final apple in [true, false]) {
+        expect(HealthProfileImporter(isApple: apple).types,
+            contains(HealthDataType.BODY_FAT_PERCENTAGE));
+      }
+    });
   });
 
   group('the read window', () {
@@ -196,6 +203,24 @@ void main() {
       ], now: now);
       expect(snap.found, ['weight', 'height']);
     });
+
+    test('body fat: the newest percentage, bounded, store wins on merge', () {
+      final snap = importer.snapshotFrom([
+        _point(HealthDataType.BODY_FAT_PERCENTAGE, 21.5, DateTime(2026, 1, 2)),
+        _point(HealthDataType.BODY_FAT_PERCENTAGE, 24.0, DateTime(2026, 1, 1)),
+      ], now: now);
+      expect(snap.bodyFatPct, 21.5);
+      expect(snap.found, ['body fat']);
+      // A 0–1 fraction that slipped past the plugin's conversion is refused.
+      final fraction = importer.snapshotFrom([
+        _point(HealthDataType.BODY_FAT_PERCENTAGE, 0.21, DateTime(2026, 1, 2)),
+      ], now: now);
+      expect(fraction.bodyFatPct, isNull);
+      expect(fraction.isEmpty, isTrue);
+      final out = mergeHealthProfile({'body_fat_pct': 30.0}, snap);
+      expect(out['body_fat_pct'], 21.5);
+      expect(healthProfileChanges({'body_fat_pct': 30.0}, snap), ['body fat']);
+    });
   });
 
   group('mergeHealthProfile', () {
@@ -289,7 +314,7 @@ void main() {
     final manifest = File(
       'android/app/src/main/AndroidManifest.xml',
     ).readAsStringSync();
-    for (final perm in ['READ_WEIGHT', 'READ_HEIGHT']) {
+    for (final perm in ['READ_WEIGHT', 'READ_HEIGHT', 'READ_BODY_FAT']) {
       expect(
         manifest,
         contains('android.permission.health.$perm'),
@@ -298,7 +323,7 @@ void main() {
     }
     // And no write counterparts: this app reads body metrics, it does not
     // write them back.
-    for (final perm in ['WRITE_WEIGHT', 'WRITE_HEIGHT']) {
+    for (final perm in ['WRITE_WEIGHT', 'WRITE_HEIGHT', 'WRITE_BODY_FAT']) {
       expect(manifest, isNot(contains('android.permission.health.$perm')));
     }
   });

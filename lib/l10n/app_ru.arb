@@ -8321,5 +8321,14 @@
     }
   },
   "stressBreatheTitle": "Дыхание",
-  "stressBreatheSub": "Несколько минут медленного дыхания, эффект показывается после."
+  "stressBreatheSub": "Несколько минут медленного дыхания, эффект показывается после.",
+  "stressSleepLabel": "Стресс во сне",
+  "homeStartSession": "Начать",
+  "homeStartBreathe": "Дыхание",
+  "homeStartTennis": "Теннис",
+  "homeStartSwimming": "Плавание",
+  "homeStartStrength": "Силовая",
+  "homeStartRunning": "Бег",
+  "homeStartWalking": "Ходьба",
+  "homeStartCycling": "Велосипед"
 }

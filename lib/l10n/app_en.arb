@@ -16922,5 +16922,41 @@
   "stressBreatheSub": "A few minutes of slow breathing, with the effect shown after.",
   "@stressBreatheSub": {
     "description": "Door subtitle."
+  },
+  "stressSleepLabel": "Sleep stress",
+  "@stressSleepLabel": {
+    "description": "Row label: the night on the same 0–3 scale."
+  },
+  "homeStartSession": "Start",
+  "@homeStartSession": {
+    "description": "Home start-row door: opens the activity picker."
+  },
+  "homeStartBreathe": "Breathe",
+  "@homeStartBreathe": {
+    "description": "Home start-row door: the breathing sitting."
+  },
+  "homeStartTennis": "Tennis",
+  "@homeStartTennis": {
+    "description": "Activity door label."
+  },
+  "homeStartSwimming": "Swimming",
+  "@homeStartSwimming": {
+    "description": "Activity door label."
+  },
+  "homeStartStrength": "Strength",
+  "@homeStartStrength": {
+    "description": "Activity door label (weight training)."
+  },
+  "homeStartRunning": "Running",
+  "@homeStartRunning": {
+    "description": "Activity door label."
+  },
+  "homeStartWalking": "Walking",
+  "@homeStartWalking": {
+    "description": "Activity door label."
+  },
+  "homeStartCycling": "Cycling",
+  "@homeStartCycling": {
+    "description": "Activity door label."
   }
 }

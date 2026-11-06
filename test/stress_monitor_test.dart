@@ -75,6 +75,8 @@ void main() {
     expect(stressBand(day.latest.v), 'high');
     expect(day.highMin, greaterThan(0));
     expect(d.dayStart, _day.millisecondsSinceEpoch ~/ 1000);
+    // No minutes inside 00:30–07:00 in this fake, so no night score.
+    expect(d.sleep, isNull);
   });
 
   test('too few nights: no day, the shortfall counted', () async {

@@ -291,6 +291,7 @@ const _notComponents = {
   // StrainFront, is in the gallery.
   'StrainFrontLoader',
   'StressMonitorLoader',
+  'HomeStartLoader',
   'StressMonitorScreen',
   'ZonesDetail',
   // Reads the day bundle AND the raw beat store to draw one night's Poincaré

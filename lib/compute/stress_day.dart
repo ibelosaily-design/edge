@@ -162,19 +162,66 @@ double? stressBaseline(List<double> nights) {
           need: kStressMinBaselineNights),
     );
   }
-  if (hrv.isEmpty || hr.isEmpty) return (null, const StressAbsent('no_still'));
+  final day = _score(
+    hrv: hrv,
+    hr: hr,
+    activity: activity,
+    keep: (t) => !exclude.any((s) => t >= s.$1 && t < s.$2),
+    gateActivity: true,
+    hrBase: hrBase,
+    hrvBase: hrvBase,
+    nights: math.min(rhrNights.length, rmssdNights.length),
+  );
+  return day == null ? (null, const StressAbsent('no_still')) : (day, null);
+}
+
+/// The same scale over the night [sleep] (onset, wake), no movement gate: the
+/// body is still, and what the line shows is how settled the night was.
+/// Null without baselines or without a minute inside the window.
+StressDay? stressSleep({
+  required List<TimePoint> hrv,
+  required List<TimePoint> hr,
+  required (int, int) sleep,
+  required List<double> rhrNights,
+  required List<double> rmssdNights,
+}) {
+  final hrBase = stressBaseline(rhrNights);
+  final hrvBase = stressBaseline(rmssdNights);
+  if (hrBase == null || hrvBase == null) return null;
+  return _score(
+    hrv: hrv,
+    hr: hr,
+    activity: const [],
+    keep: (t) => t >= sleep.$1 && t < sleep.$2,
+    gateActivity: false,
+    hrBase: hrBase,
+    hrvBase: hrvBase,
+    nights: math.min(rhrNights.length, rmssdNights.length),
+  );
+}
+
+StressDay? _score({
+  required List<TimePoint> hrv,
+  required List<TimePoint> hr,
+  required List<TimePoint> activity,
+  required bool Function(int t) keep,
+  required bool gateActivity,
+  required double hrBase,
+  required double hrvBase,
+  required int nights,
+}) {
+  if (hrv.isEmpty || hr.isEmpty) return null;
 
   final hrSorted = [...hr]..sort((x, y) => x.t.compareTo(y.t));
   final moveAt = <int, double>{
     for (final a in activity) a.t - a.t % kStressMaxPointSec: a.v,
   };
-  bool excluded(int t) => exclude.any((s) => t >= s.$1 && t < s.$2);
 
   final out = <StressPoint>[];
   var active = 0;
   var hi = 0;
   for (final p in [...hrv]..sort((x, y) => x.t.compareTo(y.t))) {
-    if (p.v <= 0 || excluded(p.t)) continue;
+    if (p.v <= 0 || !keep(p.t)) continue;
     // Nearest heart-rate minute.
     while (hi + 1 < hrSorted.length && hrSorted[hi + 1].t <= p.t) {
       hi++;
@@ -188,15 +235,16 @@ double? stressBaseline(List<double> nights) {
     }
     if (near == null || near.v <= 0) continue;
     final moving = moveAt[p.t - p.t % kStressMaxPointSec];
-    if ((moving != null && moving > kStressMoveFrac) ||
-        near.v >= kStressActiveHrRatio * hrBase) {
+    if (gateActivity &&
+        ((moving != null && moving > kStressMoveFrac) ||
+            near.v >= kStressActiveHrRatio * hrBase)) {
       active++;
       continue;
     }
     out.add(StressPoint(
         p.t, stressScore(hr: near.v, hrv: p.v, hrBase: hrBase, hrvBase: hrvBase)));
   }
-  if (out.isEmpty) return (null, const StressAbsent('no_still'));
+  if (out.isEmpty) return null;
 
   var low = 0.0, mid = 0.0, high = 0.0, sum = 0.0, wsum = 0.0;
   var peak = out.first;
@@ -218,21 +266,17 @@ double? stressBaseline(List<double> nights) {
     wsum += w;
     if (v > peak.v) peak = out[i];
   }
-  return (
-    StressDay(
-      points: out,
-      mean: sum / wsum,
-      peak: peak,
-      latest: out.last,
-      lowMin: low.round(),
-      midMin: mid.round(),
-      highMin: high.round(),
-      activeMin: active,
-      hrBase: hrBase,
-      hrvBase: hrvBase,
-      nights: math.min(rhrNights.length, rmssdNights.length)
-          .clamp(0, kStressBaselineNights),
-    ),
-    null,
+  return StressDay(
+    points: out,
+    mean: sum / wsum,
+    peak: peak,
+    latest: out.last,
+    lowMin: low.round(),
+    midMin: mid.round(),
+    highMin: high.round(),
+    activeMin: active,
+    hrBase: hrBase,
+    hrvBase: hrvBase,
+    nights: nights.clamp(0, kStressBaselineNights),
   );
 }
