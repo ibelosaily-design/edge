@@ -510,14 +510,20 @@ class StressMonitorBody extends StatelessWidget {
           child: Row(children: [
             Icon(LucideIcons.moon, size: 16, color: p.on(C.indigo)),
             const SizedBox(width: S.x3),
+            // The words give way; the number keeps its width.
             Expanded(
-              child: Text(l?.stressSleepLabel ?? 'Sleep stress',
-                  style: F.body.copyWith(color: p.ink)),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(l?.stressSleepLabel ?? 'Sleep stress',
+                        style: F.body.copyWith(color: p.ink)),
+                    Text(stressBandWord(stressBand(n.mean), l),
+                        style: F.cap.copyWith(
+                            color: p.on(stressBandColor(stressBand(n.mean))))),
+                  ]),
             ),
-            Text(displayFixed(n.mean, 1), style: F.n24.copyWith(color: p.ink)),
             const SizedBox(width: S.x2),
-            Text(stressBandWord(stressBand(n.mean), l),
-                style: F.cap.copyWith(color: p.on(stressBandColor(stressBand(n.mean))))),
+            Text(displayFixed(n.mean, 1), style: F.n24.copyWith(color: p.ink)),
           ]),
         ),
       ],
