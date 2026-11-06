@@ -44,6 +44,7 @@ import '../../data/nutrition_store.dart';
 import '../../ai/nightly_sweep.dart' show SweepFinding;
 import '../../compute/findings.dart';
 import '../../compute/healthspan.dart';
+import '../../compute/stress_day.dart';
 import '../../models/metric.dart';
 import '../../models/activity_suggestion.dart';
 import '../screens/detected_activities.dart';
@@ -854,6 +855,13 @@ Map<String, Widget> extraCases() => {
           HealthMonitorGrid(_healthMonitorSample(calibrated: true, spo2: 'band')),
       'health_monitor_imported_spo2': HealthMonitorGrid(
           _healthMonitorSample(calibrated: true, spo2: 'imported')),
+      // STRESS MONITOR — a scored day through the real arithmetic (a calm
+      // morning, a hot hour after lunch, a walk left out), the screen body,
+      // and the two honest absences.
+      'stress_monitor_card': StressMonitorCard(_stressSample()),
+      'stress_monitor_body': StressMonitorBody(_stressSample()),
+      'stress_monitor_need_nights': StressMonitorCard(_stressSample(nights: 2)),
+      'stress_monitor_no_still': StressMonitorCard(_stressSample(still: false)),
       // STRAIN FRONT — the Activity tab's top: the ring with its target,
       // steps and calories, today's sessions, time in zones.
       'strain_front': StrainFront(_strainFrontSample()),
@@ -2789,6 +2797,46 @@ StrainFrontData _strainFrontSample() {
       ),
     ],
   );
+}
+
+/// A synthetic day for the Stress Monitor: resting 58 bpm / 62 ms over
+/// [nights] nights; 07:00–16:00 of minutes whose heart rate and HRV drift
+/// calm → alert → high (13:00–14:00) → calm, with a 20-minute walk at 12:00
+/// that the movement buckets exclude.
+StressMonitorData _stressSample({int nights = 14, bool still = true}) {
+  final day = DateTime(2026, 11, 5);
+  final start = day.millisecondsSinceEpoch ~/ 1000;
+  final end = DateTime(2026, 11, 6).millisecondsSinceEpoch ~/ 1000;
+  final hrv = <TimePoint>[], hr = <TimePoint>[], act = <TimePoint>[];
+  if (still) {
+    for (var m = 7 * 60; m < 16 * 60; m += 2) {
+      final t = start + m * 60;
+      final h = m / 60.0;
+      // 0 calm … 1 hot, peaking at 13:30.
+      final heat = h < 9
+          ? 0.1
+          : h < 13
+              ? 0.3 + 0.1 * sin(h)
+              : h < 14
+                  ? 0.9
+                  : 0.25;
+      hrv.add((t: t, v: 62.0 * (1 - 0.7 * heat)));
+      hr.add((t: t, v: 58.0 * (1 + 0.55 * heat)));
+    }
+    for (var m = 12 * 60; m < 12 * 60 + 20; m += 5) {
+      act.add((t: start + m * 60, v: 0.8));
+    }
+  }
+  final (d, why) = stressDay(
+    hrv: hrv,
+    hr: hr,
+    activity: act,
+    exclude: const [],
+    rhrNights: List.filled(nights, 58.0),
+    rmssdNights: List.filled(nights, 62.0),
+  );
+  return StressMonitorData(
+      date: '2026-11-05', dayStart: start, dayEnd: end, day: d, absent: why);
 }
 
 HealthData _healthMonitorSample({required bool calibrated, String? spo2}) {

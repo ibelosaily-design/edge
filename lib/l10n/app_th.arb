@@ -16672,5 +16672,75 @@
   "sleepFrontNotMeasured": "ไม่ได้วัด",
   "healthMonitorReported": "รายงานโดยสายรัด ไม่ได้วัดที่นี่",
   "healthMonitorSpo2BandNote": "ค่าอ่านตอนกลางคืนของสายรัดเอง แสดงตามที่ส่งมา การถอดรหัสยังไม่ยืนยัน จึงใช้เป็นแนวทางเท่านั้น",
-  "healthMonitorSpo2ImportedNote": "ค่าของ WHOOP เองสำหรับคืนนี้ จากไฟล์ส่งออกของคุณ"
+  "healthMonitorSpo2ImportedNote": "ค่าของ WHOOP เองสำหรับคืนนี้ จากไฟล์ส่งออกของคุณ",
+  "stressMonitorTitle": "ตัวติดตามความเครียด",
+  "stressMonitorSub": "อัตราการเต้นของหัวใจและ HRV เทียบกับค่าปกติของคุณ",
+  "stressBandLow": "สงบ",
+  "stressBandMedium": "ตื่นตัว",
+  "stressBandHigh": "สูง",
+  "stressNeedNights": "ใส่สายรัดนอนอีก {n} คืนเพื่อให้รู้ค่าปกติของคุณ",
+  "@stressNeedNights": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "stressNoStill": "วันนี้ยังไม่มีนาทีที่นิ่งพอและมีทั้งอัตราการเต้นของหัวใจและ HRV",
+  "stressLatestAt": "เวลา {at}",
+  "@stressLatestAt": {
+    "placeholders": {
+      "at": {
+        "type": "String"
+      }
+    }
+  },
+  "stressDayAverage": "เฉลี่ยทั้งวัน {v}",
+  "@stressDayAverage": {
+    "placeholders": {
+      "v": {
+        "type": "String"
+      }
+    }
+  },
+  "stressHighMinutes": "{n} นาทีสูง",
+  "@stressHighMinutes": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "stressPeakAt": "สูงสุด {v} เวลา {at}",
+  "@stressPeakAt": {
+    "placeholders": {
+      "v": {
+        "type": "String"
+      },
+      "at": {
+        "type": "String"
+      }
+    }
+  },
+  "stressDayAverageLabel": "เฉลี่ยทั้งวัน",
+  "stressHighLabel": "เวลาที่สูง",
+  "stressMinutes": "นาที",
+  "stressActiveLabel": "กำลังเคลื่อนไหว",
+  "stressMinutesLeftOut": "นาทีที่ไม่นับ",
+  "stressMethod": "แต่ละนาทีที่นิ่งและตื่นอยู่จะให้คะแนนจากอัตราการเต้นของหัวใจที่สูงกว่าค่าพักปกติของคุณ ({hr} ครั้ง/นาที) และ HRV ที่ต่ำกว่าคืนล่าสุดของคุณ ({hrv} มิลลิวินาที) จาก {nights} คืน ไม่นับนาทีที่หลับ งีบ ออกกำลังกาย หรือเคลื่อนไหว 0–1 สงบ 1–2 ตื่นตัว 2–3 สูง",
+  "@stressMethod": {
+    "placeholders": {
+      "hr": {
+        "type": "int"
+      },
+      "hrv": {
+        "type": "int"
+      },
+      "nights": {
+        "type": "int"
+      }
+    }
+  },
+  "stressBreatheTitle": "หายใจ",
+  "stressBreatheSub": "หายใจช้าๆ สักสองสามนาที แล้วดูผลหลังจากนั้น"
 }

@@ -16807,5 +16807,120 @@
   "healthMonitorSpo2ImportedNote": "WHOOP's own value for this night, from your export.",
   "@healthMonitorSpo2ImportedNote": {
     "description": "Caveat under the SpO2 value when it is the imported WHOOP export value for the same night."
+  },
+  "stressMonitorTitle": "Stress Monitor",
+  "@stressMonitorTitle": {
+    "description": "Card and screen title."
+  },
+  "stressMonitorSub": "Heart rate and HRV against your usual",
+  "@stressMonitorSub": {
+    "description": "Screen subtitle."
+  },
+  "stressBandLow": "Calm",
+  "@stressBandLow": {
+    "description": "0–1 band word."
+  },
+  "stressBandMedium": "Alert",
+  "@stressBandMedium": {
+    "description": "1–2 band word."
+  },
+  "stressBandHigh": "High",
+  "@stressBandHigh": {
+    "description": "2–3 band word."
+  },
+  "stressNeedNights": "Wear the band to sleep {n} more nights to learn your usual.",
+  "@stressNeedNights": {
+    "description": "Absent state: nights still needed before a score exists.",
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "stressNoStill": "No still minute with both a heart-rate and an HRV reading yet today.",
+  "@stressNoStill": {
+    "description": "Absent state: the day has no scorable minute."
+  },
+  "stressLatestAt": "at {at}",
+  "@stressLatestAt": {
+    "description": "Clock time after the latest reading.",
+    "placeholders": {
+      "at": {
+        "type": "String"
+      }
+    }
+  },
+  "stressDayAverage": "Day average {v}",
+  "@stressDayAverage": {
+    "description": "Summary line; v is a decimal like 1.2.",
+    "placeholders": {
+      "v": {
+        "type": "String"
+      }
+    }
+  },
+  "stressHighMinutes": "{n} min high",
+  "@stressHighMinutes": {
+    "description": "Summary line: minutes in the high band.",
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "stressPeakAt": "Peak {v} at {at}",
+  "@stressPeakAt": {
+    "description": "Summary line.",
+    "placeholders": {
+      "v": {
+        "type": "String"
+      },
+      "at": {
+        "type": "String"
+      }
+    }
+  },
+  "stressDayAverageLabel": "Day average",
+  "@stressDayAverageLabel": {
+    "description": "Tile label."
+  },
+  "stressHighLabel": "Time high",
+  "@stressHighLabel": {
+    "description": "Tile label."
+  },
+  "stressMinutes": "min",
+  "@stressMinutes": {
+    "description": "Tile unit."
+  },
+  "stressActiveLabel": "Moving",
+  "@stressActiveLabel": {
+    "description": "Tile label."
+  },
+  "stressMinutesLeftOut": "min left out",
+  "@stressMinutesLeftOut": {
+    "description": "Tile unit: minutes excluded for movement."
+  },
+  "stressMethod": "Each still, awake minute is scored by how far your heart rate sits above your typical resting rate ({hr} bpm) and how far your HRV sits below your recent nights ({hrv} ms), over {nights} nights. Minutes asleep, napping, in a workout or moving are left out. 0–1 calm, 1–2 alert, 2–3 high.",
+  "@stressMethod": {
+    "description": "Method text on the screen.",
+    "placeholders": {
+      "hr": {
+        "type": "int"
+      },
+      "hrv": {
+        "type": "int"
+      },
+      "nights": {
+        "type": "int"
+      }
+    }
+  },
+  "stressBreatheTitle": "Breathe",
+  "@stressBreatheTitle": {
+    "description": "Door to the breathing exercise."
+  },
+  "stressBreatheSub": "A few minutes of slow breathing, with the effect shown after.",
+  "@stressBreatheSub": {
+    "description": "Door subtitle."
   }
 }

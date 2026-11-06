@@ -290,6 +290,8 @@ const _notComponents = {
   // Reads the repo on open and draws nothing without one; its pure half,
   // StrainFront, is in the gallery.
   'StrainFrontLoader',
+  'StressMonitorLoader',
+  'StressMonitorScreen',
   'ZonesDetail',
   // Reads the day bundle AND the raw beat store to draw one night's Poincaré
   // cloud — a gallery case would have to mock 27 000 beat intervals.

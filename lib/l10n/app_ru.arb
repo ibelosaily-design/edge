@@ -8251,5 +8251,75 @@
   "sleepFrontNotMeasured": "Не измерено",
   "healthMonitorReported": "Передано браслетом, не измерено здесь",
   "healthMonitorSpo2BandNote": "Собственное ночное значение браслета, как он его передал. Кодировка пока не подтверждена — ориентир, не точная цифра.",
-  "healthMonitorSpo2ImportedNote": "Собственное значение WHOOP за эту ночь, из вашего экспорта."
+  "healthMonitorSpo2ImportedNote": "Собственное значение WHOOP за эту ночь, из вашего экспорта.",
+  "stressMonitorTitle": "Монитор стресса",
+  "stressMonitorSub": "Пульс и ВСР относительно вашей нормы",
+  "stressBandLow": "Спокойно",
+  "stressBandMedium": "Собранно",
+  "stressBandHigh": "Высокий",
+  "stressNeedNights": "Поспите с браслетом ещё {n} ночей, чтобы он узнал вашу норму.",
+  "@stressNeedNights": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "stressNoStill": "Сегодня пока нет ни одной спокойной минуты с пульсом и ВСР вместе.",
+  "stressLatestAt": "в {at}",
+  "@stressLatestAt": {
+    "placeholders": {
+      "at": {
+        "type": "String"
+      }
+    }
+  },
+  "stressDayAverage": "Среднее за день {v}",
+  "@stressDayAverage": {
+    "placeholders": {
+      "v": {
+        "type": "String"
+      }
+    }
+  },
+  "stressHighMinutes": "{n} мин высокий",
+  "@stressHighMinutes": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "stressPeakAt": "Пик {v} в {at}",
+  "@stressPeakAt": {
+    "placeholders": {
+      "v": {
+        "type": "String"
+      },
+      "at": {
+        "type": "String"
+      }
+    }
+  },
+  "stressDayAverageLabel": "Среднее за день",
+  "stressHighLabel": "Время в высоком",
+  "stressMinutes": "мин",
+  "stressActiveLabel": "В движении",
+  "stressMinutesLeftOut": "мин исключено",
+  "stressMethod": "Каждая спокойная минута бодрствования оценивается по тому, насколько пульс выше вашего обычного пульса покоя ({hr} уд/мин) и насколько ВСР ниже ваших последних ночей ({hrv} мс), за {nights} ночей. Минуты сна, дневного сна, тренировки и движения исключены. 0–1 спокойно, 1–2 собранно, 2–3 высокий.",
+  "@stressMethod": {
+    "placeholders": {
+      "hr": {
+        "type": "int"
+      },
+      "hrv": {
+        "type": "int"
+      },
+      "nights": {
+        "type": "int"
+      }
+    }
+  },
+  "stressBreatheTitle": "Дыхание",
+  "stressBreatheSub": "Несколько минут медленного дыхания, эффект показывается после."
 }

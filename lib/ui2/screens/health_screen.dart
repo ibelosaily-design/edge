@@ -31,6 +31,7 @@ import 'ecg.dart' show EcgEntryCard, pairedIsMaverickOf;
 import 'findings_log.dart';
 import 'health_monitor.dart' show HealthMonitorGrid;
 import 'healthspan_screen.dart' show HealthspanDoor;
+import 'stress_monitor.dart' show StressMonitorLoader;
 import 'home_screen.dart';
 import 'investigate.dart';
 import 'metric_detail.dart';
@@ -909,6 +910,10 @@ class _HealthScreenState extends State<HealthScreen> with RevisionReload {
       // verdict, and the nights left until the ranges exist. The rows under
       // it keep their sparklines and doors.
       HealthMonitorGrid(d),
+      const SizedBox(height: S.x3),
+      // STRESS MONITOR — the day's 0–3 line from the stored minutes; loads
+      // itself and renders nothing until it has read the day.
+      const StressMonitorLoader(),
       const SizedBox(height: S.x4),
       if (rows.isNotEmpty)
         Surface(

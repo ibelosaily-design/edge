@@ -3744,5 +3744,75 @@
   "sleepFrontNotMeasured": "متقاسش",
   "healthMonitorReported": "كما يبلّغه السوار، مش محسوب هنا",
   "healthMonitorSpo2BandNote": "قراءة السوار نفسه بالليل، معروضة زي ما بعتها. ترميزها لسه مش مؤكد، فخدها كإشارة مش رقم نهائي.",
-  "healthMonitorSpo2ImportedNote": "رقم WHOOP نفسه لليلة دي، من ملف التصدير بتاعك."
+  "healthMonitorSpo2ImportedNote": "رقم WHOOP نفسه لليلة دي، من ملف التصدير بتاعك.",
+  "stressMonitorTitle": "مراقب التوتر",
+  "stressMonitorSub": "نبضك وتقلّب نبضك مقارنة بالمعتاد عندك",
+  "stressBandLow": "هادي",
+  "stressBandMedium": "متيقّظ",
+  "stressBandHigh": "عالي",
+  "stressNeedNights": "نام بالسوار {n} ليلة كمان لحد ما يتعلّم المعتاد عندك.",
+  "@stressNeedNights": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "stressNoStill": "لسه مافيش دقيقة هادية فيها نبض وتقلّب نبض مع بعض النهارده.",
+  "stressLatestAt": "الساعة {at}",
+  "@stressLatestAt": {
+    "placeholders": {
+      "at": {
+        "type": "String"
+      }
+    }
+  },
+  "stressDayAverage": "متوسط اليوم {v}",
+  "@stressDayAverage": {
+    "placeholders": {
+      "v": {
+        "type": "String"
+      }
+    }
+  },
+  "stressHighMinutes": "{n} دقيقة عالي",
+  "@stressHighMinutes": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "stressPeakAt": "الأعلى {v} الساعة {at}",
+  "@stressPeakAt": {
+    "placeholders": {
+      "v": {
+        "type": "String"
+      },
+      "at": {
+        "type": "String"
+      }
+    }
+  },
+  "stressDayAverageLabel": "متوسط اليوم",
+  "stressHighLabel": "وقت عالي",
+  "stressMinutes": "دقيقة",
+  "stressActiveLabel": "حركة",
+  "stressMinutesLeftOut": "دقيقة مستبعدة",
+  "stressMethod": "كل دقيقة هادية وأنت صاحي بتتقيّم بقدر ما نبضك أعلى من نبض الراحة المعتاد عندك ({hr} نبضة/د) وقدر ما تقلّب نبضك أقل من لياليك الأخيرة ({hrv} مللي ثانية)، على {nights} ليلة. دقايق النوم والقيلولة والتمرين والحركة مستبعدة. 0–1 هادي، 1–2 متيقّظ، 2–3 عالي.",
+  "@stressMethod": {
+    "placeholders": {
+      "hr": {
+        "type": "int"
+      },
+      "hrv": {
+        "type": "int"
+      },
+      "nights": {
+        "type": "int"
+      }
+    }
+  },
+  "stressBreatheTitle": "اتنفّس",
+  "stressBreatheSub": "كام دقيقة تنفّس بطيء، والأثر بيظهر بعدها."
 }
