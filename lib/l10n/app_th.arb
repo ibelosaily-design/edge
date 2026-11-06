@@ -16751,5 +16751,20 @@
   "homeStartStrength": "เวทเทรนนิ่ง",
   "homeStartRunning": "วิ่ง",
   "homeStartWalking": "เดิน",
-  "homeStartCycling": "ปั่นจักรยาน"
+  "homeStartCycling": "ปั่นจักรยาน",
+  "activityMuscularLoadTitle": "ภาระกล้ามเนื้อ",
+  "activityMuscularLoadSub": "ยกรวม {tonnage} ใน {sets} เซ็ต · ค่าประมาณ",
+  "@activityMuscularLoadSub": {
+    "placeholders": {
+      "tonnage": {
+        "type": "String"
+      },
+      "sets": {
+        "type": "int"
+      }
+    }
+  },
+  "activityMuscularLoadMethod": "น้ำหนัก × จำนวนครั้งในแต่ละเซ็ต ท่าบอดี้เวทนับประมาณสองในสามของน้ำหนักตัว RPE ที่บันทึกปรับขนาดเซ็ต แล้วรวมเทียบกับน้ำหนักตัวบนเส้นโค้งที่ราบลงเหมือนค่าความหนัก สเกลของเราไม่ใช่ของ WHOOP แสดงข้างค่าความหนัก ไม่ได้บวกเข้าไป",
+  "activityMuscularLoadNoWeightTitle": "ไม่มีภาระกล้ามเนื้อ",
+  "activityMuscularLoadNoWeightBody": "ค่านี้เทียบกับน้ำหนักตัวของคุณ แต่โปรไฟล์ยังไม่มีน้ำหนัก"
 }

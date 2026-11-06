@@ -16958,5 +16958,33 @@
   "homeStartCycling": "Cycling",
   "@homeStartCycling": {
     "description": "Activity door label."
+  },
+  "activityMuscularLoadTitle": "Muscular load",
+  "@activityMuscularLoadTitle": {
+    "description": "Strength summary section title (0–21 estimate from logged sets)."
+  },
+  "activityMuscularLoadSub": "{tonnage} moved over {sets} sets · estimate",
+  "@activityMuscularLoadSub": {
+    "description": "Under the muscular-load number; tonnage is already formatted with its unit.",
+    "placeholders": {
+      "tonnage": {
+        "type": "String"
+      },
+      "sets": {
+        "type": "int"
+      }
+    }
+  },
+  "activityMuscularLoadMethod": "Load × reps for every set, bodyweight moves counted at about two-thirds of your body, a logged RPE scaling the set, then the total relative to your body weight on a curve that flattens like strain's. Our scale, not WHOOP's; shown beside strain, not added to it.",
+  "@activityMuscularLoadMethod": {
+    "description": "Method text under the muscular-load number."
+  },
+  "activityMuscularLoadNoWeightTitle": "No muscular load",
+  "@activityMuscularLoadNoWeightTitle": {
+    "description": "Status card title when the profile has no body weight."
+  },
+  "activityMuscularLoadNoWeightBody": "It is read against your body weight, and the profile has none yet.",
+  "@activityMuscularLoadNoWeightBody": {
+    "description": "Status card body."
   }
 }

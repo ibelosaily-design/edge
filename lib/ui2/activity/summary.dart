@@ -19,6 +19,7 @@
 // screen has to be honest about it without falling apart.
 
 import '../../compute/match_sets.dart';
+import '../../compute/muscular_load.dart';
 import '../../l10n/display_text.dart';
 import '../../state/locale_controller.dart';
 import 'package:intl/intl.dart';
@@ -194,6 +195,23 @@ class StrengthLog {
   List<LoggedSet> forExercise(String key) =>
       [for (final s in sets) if (s.exerciseKey == key) s];
 }
+
+/// The session's muscular load from its logged sets and the profile's body
+/// weight, or null (no body weight, or no set that could be counted). The
+/// exercise's own bodyweight flag decides whether an unloaded set is a
+/// bodyweight set or a missing number.
+MuscularLoad? muscularLoadOf(StrengthLog log, double? bodyKg) => muscularLoad(
+      [
+        for (final s in log.sets)
+          LoadSet(
+            reps: s.reps,
+            loadKg: s.loadKg,
+            rpe: s.rpe,
+            bodyweight: exerciseByKey(s.exerciseKey)?.bodyweight ?? false,
+          ),
+      ],
+      bodyKg: bodyKg,
+    );
 
 /// Epley 1RM estimate — ALWAYS an estimate, never shown without saying so.
 /// Epley B. (1985), Poundage Chart. Boone's/Brzycki disagree by a few kg; at
@@ -1845,6 +1863,64 @@ class _ActivitySummaryState extends State<ActivitySummary> {
                       overflow: TextOverflow.ellipsis,
                       style: F.n17.copyWith(color: p.ink)),
                 ]),
+              ),
+            ),
+          // Muscular load — what the sets asked of the muscles, on strain's
+          // 0–21 scale, beside strain and never added into it
+          // (compute/muscular_load.dart). Needs a body weight; without one
+          // the card says what to enter rather than assuming a body.
+          if (muscularLoadOf(r.strength, weightKg) case final ml?)
+            Padding(
+              padding: const EdgeInsets.only(top: S.x4),
+              child: Section(
+                l?.activityMuscularLoadTitle ?? 'Muscular load',
+                Surface(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
+                          Text(displayFixed(ml.value, 1),
+                              style: F.n34.copyWith(color: p.ink)),
+                          const SizedBox(width: S.x2),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(bottom: S.x1),
+                              child: Text(
+                                l?.activityMuscularLoadSub(
+                                        _kg(c, ml.tonnageKg.roundToDouble()),
+                                        ml.sets) ??
+                                    '${_kg(c, ml.tonnageKg.roundToDouble())} '
+                                        'moved over ${ml.sets} sets · estimate',
+                                style: F.cap.copyWith(color: p.ink2),
+                              ),
+                            ),
+                          ),
+                        ]),
+                        const SizedBox(height: S.x2),
+                        Text(
+                          l?.activityMuscularLoadMethod ??
+                              'Load × reps for every set, bodyweight moves '
+                                  'counted at about two-thirds of your body, '
+                                  'a logged RPE scaling the set, then the '
+                                  'total relative to your body weight on a '
+                                  'curve that flattens like strain\'s. Our '
+                                  'scale, not WHOOP\'s; shown beside strain, '
+                                  'not added to it.',
+                          style: F.over.copyWith(color: p.ink3),
+                        ),
+                      ]),
+                ),
+              ),
+            )
+          else if (!r.strength.isEmpty && weightKg == null)
+            Padding(
+              padding: const EdgeInsets.only(top: S.x4),
+              child: StatusCard(
+                l?.activityMuscularLoadNoWeightTitle ?? 'No muscular load',
+                l?.activityMuscularLoadNoWeightBody ??
+                    'It is read against your body weight, and the profile has '
+                        'none yet.',
+                icon: LucideIcons.info,
               ),
             ),
           if (r.strength.hasUnloadedSets)
