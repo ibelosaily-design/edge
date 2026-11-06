@@ -3845,5 +3845,26 @@
   "routinePush": "دفع",
   "routinePull": "سحب",
   "routineLegs": "رجل",
-  "routineFullBody": "الجسم كله"
+  "routineFullBody": "الجسم كله",
+  "exerciseProgressSub": "مجموعاتك أنت، جلسة بجلسة",
+  "exerciseProgressNoneTitle": "مش متسجّل لسه",
+  "exerciseProgressNoneBody": "أول جلسة تسجّلها هنا بتبدأ السجل.",
+  "exerciseProgressLatest": "آخر مرة",
+  "exerciseProgressBest": "أعلى تقدير 1RM",
+  "exerciseProgressBodyweight": "وزن الجسم",
+  "exerciseProgressNoLoad": "مافيش وزن متسجّل",
+  "exerciseProgressChartTitle": "تقدير 1RM لكل جلسة",
+  "exerciseProgressEpley": "إبلي: الوزن × (1 + التكرارات ÷ 30) من أثقل مجموعة في كل جلسة. تقدير، مش رفعة عملتها فعلاً.",
+  "exerciseProgressSessions": "الجلسات",
+  "exerciseProgressSetsReps": "{sets} مجموعة · {reps} تكرار",
+  "@exerciseProgressSetsReps": {
+    "placeholders": {
+      "sets": {
+        "type": "int"
+      },
+      "reps": {
+        "type": "int"
+      }
+    }
+  }
 }

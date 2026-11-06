@@ -16773,5 +16773,26 @@
   "routinePush": "ท่าดัน",
   "routinePull": "ท่าดึง",
   "routineLegs": "ขา",
-  "routineFullBody": "ทั้งตัว"
+  "routineFullBody": "ทั้งตัว",
+  "exerciseProgressSub": "เซ็ตของคุณเอง ทีละเซสชัน",
+  "exerciseProgressNoneTitle": "ยังไม่ได้บันทึก",
+  "exerciseProgressNoneBody": "เซสชันแรกที่คุณบันทึกจะเริ่มประวัติ",
+  "exerciseProgressLatest": "ล่าสุด",
+  "exerciseProgressBest": "ค่าประมาณ 1RM สูงสุด",
+  "exerciseProgressBodyweight": "น้ำหนักตัว",
+  "exerciseProgressNoLoad": "ไม่มีน้ำหนักที่บันทึก",
+  "exerciseProgressChartTitle": "ค่าประมาณ 1RM ต่อเซสชัน",
+  "exerciseProgressEpley": "Epley: น้ำหนัก × (1 + จำนวนครั้ง ÷ 30) จากเซ็ตที่หนักสุดของแต่ละเซสชัน เป็นค่าประมาณ ไม่ใช่น้ำหนักที่ยกจริง",
+  "exerciseProgressSessions": "เซสชัน",
+  "exerciseProgressSetsReps": "{sets} เซ็ต · {reps} ครั้ง",
+  "@exerciseProgressSetsReps": {
+    "placeholders": {
+      "sets": {
+        "type": "int"
+      },
+      "reps": {
+        "type": "int"
+      }
+    }
+  }
 }

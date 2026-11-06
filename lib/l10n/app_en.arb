@@ -17014,5 +17014,57 @@
   "routineFullBody": "Full body",
   "@routineFullBody": {
     "description": "Preset routine name."
+  },
+  "exerciseProgressSub": "Your own sets, session by session",
+  "@exerciseProgressSub": {
+    "description": "Exercise progress screen subtitle."
+  },
+  "exerciseProgressNoneTitle": "Not logged yet",
+  "@exerciseProgressNoneTitle": {
+    "description": "Empty state title."
+  },
+  "exerciseProgressNoneBody": "The first session you log here starts the record.",
+  "@exerciseProgressNoneBody": {
+    "description": "Empty state body."
+  },
+  "exerciseProgressLatest": "Latest",
+  "@exerciseProgressLatest": {
+    "description": "Stat label: the latest session's top set."
+  },
+  "exerciseProgressBest": "Best 1RM estimate",
+  "@exerciseProgressBest": {
+    "description": "Stat label."
+  },
+  "exerciseProgressBodyweight": "Bodyweight",
+  "@exerciseProgressBodyweight": {
+    "description": "Latest value when the session had no loaded set."
+  },
+  "exerciseProgressNoLoad": "No load logged",
+  "@exerciseProgressNoLoad": {
+    "description": "Best value when no set ever carried a load."
+  },
+  "exerciseProgressChartTitle": "1RM estimate per session",
+  "@exerciseProgressChartTitle": {
+    "description": "Chart title."
+  },
+  "exerciseProgressEpley": "Epley: load × (1 + reps ÷ 30), from the heaviest set of each session. An estimate, never a lift you did.",
+  "@exerciseProgressEpley": {
+    "description": "Method line under the chart."
+  },
+  "exerciseProgressSessions": "Sessions",
+  "@exerciseProgressSessions": {
+    "description": "Section title."
+  },
+  "exerciseProgressSetsReps": "{sets} sets · {reps} reps",
+  "@exerciseProgressSetsReps": {
+    "description": "Session row subtitle.",
+    "placeholders": {
+      "sets": {
+        "type": "int"
+      },
+      "reps": {
+        "type": "int"
+      }
+    }
   }
 }

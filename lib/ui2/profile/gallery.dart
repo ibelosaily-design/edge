@@ -56,6 +56,7 @@ import '../activity/poster.dart'
 import '../activity/setup.dart' show ActivitySetup;
 import '../activity/day_strain.dart' show DayStrainData;
 import '../activity/strain_front.dart';
+import '../activity/exercise_progress.dart';
 import '../activity/tiles.dart';
 import '../activity/share.dart' show ShareSheet, shareOrigin;
 import '../activity/summary.dart';
@@ -867,6 +868,12 @@ Map<String, Widget> extraCases() => {
       'home_start': HomeStartRow(activities: homeStartActivities(const [])),
       'home_start_recent': HomeStartRow(
           activities: homeStartActivities(const ['weight_training', 'running'])),
+      // EXERCISE PROGRESS — one lift's sessions: a record with a trend, a
+      // single session (no line through one point), and nothing logged.
+      'exercise_progress': ExerciseProgressBody('bench_press', _liftSample(6)),
+      'exercise_progress_once': ExerciseProgressBody('bench_press', _liftSample(1)),
+      'exercise_progress_none':
+          const ExerciseProgressBody('bench_press', []),
       // STRAIN FRONT — the Activity tab's top: the ring with its target,
       // steps and calories, today's sessions, time in zones.
       'strain_front': StrainFront(_strainFrontSample()),
@@ -2859,6 +2866,21 @@ StressMonitorData _stressSample({int nights = 14, bool still = true}) {
         hrv: hrv, hr: hr, sleep: night, rhrNights: rhr, rmssdNights: rmssd),
   );
 }
+
+/// [n] bench sessions a week apart, the load creeping up 2.5 kg a time.
+List<ExerciseSession> _liftSample(int n) => exerciseSessionsFrom([
+      for (var i = 0; i < n; i++)
+        for (var set = 0; set < 3; set++)
+          {
+            'session_id': 'g$i',
+            'exercise_key': 'bench_press',
+            'seq': set,
+            'reps': set == 2 ? 6 : 8,
+            'load_kg': 60.0 + 2.5 * i,
+            'rpe': 7 + set,
+            'at_ts': DateTime(2026, 9, 1 + 7 * i, 18).millisecondsSinceEpoch ~/ 1000 + set * 180,
+          },
+    ]);
 
 HealthData _healthMonitorSample({required bool calibrated, String? spo2}) {
   Map<String, dynamic> block(double baseline, double spread, double z) => {

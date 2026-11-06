@@ -44,7 +44,8 @@ import '../charts.dart';
 import '../grammar.dart';
 import '../paint_activity.dart';
 import '../profile/profile.dart';
-import '../screens/home_screen.dart' show unitsOf;
+import '../screens/home_screen.dart' show go, unitsOf;
+import 'exercise_progress.dart' show ExerciseProgressScreen;
 import '../screens/log_workout.dart' show bumpInsights;
 import '../theme.dart';
 import 'catalogue.dart';
@@ -1818,7 +1819,9 @@ class _ActivitySummaryState extends State<ActivitySummary> {
           if (top != null)
             Section(
               l?.activitySummaryTopSet ?? 'Top set',
+              // A door into this lift's own record (exercise_progress.dart).
               Surface(
+                onTap: () => go(c, ExerciseProgressScreen(top.exerciseKey)),
                 child: Row(children: [
                   Container(
                     width: 40,

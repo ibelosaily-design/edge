@@ -8352,5 +8352,26 @@
   "routinePush": "Жимы",
   "routinePull": "Тяги",
   "routineLegs": "Ноги",
-  "routineFullBody": "Всё тело"
+  "routineFullBody": "Всё тело",
+  "exerciseProgressSub": "Ваши подходы, тренировка за тренировкой",
+  "exerciseProgressNoneTitle": "Ещё не записано",
+  "exerciseProgressNoneBody": "Первая записанная тренировка откроет историю.",
+  "exerciseProgressLatest": "Последняя",
+  "exerciseProgressBest": "Лучшая оценка 1ПМ",
+  "exerciseProgressBodyweight": "Собственный вес",
+  "exerciseProgressNoLoad": "Вес не записан",
+  "exerciseProgressChartTitle": "Оценка 1ПМ по тренировкам",
+  "exerciseProgressEpley": "Эпли: вес × (1 + повторы ÷ 30) по самому тяжёлому подходу тренировки. Оценка, а не выполненный подъём.",
+  "exerciseProgressSessions": "Тренировки",
+  "exerciseProgressSetsReps": "{sets} подходов · {reps} повторов",
+  "@exerciseProgressSetsReps": {
+    "placeholders": {
+      "sets": {
+        "type": "int"
+      },
+      "reps": {
+        "type": "int"
+      }
+    }
+  }
 }
