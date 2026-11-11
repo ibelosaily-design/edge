@@ -258,13 +258,18 @@ class CompareBody extends StatelessWidget {
               ),
             ),
             const SizedBox(height: S.x2),
-            Row(children: [
-              Text(days.isEmpty ? '' : days.first,
-                  style: F.over.copyWith(color: p.ink3)),
-              const Spacer(),
-              Text(days.isEmpty ? '' : days.last,
-                  style: F.over.copyWith(color: p.ink3)),
-            ]),
+            // The two ends of the axis; at large text they stack rather than
+            // squeeze.
+            Wrap(
+              alignment: WrapAlignment.spaceBetween,
+              spacing: S.x3,
+              children: [
+                Text(days.isEmpty ? '' : days.first,
+                    style: F.over.copyWith(color: p.ink3)),
+                Text(days.isEmpty ? '' : days.last,
+                    style: F.over.copyWith(color: p.ink3)),
+              ],
+            ),
             const SizedBox(height: S.x3),
             // The real range of each series — the scaling hides nothing.
             for (final k in chosen) _RangeLine(k, within[k]!, days),
@@ -437,15 +442,21 @@ class _RangeLine extends StatelessWidget {
               BoxDecoration(color: p.on(spec.color), shape: BoxShape.circle),
         ),
         const SizedBox(width: S.x2),
-        Expanded(
+        Flexible(
+          flex: 3,
           child: Text(uiText(c, spec.title),
               style: F.cap.copyWith(color: p.ink2)),
         ),
-        Text(
-          lo == null || hi == null
-              ? (l?.compareNoDays ?? 'no days')
-              : '${f(lo)}–${f(hi)} ${spec.unit} · $n',
-          style: F.cap.copyWith(color: p.ink3),
+        const SizedBox(width: S.x2),
+        Flexible(
+          flex: 2,
+          child: Text(
+            lo == null || hi == null
+                ? (l?.compareNoDays ?? 'no days')
+                : '${f(lo)}–${f(hi)} ${spec.unit} · $n',
+            style: F.cap.copyWith(color: p.ink3),
+            textAlign: TextAlign.end,
+          ),
         ),
       ]),
     );
@@ -464,14 +475,17 @@ class _PairRow extends StatelessWidget {
         ? p.ink3
         : p.on(x.positive ? C.green : C.orange);
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-      Row(children: [
+      Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Expanded(
           child: Text(correlationSentence(c, x, l),
               style: F.body.copyWith(color: p.ink)),
         ),
         const SizedBox(width: S.x3),
-        Text('r ${x.r >= 0 ? '+' : '−'}${x.r.abs().toStringAsFixed(2)}',
-            style: F.n17.copyWith(color: col)),
+        Flexible(
+          child: Text(
+              'r ${x.r >= 0 ? '+' : '−'}${x.r.abs().toStringAsFixed(2)}',
+              style: F.n17.copyWith(color: col)),
+        ),
       ]),
       const SizedBox(height: S.x1),
       Row(children: [
@@ -485,8 +499,10 @@ class _PairRow extends StatelessWidget {
           ),
         ),
         const SizedBox(width: S.x3),
-        Text(l?.compareDays(x.n) ?? '${x.n} days',
-            style: F.over.copyWith(color: p.ink3)),
+        Flexible(
+          child: Text(l?.compareDays(x.n) ?? '${x.n} days',
+              style: F.over.copyWith(color: p.ink3)),
+        ),
       ]),
     ]);
   }
@@ -669,9 +685,11 @@ class MovesWithList extends StatelessWidget {
                                 ),
                               ]),
                         ),
-                        Text(
-                            'r ${x.r >= 0 ? '+' : '−'}${x.r.abs().toStringAsFixed(2)}',
-                            style: F.n17.copyWith(color: p.ink2)),
+                        Flexible(
+                          child: Text(
+                              'r ${x.r >= 0 ? '+' : '−'}${x.r.abs().toStringAsFixed(2)}',
+                              style: F.n17.copyWith(color: p.ink2)),
+                        ),
                         const SizedBox(width: S.x2),
                         Icon(LucideIcons.chevronRight, size: 15, color: p.ink3),
                       ]),
