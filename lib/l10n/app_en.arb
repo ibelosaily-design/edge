@@ -17257,5 +17257,14 @@
   "stressTrendNone": "No scored day in the last 30 yet.",
   "@stressTrendNone": {
     "description": "Empty trend."
+  },
+  "welcomeFoodRowsWritten": "{n, plural, one{1 food log entry written} other{{n} food log entries written}}",
+  "@welcomeFoodRowsWritten": {
+    "description": "Import report line: eating occasions written from a food-log CSV.",
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
   }
 }

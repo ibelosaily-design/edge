@@ -24,6 +24,7 @@ import '../../import/backup_crypto.dart';
 import '../../import/import_container.dart';
 import '../../import/journal_csv_import.dart';
 import '../../import/lab_csv_import.dart';
+import '../../import/nutrition_csv_import.dart';
 import '../../l10n/app_localizations.dart';
 import '../../state/app_state.dart';
 import '../ui2.dart';
@@ -77,6 +78,10 @@ class ImportOutcome {
   /// re-importing corrects the (marker, date) rows it names.
   final int labRows;
 
+  /// Eating occasions written from another app's food-log CSV. Same-id rows
+  /// replace, so a re-import of one file never doubles a day.
+  final int foodRows;
+
   /// Journal or lab CSV lines that were REJECTED, never clamped — "line 12:
   /// note is 40122 characters". Shown up to a cap, because a validation the
   /// user cannot see is a silent drop.
@@ -103,6 +108,7 @@ class ImportOutcome {
     this.archiveBucketsRestored = 0,
     this.journalRows = 0,
     this.labRows = 0,
+    this.foodRows = 0,
     this.rejectedRows = const [],
     this.error,
     this.rollupError,
@@ -132,6 +138,7 @@ class ImportOutcome {
       skippedDays == 0 &&
       journalRows == 0 &&
       labRows == 0 &&
+      foodRows == 0 &&
       archiveBucketsRestored == 0;
 }
 
@@ -366,6 +373,7 @@ Future<ImportOutcome> runImport(
   var days = 0, workouts = 0, skipped = 0, late = 0, stranded = 0;
   var journalRows = 0;
   var labRows = 0;
+  var foodRows = 0;
   final corruptTables = <String>{};
   var archiveSkipped = 0, archiveRestored = 0;
   final rejected = <String>[];
@@ -505,7 +513,28 @@ Future<ImportOutcome> runImport(
       if (r.imported > 0) app.bumpInsights();
       rejected.addAll(r.rejected.map((x) => x.toString()));
       if (!sources.contains('Lab results CSV')) sources.add('Lab results CSV');
+      continue;
     } on LabCsvFormatException {
+      // Not lab results either — a food log from another app comes next.
+    } on FormatException {
+      if (await _isOwnCsvExport(p)) {
+        rejected.add(_notUtf8(p));
+      } else {
+        vendor.add(p);
+      }
+      continue;
+    }
+    // food-log: Cronometer / MacroFactor / MyFitnessPal / Lose It exports,
+    // by header (import/nutrition_csv_import.dart). Written as eating
+    // occasions; a daily-summary file is refused by name and falls through.
+    try {
+      final r = await importNutritionCsvFile(p);
+      foodRows += r.imported;
+      if (r.imported > 0) app.bumpInsights();
+      rejected.addAll(r.rejected.map((x) => x.toString()));
+      final name = 'Food log CSV (${r.source})';
+      if (!sources.contains(name)) sources.add(name);
+    } on NutritionCsvFormatException {
       vendor.add(p);
     } on FormatException {
       if (await _isOwnCsvExport(p)) {
@@ -538,6 +567,7 @@ Future<ImportOutcome> runImport(
           raw.isEmpty &&
           journalRows == 0 &&
           labRows == 0 &&
+          foodRows == 0 &&
           rejected.isEmpty) {
         rethrow;
       }
@@ -557,6 +587,7 @@ Future<ImportOutcome> runImport(
     archiveBucketsRestored: archiveRestored,
     journalRows: journalRows,
     labRows: labRows,
+    foodRows: foodRows,
     rejectedRows: rejected,
     rollupError: rollupError,
     // A file that would not decrypt is reported the same way a file that would
@@ -810,6 +841,10 @@ class ImportReport extends StatelessWidget {
         ? l?.welcomeLabResultsWritten(o.labRows) ??
             '${o.labRows} lab result${o.labRows == 1 ? '' : 's'} written'
         : null;
+    final food = o.foodRows > 0
+        ? l?.welcomeFoodRowsWritten(o.foodRows) ??
+            '${o.foodRows} food log entr${o.foodRows == 1 ? 'y' : 'ies'} written'
+        : null;
     final workouts = o.workouts > 0
         ? l?.welcomeWorkoutsCount(o.workouts) ??
             '${o.workouts} workout${o.workouts == 1 ? '' : 's'}'
@@ -825,11 +860,11 @@ class ImportReport extends StatelessWidget {
                 '${o.archiveBucketsRestored} day'
                 '${o.archiveBucketsRestored == 1 ? '' : 's'}'
         : null;
-    final headline = [days, journal, labs, workouts, skipped, archive].firstWhere((c) => c != null)!;
+    final headline = [days, journal, labs, food, workouts, skipped, archive].firstWhere((c) => c != null)!;
     // journal is NEVER folded in here — when it isn't the headline, days > 0
     // means it gets its own "N journal days REPLACED" line below instead (a
     // different fact: a journal CSV always replaces, on any day it names).
-    final also = [labs, workouts, skipped, archive].whereType<String>().where((c) => c != headline).toList();
+    final also = [labs, food, workouts, skipped, archive].whereType<String>().where((c) => c != headline).toList();
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       Surface(
         child: Row(children: [

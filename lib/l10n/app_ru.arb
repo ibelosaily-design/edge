@@ -8478,5 +8478,13 @@
       }
     }
   },
-  "stressTrendNone": "Пока ни одного оценённого дня за последние 30."
+  "stressTrendNone": "Пока ни одного оценённого дня за последние 30.",
+  "welcomeFoodRowsWritten": "{n, plural, one{записана {n} запись еды} few{записано {n} записи еды} other{записано {n} записей еды}}",
+  "@welcomeFoodRowsWritten": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  }
 }

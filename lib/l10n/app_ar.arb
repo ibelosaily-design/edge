@@ -3971,5 +3971,13 @@
       }
     }
   },
-  "stressTrendNone": "مافيش يوم اتحسب في آخر 30 لسه."
+  "stressTrendNone": "مافيش يوم اتحسب في آخر 30 لسه.",
+  "welcomeFoodRowsWritten": "{n, plural, one{اتكتب سطر أكل واحد} other{اتكتب {n} سطر أكل}}",
+  "@welcomeFoodRowsWritten": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  }
 }

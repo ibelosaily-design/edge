@@ -16899,5 +16899,13 @@
       }
     }
   },
-  "stressTrendNone": "ยังไม่มีวันที่ให้คะแนนใน 30 วันล่าสุด"
+  "stressTrendNone": "ยังไม่มีวันที่ให้คะแนนใน 30 วันล่าสุด",
+  "welcomeFoodRowsWritten": "{n, plural, one{บันทึกรายการอาหาร {n} รายการ} other{บันทึกรายการอาหาร {n} รายการ}}",
+  "@welcomeFoodRowsWritten": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  }
 }
