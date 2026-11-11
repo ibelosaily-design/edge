@@ -861,6 +861,8 @@ Map<String, Widget> extraCases() => {
       // and the two honest absences.
       'stress_monitor_card': StressMonitorCard(_stressSample()),
       'stress_monitor_body': StressMonitorBody(_stressSample()),
+      'stress_monitor_body_trend':
+          StressMonitorBody(_stressSample(), trend: _stressTrendSample()),
       'stress_monitor_need_nights': StressMonitorCard(_stressSample(nights: 2)),
       'stress_monitor_no_still': StressMonitorCard(_stressSample(still: false)),
       // HOME · START — the four doors under the rings; the defaults a first
@@ -2875,6 +2877,17 @@ StressMonitorData _stressSample({int nights = 14, bool still = true}) {
         hrv: hrv, hr: hr, sleep: night, rhrNights: rhr, rmssdNights: rmssd),
   );
 }
+
+/// Thirty days of stress means: a calm fortnight, a hot week, two gaps.
+List<StressTrendDay> _stressTrendSample() => [
+      for (var i = 0; i < 30; i++)
+        (
+          day: '2026-10-${(7 + i).toString().padLeft(2, '0')}',
+          mean: (i == 4 || i == 19)
+              ? null
+              : (i < 14 ? 0.6 + 0.3 * sin(i / 2) : (i < 21 ? 2.1 + 0.4 * cos(i) : 1.2)),
+        ),
+    ];
 
 /// 90 days of three series: sleep drives readiness up and resting HR down
 /// (with noise), so the pairs read as real links of different signs.

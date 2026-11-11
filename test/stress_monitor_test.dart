@@ -93,6 +93,26 @@ void main() {
     expect(d.absent!.note, 'no_still');
   });
 
+  test('the trend scores each day against the nights before it; calm time',
+      () async {
+    final t = await loadStressTrend(_Repo(), days: 30, now: _day);
+    expect(t.length, 30);
+    expect(t.last.day, _label);
+    expect(t.last.mean, isNotNull, reason: 'the fake serves only this day');
+    expect(t.where((d) => d.mean != null).length, 1,
+        reason: 'another label gets the bundle of a different date → absent');
+    final ct = calmTime(t)!;
+    expect(ct.scored, 1);
+    expect(calmTime(const []), isNull);
+    expect(
+        calmTime(const [
+          (day: 'a', mean: 0.5),
+          (day: 'b', mean: 2.5),
+          (day: 'c', mean: null),
+        ]),
+        (calm: 1, scored: 2));
+  });
+
   testWidgets('the card renders each state in words, never a dash',
       (tester) async {
     tester.view.physicalSize = const Size(390 * 3, 1400 * 3);
@@ -105,7 +125,11 @@ void main() {
             body: SingleChildScrollView(
                 child: Column(children: [
           StressMonitorCard(d),
-          StressMonitorBody(d),
+          StressMonitorBody(d, trend: const [
+            (day: '2026-11-03', mean: 0.7),
+            (day: '2026-11-04', mean: null),
+            (day: '2026-11-05', mean: 2.2),
+          ]),
         ]))),
       ));
       await tester.pumpAndSettle();
@@ -114,6 +138,7 @@ void main() {
 
     await pump(await StressMonitorData.load(_Repo(), date: _label));
     expect(find.textContaining('Day average'), findsWidgets);
+    expect(find.textContaining('Calm on 1 of 2'), findsOneWidget);
     expect(find.text('High'), findsWidgets);
     expect(find.textContaining('Breathe'), findsOneWidget);
 

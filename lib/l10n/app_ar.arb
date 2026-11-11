@@ -3941,5 +3941,35 @@
     }
   },
   "compareSameWay": "نفس الاتجاه",
-  "compareOppositeWay": "عكس بعض"
+  "compareOppositeWay": "عكس بعض",
+  "workoutBySportTitle": "حسب الرياضة، الشهر ده",
+  "workoutBySportSessions": "{n} جلسة",
+  "@workoutBySportSessions": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "workoutBySportStrain": "متوسط الجهد {v}",
+  "@workoutBySportStrain": {
+    "placeholders": {
+      "v": {
+        "type": "String"
+      }
+    }
+  },
+  "stressTrendTitle": "آخر 30 يوم",
+  "stressCalmTime": "هادي في {calm} من {scored} يوم اتحسبوا.",
+  "@stressCalmTime": {
+    "placeholders": {
+      "calm": {
+        "type": "int"
+      },
+      "scored": {
+        "type": "int"
+      }
+    }
+  },
+  "stressTrendNone": "مافيش يوم اتحسب في آخر 30 لسه."
 }

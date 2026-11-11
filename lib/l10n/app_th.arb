@@ -16869,5 +16869,35 @@
     }
   },
   "compareSameWay": "ทิศเดียวกัน",
-  "compareOppositeWay": "ทิศตรงข้าม"
+  "compareOppositeWay": "ทิศตรงข้าม",
+  "workoutBySportTitle": "แยกตามกีฬา เดือนนี้",
+  "workoutBySportSessions": "{n} ครั้ง",
+  "@workoutBySportSessions": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "workoutBySportStrain": "ค่าความหนักเฉลี่ย {v}",
+  "@workoutBySportStrain": {
+    "placeholders": {
+      "v": {
+        "type": "String"
+      }
+    }
+  },
+  "stressTrendTitle": "30 วันล่าสุด",
+  "stressCalmTime": "สงบ {calm} จาก {scored} วันที่ให้คะแนน",
+  "@stressCalmTime": {
+    "placeholders": {
+      "calm": {
+        "type": "int"
+      },
+      "scored": {
+        "type": "int"
+      }
+    }
+  },
+  "stressTrendNone": "ยังไม่มีวันที่ให้คะแนนใน 30 วันล่าสุด"
 }

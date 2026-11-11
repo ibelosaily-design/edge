@@ -17215,5 +17215,47 @@
   "compareOppositeWay": "opposite way",
   "@compareOppositeWay": {
     "description": "Row subtitle: negative link."
+  },
+  "workoutBySportTitle": "By sport, this month",
+  "@workoutBySportTitle": {
+    "description": "History section: sessions grouped by activity."
+  },
+  "workoutBySportSessions": "{n} sessions",
+  "@workoutBySportSessions": {
+    "description": "Per-sport count.",
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "workoutBySportStrain": "avg strain {v}",
+  "@workoutBySportStrain": {
+    "description": "Per-sport average strain over measured sessions.",
+    "placeholders": {
+      "v": {
+        "type": "String"
+      }
+    }
+  },
+  "stressTrendTitle": "Last 30 days",
+  "@stressTrendTitle": {
+    "description": "Stress screen: the month of day means."
+  },
+  "stressCalmTime": "Calm on {calm} of {scored} scored days.",
+  "@stressCalmTime": {
+    "description": "Share of scored days in the calm band.",
+    "placeholders": {
+      "calm": {
+        "type": "int"
+      },
+      "scored": {
+        "type": "int"
+      }
+    }
+  },
+  "stressTrendNone": "No scored day in the last 30 yet.",
+  "@stressTrendNone": {
+    "description": "Empty trend."
   }
 }

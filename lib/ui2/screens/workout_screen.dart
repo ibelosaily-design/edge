@@ -649,6 +649,14 @@ class _WorkoutScreenState extends State<WorkoutScreen> with RevisionReload {
           style: F.cap.copyWith(color: p.ink3, height: 1.5),
         ),
       ],
+      // BY SPORT — the month's sessions grouped by activity: how many, how
+      // long, the strain the band measured (an average, since strain does not
+      // add), and the calories it counted. Over two sports only — one sport
+      // is already the list below.
+      if (_sportBreakdown(d.workouts).length >= 2) ...[
+        const SizedBox(height: S.x3),
+        _SportBreakdown(_sportBreakdown(d.workouts)),
+      ],
       // The import card lives UP HERE, under the numbers it feeds — at the
       // bottom of a long list nobody reached it without scrolling past every
       // session it exists to fill.
@@ -981,6 +989,119 @@ class _WorkoutScreenState extends State<WorkoutScreen> with RevisionReload {
               textAlign: TextAlign.center),
         ]),
       );
+}
+
+/// One sport's month in numbers. [strainAvg] and [calories] cover only the
+/// sessions that carried them (the band's own); [measured] counts those.
+class SportTotals {
+  final Activity activity;
+  final int sessions;
+  final Duration time;
+  final int measured;
+  final double? strainAvg;
+  final int? calories;
+  const SportTotals({
+    required this.activity,
+    required this.sessions,
+    required this.time,
+    required this.measured,
+    this.strainAvg,
+    this.calories,
+  });
+}
+
+/// Group sessions by activity, most sessions first (ties by time).
+List<SportTotals> _sportBreakdown(List<_PastWorkout> workouts) {
+  final by = <String, List<_PastWorkout>>{};
+  for (final w in workouts) {
+    (by[w.activity.name] ??= []).add(w);
+  }
+  final out = <SportTotals>[];
+  for (final e in by.entries) {
+    var time = Duration.zero;
+    var measured = 0, kcal = 0;
+    var strainSum = 0.0;
+    var hasKcal = false;
+    for (final w in e.value) {
+      time += w.duration;
+      if (w.strain != null) {
+        measured++;
+        strainSum += w.strain!;
+      }
+      if (w.calories != null) {
+        hasKcal = true;
+        kcal += w.calories!;
+      }
+    }
+    out.add(SportTotals(
+      activity: e.value.first.activity,
+      sessions: e.value.length,
+      time: time,
+      measured: measured,
+      strainAvg: measured == 0 ? null : strainSum / measured,
+      calories: hasKcal ? kcal : null,
+    ));
+  }
+  out.sort((a, b) => b.sessions != a.sessions
+      ? b.sessions.compareTo(a.sessions)
+      : b.time.compareTo(a.time));
+  return out;
+}
+
+class _SportBreakdown extends StatelessWidget {
+  final List<SportTotals> rows;
+  const _SportBreakdown(this.rows);
+
+  @override
+  Widget build(BuildContext c) {
+    final p = P.of(c);
+    final l = AppLocalizations.of(c);
+    String hm(Duration d) {
+      final h = d.inHours, m = d.inMinutes % 60;
+      return h == 0 ? '$m min' : '${h}h ${m.toString().padLeft(2, '0')}';
+    }
+
+    return Section(
+      l?.workoutBySportTitle ?? 'By sport, this month',
+      Surface(
+        pad: const EdgeInsets.symmetric(horizontal: S.x4, vertical: S.x2),
+        child: Column(children: [
+          for (final (i, r) in rows.indexed) ...[
+            if (i > 0) Divider(color: p.line, height: 1),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: S.x3),
+              child: Row(children: [
+                Icon(r.activity.icon, size: 18, color: p.on(r.activity.color)),
+                const SizedBox(width: S.x3),
+                Expanded(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(uiText(c, r.activity.name),
+                            style: F.body.copyWith(color: p.ink)),
+                        Text(
+                          [
+                            l?.workoutBySportSessions(r.sessions) ??
+                                '${r.sessions} sessions',
+                            hm(r.time),
+                            if (r.strainAvg != null)
+                              l?.workoutBySportStrain(
+                                      displayFixed(r.strainAvg!, 1)) ??
+                                  'avg strain ${displayFixed(r.strainAvg!, 1)}',
+                            if (r.calories != null)
+                              '${r.calories} kcal',
+                          ].join(' · '),
+                          style: F.over.copyWith(color: p.ink3),
+                        ),
+                      ]),
+                ),
+              ]),
+            ),
+          ],
+        ]),
+      ),
+    );
+  }
 }
 
 class WorkoutQuickTile extends StatelessWidget {

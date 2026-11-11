@@ -8448,5 +8448,35 @@
     }
   },
   "compareSameWay": "в ту же сторону",
-  "compareOppositeWay": "в разные стороны"
+  "compareOppositeWay": "в разные стороны",
+  "workoutBySportTitle": "По видам спорта за месяц",
+  "workoutBySportSessions": "{n} трен.",
+  "@workoutBySportSessions": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "workoutBySportStrain": "ср. нагрузка {v}",
+  "@workoutBySportStrain": {
+    "placeholders": {
+      "v": {
+        "type": "String"
+      }
+    }
+  },
+  "stressTrendTitle": "Последние 30 дней",
+  "stressCalmTime": "Спокойно в {calm} из {scored} оценённых дней.",
+  "@stressCalmTime": {
+    "placeholders": {
+      "calm": {
+        "type": "int"
+      },
+      "scored": {
+        "type": "int"
+      }
+    }
+  },
+  "stressTrendNone": "Пока ни одного оценённого дня за последние 30."
 }

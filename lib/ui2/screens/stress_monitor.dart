@@ -22,7 +22,7 @@ import '../../l10n/decimal_text.dart';
 import '../../state/clock_format.dart' show formatClockOf;
 import '../ui2.dart';
 import 'calm_breathing.dart' show CalmBreathing;
-import 'home_screen.dart' show go, pointsOf, repoOf;
+import 'home_screen.dart' show ChartPoint, go, pointsOf, repoOf;
 import 'metric_detail.dart' show detailScaffold;
 import '../profile/devices.dart' show formatDayTime;
 
@@ -118,6 +118,86 @@ class StressMonitorData {
       sleep: sleep,
     );
   }
+}
+
+/// One day of the trend: the day's mean on the 0–3 scale, or null when the
+/// day had no scored minute.
+typedef StressTrendDay = ({String day, double? mean});
+
+/// The last [days] days' means, oldest first, each scored against the
+/// baselines as they stood before THAT day (so an early day in the window
+/// does not borrow nights it had not slept yet). Thirty bundle reads, so it
+/// is read by the screen on open, never by the card.
+Future<List<StressTrendDay>> loadStressTrend(LocalRepository repo,
+    {int days = 30, DateTime? now}) async {
+  final today = now ?? DateTime.now();
+  final rhrAll = pointsOf(await repo.getChart('resting_hr'));
+  final rmssdAll = pointsOf(await repo.getChart('hrv'));
+  List<double> before(List<ChartPoint> pts, String day) => [
+        for (final p in pts)
+          if (dayLabelOf(DateTime.fromMillisecondsSinceEpoch(p.t * 1000))
+                  .compareTo(day) <
+              0)
+            p.v,
+      ];
+  final out = <StressTrendDay>[];
+  for (var back = days - 1; back >= 0; back--) {
+    final d = DateTime(today.year, today.month, today.day - back);
+    final label = dayLabelOf(d);
+    double? mean;
+    try {
+      final heart = await repo.getDayHeart(label);
+      if (heart['date']?.toString() == label) {
+        List<TimePoint> line(Object? l) => [
+              for (final e in (l is List ? l : const []))
+                if (e is Map && e['t'] is num && e['v'] is num)
+                  (t: (e['t'] as num).round(), v: (e['v'] as num).toDouble()),
+            ];
+        final exclude = <(int, int)>[];
+        for (final s in (heart['sleep'] is List ? heart['sleep'] as List : const [])) {
+          if (s is Map && s['onset_ts'] is num && s['wake_ts'] is num) {
+            exclude.add(((s['onset_ts'] as num).toInt(), (s['wake_ts'] as num).toInt()));
+          }
+        }
+        for (final n in (heart['naps'] is List ? heart['naps'] as List : const [])) {
+          if (n is Map && n['start'] is num && n['end'] is num) {
+            exclude.add(((n['start'] as num).toInt(), (n['end'] as num).toInt()));
+          }
+        }
+        for (final w in (heart['sessions'] is List ? heart['sessions'] as List : const [])) {
+          if (w is Map && w['start_ts'] is num && w['duration_min'] is num) {
+            final st = (w['start_ts'] as num).toInt();
+            exclude.add((st, st + (w['duration_min'] as num).toInt() * 60));
+          }
+        }
+        final (day, _) = stressDay(
+          hrv: line(heart['hrv']),
+          hr: line(heart['hr']),
+          activity: line(heart['activity']),
+          exclude: exclude,
+          rhrNights: before(rhrAll, label),
+          rmssdNights: before(rmssdAll, label),
+        );
+        mean = day?.mean;
+      }
+    } catch (_) {
+      // An unreadable day is an absent day.
+    }
+    out.add((day: label, mean: mean));
+  }
+  return out;
+}
+
+/// Scored days in the calm band over scored days; null with none scored.
+({int calm, int scored})? calmTime(List<StressTrendDay> trend) {
+  var calm = 0, scored = 0;
+  for (final d in trend) {
+    final m = d.mean;
+    if (m == null) continue;
+    scored++;
+    if (stressBand(m) == 'low') calm++;
+  }
+  return scored == 0 ? null : (calm: calm, scored: scored);
 }
 
 /// Loads on open and on every data revision; renders the card.
@@ -416,6 +496,7 @@ class StressMonitorScreen extends StatefulWidget {
 class _StressMonitorScreenState extends State<StressMonitorScreen>
     with RevisionReload {
   StressMonitorData? _d;
+  List<StressTrendDay>? _trend;
 
   @override
   bool get revisionReloads => true;
@@ -423,20 +504,23 @@ class _StressMonitorScreenState extends State<StressMonitorScreen>
   @override
   void reload() => _load();
 
-  @override
-  void initState() {
-    super.initState();
-    _d = widget.data;
-    if (_d == null) WidgetsBinding.instance.addPostFrameCallback((_) => _load());
-  }
-
   Future<void> _load() async {
     final repo = repoOf(context);
     if (repo == null) return;
     try {
       final d = await StressMonitorData.load(repo);
       if (mounted) setState(() => _d = d);
+      final t = await loadStressTrend(repo);
+      if (mounted) setState(() => _trend = t);
     } catch (_) {}
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _d = widget.data;
+    // A preloaded card still reads its trend from the repository.
+    WidgetsBinding.instance.addPostFrameCallback((_) => _load());
   }
 
   @override
@@ -446,7 +530,7 @@ class _StressMonitorScreenState extends State<StressMonitorScreen>
     return detailScaffold(
       c,
       l?.stressMonitorTitle ?? 'Stress Monitor',
-      [if (d != null) StressMonitorBody(d)],
+      [if (d != null) StressMonitorBody(d, trend: _trend)],
       sub: l?.stressMonitorSub ?? 'Heart rate and HRV against your usual',
     );
   }
@@ -455,7 +539,10 @@ class _StressMonitorScreenState extends State<StressMonitorScreen>
 /// The screen's content, a plain widget so the gallery can sweep it.
 class StressMonitorBody extends StatelessWidget {
   final StressMonitorData data;
-  const StressMonitorBody(this.data, {super.key});
+
+  /// The last 30 days' means; null while loading or in a preview.
+  final List<StressTrendDay>? trend;
+  const StressMonitorBody(this.data, {super.key, this.trend});
 
   @override
   Widget build(BuildContext c) {
@@ -543,6 +630,34 @@ class StressMonitorBody extends StatelessWidget {
           ),
         ),
       ],
+      // THE MONTH — each day's mean as a bar on the same bands, and how many
+      // scored days sat in the calm band. Absent days are gaps, not zeros.
+      if (trend case final t?) ...[
+        const SizedBox(height: S.x3),
+        Section(
+          l?.stressTrendTitle ?? 'Last 30 days',
+          Surface(
+            child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+              SizedBox(
+                height: 96,
+                child: CustomPaint(painter: StressTrendPainter(t, p)),
+              ),
+              const SizedBox(height: S.x2),
+              if (calmTime(t) case final ct?)
+                Text(
+                  l?.stressCalmTime(ct.calm, ct.scored) ??
+                      'Calm on ${ct.calm} of ${ct.scored} scored days.',
+                  style: F.cap.copyWith(color: p.ink2),
+                )
+              else
+                Text(
+                  l?.stressTrendNone ?? 'No scored day in the last 30 yet.',
+                  style: F.cap.copyWith(color: p.ink2),
+                ),
+            ]),
+          ),
+        ),
+      ],
       const SizedBox(height: S.x3),
       Surface(
         onTap: () => go(c, const CalmBreathing()),
@@ -565,6 +680,42 @@ class StressMonitorBody extends StatelessWidget {
       ),
     ]);
   }
+}
+
+/// Thirty bars on the 0–3 bands; a day without a score draws nothing.
+class StressTrendPainter extends CustomPainter {
+  final List<StressTrendDay> trend;
+  final P p;
+  const StressTrendPainter(this.trend, this.p);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    double y(double v) => size.height - (v / 3).clamp(0.0, 1.0) * size.height;
+    for (final (lo, hi, col) in [
+      (0.0, kStressLowHi, C.green),
+      (kStressLowHi, kStressMidHi, C.orange),
+      (kStressMidHi, 3.0, C.red),
+    ]) {
+      canvas.drawRect(Rect.fromLTRB(0, y(hi), size.width, y(lo)),
+          Paint()..color = p.wash(col, strength: .5));
+    }
+    if (trend.isEmpty) return;
+    final slot = size.width / trend.length;
+    final w = slot * 0.6;
+    for (var i = 0; i < trend.length; i++) {
+      final m = trend[i].mean;
+      if (m == null) continue;
+      final x = i * slot + (slot - w) / 2;
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(
+            Rect.fromLTRB(x, y(m), x + w, size.height), const Radius.circular(2)),
+        Paint()..color = p.on(stressBandColor(stressBand(m))),
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(StressTrendPainter o) => o.trend != trend;
 }
 
 class _Legend extends StatelessWidget {
