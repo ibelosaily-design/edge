@@ -371,7 +371,8 @@ class _Chip extends StatelessWidget {
           decoration: BoxDecoration(color: p.on(color), shape: BoxShape.circle),
         ),
         const SizedBox(width: S.x2),
-        Text(label, style: F.cap.copyWith(color: p.ink)),
+        // Bounded by the Wrap's width: a long title wraps inside the chip.
+        Flexible(child: Text(label, style: F.cap.copyWith(color: p.ink))),
         if (onRemove != null) ...[
           const SizedBox(width: S.x2),
           Icon(LucideIcons.x, size: 14, color: p.ink3),
