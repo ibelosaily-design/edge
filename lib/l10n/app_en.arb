@@ -17066,5 +17066,154 @@
         "type": "int"
       }
     }
+  },
+  "compareTitle": "Compare",
+  "@compareTitle": {
+    "description": "Compare screen title and Health section title."
+  },
+  "compareDoorTitle": "Compare signals",
+  "@compareDoorTitle": {
+    "description": "Door row title on Health."
+  },
+  "compareSub": "Two to four of your own signals, side by side",
+  "@compareSub": {
+    "description": "Compare subtitle / door subtitle."
+  },
+  "compareStrong": "strong",
+  "@compareStrong": {
+    "description": "Link strength word."
+  },
+  "compareModerate": "moderate",
+  "@compareModerate": {
+    "description": "Link strength word."
+  },
+  "compareWeak": "weak",
+  "@compareWeak": {
+    "description": "Link strength word."
+  },
+  "compareRiseTogether": "When {a} rises, {b} tends to rise too — a {strength} link.",
+  "@compareRiseTogether": {
+    "description": "Positive link sentence.",
+    "placeholders": {
+      "a": {
+        "type": "String"
+      },
+      "b": {
+        "type": "String"
+      },
+      "strength": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRiseFall": "When {a} rises, {b} tends to fall — a {strength} link.",
+  "@compareRiseFall": {
+    "description": "Negative link sentence.",
+    "placeholders": {
+      "a": {
+        "type": "String"
+      },
+      "b": {
+        "type": "String"
+      },
+      "strength": {
+        "type": "String"
+      }
+    }
+  },
+  "compareWindow7": "7d",
+  "@compareWindow7": {
+    "description": "Window tab."
+  },
+  "compareWindow30": "30d",
+  "@compareWindow30": {
+    "description": "Window tab."
+  },
+  "compareWindow90": "90d",
+  "@compareWindow90": {
+    "description": "Window tab."
+  },
+  "compareWindow182": "6m",
+  "@compareWindow182": {
+    "description": "Window tab."
+  },
+  "compareWindowYear": "1y",
+  "@compareWindowYear": {
+    "description": "Window tab."
+  },
+  "compareWindowAll": "All",
+  "@compareWindowAll": {
+    "description": "Window tab."
+  },
+  "compareNeedTwoTitle": "Pick two signals",
+  "@compareNeedTwoTitle": {
+    "description": "Status card title with fewer than two chosen."
+  },
+  "compareNeedTwoBody": "Add a second signal above to see how the two move together.",
+  "@compareNeedTwoBody": {
+    "description": "Status card body."
+  },
+  "comparePairsSection": "How they move together",
+  "@comparePairsSection": {
+    "description": "Section title."
+  },
+  "compareTooFewDays": "Fewer than {n} days with both signals in this window. Widen it, or wear the band longer.",
+  "@compareTooFewDays": {
+    "description": "No pair clears the minimum days.",
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "compareCaveat": "A link in your own history, not a cause: it says the two moved together on these days, nothing about why.",
+  "@compareCaveat": {
+    "description": "Caveat under the pairs."
+  },
+  "compareAddSignal": "Add a signal",
+  "@compareAddSignal": {
+    "description": "Sheet title / add chip label."
+  },
+  "compareAdd": "Add",
+  "@compareAdd": {
+    "description": "Add chip."
+  },
+  "compareNoDays": "no days",
+  "@compareNoDays": {
+    "description": "Legend when a series has no day in the window."
+  },
+  "compareDays": "{n} days",
+  "@compareDays": {
+    "description": "Paired-day count beside r.",
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "compareMovesWithTitle": "Moves with",
+  "@compareMovesWithTitle": {
+    "description": "Metric screen door/section: which other signals track this one."
+  },
+  "compareMovesWithSub": "Which of your other signals track this one",
+  "@compareMovesWithSub": {
+    "description": "Door subtitle."
+  },
+  "compareNoLinks": "No clear link yet in this window — a link needs {n} shared days and a steady pattern.",
+  "@compareNoLinks": {
+    "description": "Empty moves-with list.",
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "compareSameWay": "same way",
+  "@compareSameWay": {
+    "description": "Row subtitle: positive link."
+  },
+  "compareOppositeWay": "opposite way",
+  "@compareOppositeWay": {
+    "description": "Row subtitle: negative link."
   }
 }

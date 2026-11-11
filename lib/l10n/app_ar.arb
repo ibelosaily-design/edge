@@ -3866,5 +3866,80 @@
         "type": "int"
       }
     }
-  }
+  },
+  "compareTitle": "مقارنة",
+  "compareDoorTitle": "قارن الإشارات",
+  "compareSub": "من اتنين لأربع إشارات بتاعتك جنب بعض",
+  "compareStrong": "قوي",
+  "compareModerate": "متوسط",
+  "compareWeak": "ضعيف",
+  "compareRiseTogether": "لما {a} يزيد، {b} غالباً بيزيد معاه — ارتباط {strength}.",
+  "@compareRiseTogether": {
+    "placeholders": {
+      "a": {
+        "type": "String"
+      },
+      "b": {
+        "type": "String"
+      },
+      "strength": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRiseFall": "لما {a} يزيد، {b} غالباً بيقل — ارتباط {strength}.",
+  "@compareRiseFall": {
+    "placeholders": {
+      "a": {
+        "type": "String"
+      },
+      "b": {
+        "type": "String"
+      },
+      "strength": {
+        "type": "String"
+      }
+    }
+  },
+  "compareWindow7": "7 أيام",
+  "compareWindow30": "30 يوم",
+  "compareWindow90": "90 يوم",
+  "compareWindow182": "6 شهور",
+  "compareWindowYear": "سنة",
+  "compareWindowAll": "الكل",
+  "compareNeedTwoTitle": "اختار إشارتين",
+  "compareNeedTwoBody": "ضيف إشارة تانية فوق عشان تشوف الاتنين بيتحرّكوا إزاي مع بعض.",
+  "comparePairsSection": "بيتحرّكوا إزاي مع بعض",
+  "compareTooFewDays": "أقل من {n} يوم فيهم الإشارتين في النطاق ده. وسّعه، أو البس السوار أطول.",
+  "@compareTooFewDays": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "compareCaveat": "ارتباط في تاريخك أنت، مش سبب: بيقول إن الاتنين اتحرّكوا مع بعض في الأيام دي، ومش بيقول ليه.",
+  "compareAddSignal": "ضيف إشارة",
+  "compareAdd": "ضيف",
+  "compareNoDays": "مافيش أيام",
+  "compareDays": "{n} يوم",
+  "@compareDays": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "compareMovesWithTitle": "بيتحرّك مع",
+  "compareMovesWithSub": "إشاراتك التانية اللي بتمشي مع دي",
+  "compareNoLinks": "لسه مافيش ارتباط واضح في النطاق ده — الارتباط محتاج {n} يوم مشتركين ونمط ثابت.",
+  "@compareNoLinks": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "compareSameWay": "نفس الاتجاه",
+  "compareOppositeWay": "عكس بعض"
 }

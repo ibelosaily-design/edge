@@ -293,6 +293,8 @@ const _notComponents = {
   'StressMonitorLoader',
   'HomeStartLoader',
   'ExerciseProgressScreen',
+  'CompareScreen',
+  'MovesWithLoader',
   'StressMonitorScreen',
   'ZonesDetail',
   // Reads the day bundle AND the raw beat store to draw one night's Poincaré

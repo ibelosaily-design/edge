@@ -8373,5 +8373,80 @@
         "type": "int"
       }
     }
-  }
+  },
+  "compareTitle": "Сравнение",
+  "compareDoorTitle": "Сравнить сигналы",
+  "compareSub": "От двух до четырёх ваших сигналов рядом",
+  "compareStrong": "сильная",
+  "compareModerate": "умеренная",
+  "compareWeak": "слабая",
+  "compareRiseTogether": "Когда {a} растёт, {b} обычно тоже растёт — {strength} связь.",
+  "@compareRiseTogether": {
+    "placeholders": {
+      "a": {
+        "type": "String"
+      },
+      "b": {
+        "type": "String"
+      },
+      "strength": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRiseFall": "Когда {a} растёт, {b} обычно падает — {strength} связь.",
+  "@compareRiseFall": {
+    "placeholders": {
+      "a": {
+        "type": "String"
+      },
+      "b": {
+        "type": "String"
+      },
+      "strength": {
+        "type": "String"
+      }
+    }
+  },
+  "compareWindow7": "7 дн",
+  "compareWindow30": "30 дн",
+  "compareWindow90": "90 дн",
+  "compareWindow182": "6 мес",
+  "compareWindowYear": "1 год",
+  "compareWindowAll": "Всё",
+  "compareNeedTwoTitle": "Выберите два сигнала",
+  "compareNeedTwoBody": "Добавьте второй сигнал выше, чтобы увидеть, как они движутся вместе.",
+  "comparePairsSection": "Как они движутся вместе",
+  "compareTooFewDays": "Меньше {n} дней с обоими сигналами в этом окне. Расширьте его или носите браслет дольше.",
+  "@compareTooFewDays": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "compareCaveat": "Связь в вашей собственной истории, не причина: она говорит, что эти два двигались вместе в эти дни, и ничего о том, почему.",
+  "compareAddSignal": "Добавить сигнал",
+  "compareAdd": "Добавить",
+  "compareNoDays": "нет дней",
+  "compareDays": "{n} дн",
+  "@compareDays": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "compareMovesWithTitle": "Движется вместе с",
+  "compareMovesWithSub": "Какие из ваших сигналов следуют за этим",
+  "compareNoLinks": "Пока нет явной связи в этом окне — для неё нужны {n} общих дней и устойчивая закономерность.",
+  "@compareNoLinks": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "compareSameWay": "в ту же сторону",
+  "compareOppositeWay": "в разные стороны"
 }

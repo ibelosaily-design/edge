@@ -23,6 +23,7 @@ import '../../l10n/app_localizations.dart';
 import '../../state/app_state.dart';
 import '../ui2.dart';
 import 'advanced.dart';
+import 'compare_screen.dart' show MovesWithLoader, kCompareKeys;
 import 'day_steps.dart';
 import 'home_screen.dart';
 import 'investigate.dart';
@@ -708,6 +709,8 @@ class MetricDetail extends StatefulWidget {
 }
 
 class _MetricDetailState extends State<MetricDetail> {
+  bool get _compareable => kCompareKeys.contains(widget.metricKey);
+
   // Today is its own window, not the left edge of the 7-day one. Asking "what
   // is it right now" and "what has it been lately" are different questions,
   // and a range list that starts at 7 days made the first one unanswerable.
@@ -1001,6 +1004,14 @@ class _MetricDetailState extends State<MetricDetail> {
         if (d.movers.isNotEmpty)
           Section(l?.metricDetailWhatMovesItSection ?? 'What moves it',
               _movers(c, d.movers)),
+        // Which OTHER signals track this one (compare_screen.dart): a door,
+        // because answering it reads the whole catalogue; opened on tap, not
+        // on this screen's load. Live path only — fixtures have no repo.
+        if (widget.data == null && _compareable) ...[
+          const SizedBox(height: S.x3),
+          MovesWithLoader(widget.metricKey,
+              windowDays: win == 1 ? 90 : win),
+        ],
         const SizedBox(height: S.x5),
         // Steps are the one metric assembled from SPANS of the day, each
         // counted by a different sensor. That breakdown is a day's worth of

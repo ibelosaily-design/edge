@@ -16794,5 +16794,80 @@
         "type": "int"
       }
     }
-  }
+  },
+  "compareTitle": "เปรียบเทียบ",
+  "compareDoorTitle": "เปรียบเทียบสัญญาณ",
+  "compareSub": "สัญญาณของคุณสองถึงสี่อย่างเคียงข้างกัน",
+  "compareStrong": "แน่น",
+  "compareModerate": "ปานกลาง",
+  "compareWeak": "อ่อน",
+  "compareRiseTogether": "เมื่อ {a} เพิ่มขึ้น {b} มักเพิ่มตาม — ความสัมพันธ์{strength}",
+  "@compareRiseTogether": {
+    "placeholders": {
+      "a": {
+        "type": "String"
+      },
+      "b": {
+        "type": "String"
+      },
+      "strength": {
+        "type": "String"
+      }
+    }
+  },
+  "compareRiseFall": "เมื่อ {a} เพิ่มขึ้น {b} มักลดลง — ความสัมพันธ์{strength}",
+  "@compareRiseFall": {
+    "placeholders": {
+      "a": {
+        "type": "String"
+      },
+      "b": {
+        "type": "String"
+      },
+      "strength": {
+        "type": "String"
+      }
+    }
+  },
+  "compareWindow7": "7 วัน",
+  "compareWindow30": "30 วัน",
+  "compareWindow90": "90 วัน",
+  "compareWindow182": "6 เดือน",
+  "compareWindowYear": "1 ปี",
+  "compareWindowAll": "ทั้งหมด",
+  "compareNeedTwoTitle": "เลือกสองสัญญาณ",
+  "compareNeedTwoBody": "เพิ่มสัญญาณที่สองด้านบนเพื่อดูว่าทั้งสองเคลื่อนไปด้วยกันอย่างไร",
+  "comparePairsSection": "เคลื่อนไปด้วยกันอย่างไร",
+  "compareTooFewDays": "น้อยกว่า {n} วันที่มีทั้งสองสัญญาณในช่วงนี้ ขยายช่วงหรือใส่สายรัดให้นานขึ้น",
+  "@compareTooFewDays": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "compareCaveat": "เป็นความสัมพันธ์ในประวัติของคุณเอง ไม่ใช่สาเหตุ: บอกว่าทั้งสองเคลื่อนไปด้วยกันในวันเหล่านี้ ไม่ได้บอกว่าทำไม",
+  "compareAddSignal": "เพิ่มสัญญาณ",
+  "compareAdd": "เพิ่ม",
+  "compareNoDays": "ไม่มีวัน",
+  "compareDays": "{n} วัน",
+  "@compareDays": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "compareMovesWithTitle": "เคลื่อนไปพร้อมกับ",
+  "compareMovesWithSub": "สัญญาณอื่นของคุณที่เคลื่อนตามสัญญาณนี้",
+  "compareNoLinks": "ยังไม่มีความสัมพันธ์ชัดเจนในช่วงนี้ — ต้องมี {n} วันร่วมกันและรูปแบบที่คงที่",
+  "@compareNoLinks": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "compareSameWay": "ทิศเดียวกัน",
+  "compareOppositeWay": "ทิศตรงข้าม"
 }

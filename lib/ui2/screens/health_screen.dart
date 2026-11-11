@@ -31,6 +31,7 @@ import 'ecg.dart' show EcgEntryCard, pairedIsMaverickOf;
 import 'findings_log.dart';
 import 'health_monitor.dart' show HealthMonitorGrid;
 import 'healthspan_screen.dart' show HealthspanDoor;
+import 'compare_screen.dart' show CompareScreen;
 import 'stress_monitor.dart' show StressMonitorLoader;
 import 'home_screen.dart';
 import 'investigate.dart';
@@ -967,6 +968,20 @@ class _HealthScreenState extends State<HealthScreen> with RevisionReload {
         Section(
           l?.healthspanTitle ?? 'Healthspan',
           const HealthspanDoor(),
+        ),
+
+      // COMPARE — two to four of your own signals on one axis, with how each
+      // pair moves together (compare_screen.dart). A door; the screen reads
+      // the catalogue itself.
+      if (widget.data == null)
+        Section(
+          l?.compareTitle ?? 'Compare',
+          detailLinkRow(
+              c,
+              LucideIcons.gitCompare,
+              l?.compareDoorTitle ?? 'Compare signals',
+              l?.compareSub ?? 'Two to four of your own signals, side by side',
+              () => go(c, const CompareScreen())),
         ),
 
       // What used to be the Wellness tab: the things you tell the app back.

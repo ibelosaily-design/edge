@@ -874,6 +874,15 @@ Map<String, Widget> extraCases() => {
       'exercise_progress_once': ExerciseProgressBody('bench_press', _liftSample(1)),
       'exercise_progress_none':
           const ExerciseProgressBody('bench_press', []),
+      // COMPARE — three signals over 90 days with one real negative link, the
+      // same data at 7 days (too few paired days: no number), and a metric
+      // screen's "moves with" list.
+      'compare_body': CompareBody(_compareSample(),
+          keys: const ['readiness', 'sleep', 'resting_hr'], window: 2),
+      'compare_body_short': CompareBody(_compareSample(),
+          keys: const ['readiness', 'sleep'], window: 0),
+      'compare_moves_with':
+          MovesWithList(_compareSample(), 'readiness', windowDays: 90),
       // STRAIN FRONT — the Activity tab's top: the ring with its target,
       // steps and calories, today's sessions, time in zones.
       'strain_front': StrainFront(_strainFrontSample()),
@@ -2865,6 +2874,27 @@ StressMonitorData _stressSample({int nights = 14, bool still = true}) {
     sleep: stressSleep(
         hrv: hrv, hr: hr, sleep: night, rhrNights: rhr, rmssdNights: rmssd),
   );
+}
+
+/// 90 days of three series: sleep drives readiness up and resting HR down
+/// (with noise), so the pairs read as real links of different signs.
+CompareData _compareSample() {
+  final series = <String, Map<String, double>>{
+    'readiness': {},
+    'sleep': {},
+    'resting_hr': {},
+  };
+  for (var i = 0; i < 90; i++) {
+    final d = DateTime(2026, 8, 8 + i);
+    final key = '${d.year}-${d.month.toString().padLeft(2, '0')}-'
+        '${d.day.toString().padLeft(2, '0')}';
+    final sleep = 380 + 60 * sin(i / 5) + 25 * cos(i / 1.7);
+    series['sleep']![key] = sleep;
+    series['readiness']![key] =
+        (35 + (sleep - 340) * 0.35 + 8 * sin(i / 2.3)).clamp(1.0, 99.0);
+    series['resting_hr']![key] = 66 - (sleep - 380) * 0.05 + 2 * cos(i / 3.1);
+  }
+  return CompareData(series);
 }
 
 /// [n] bench sessions a week apart, the load creeping up 2.5 kg a time.
