@@ -43,25 +43,28 @@ void main() {
       expect(n.median, 97);
     });
 
-    test('bit 7 is stripped and counted, never read as part of the number',
+    test('a bit-7 byte is a sentinel: counted and dropped, never stripped',
         () {
-      final bytes = [for (var i = 0; i < 12; i++) 128 + 96, 95];
+      final bytes = [for (var i = 0; i < 12; i++) 128 + 96, ...List.filled(10, 95)];
       final n = spo2BandNight(bytes)!;
-      expect(n.n, 13);
-      expect(n.median, 96);
+      expect(n.n, 10);
+      expect(n.median, 95);
       expect(n.flaggedN, 12);
-      expect(n.min, 95);
+      expect(spo2BandNight([for (var i = 0; i < 40; i++) 0xA8]), isNull,
+          reason: 'sentinels alone never make a night');
     });
 
-    test('a stripped value outside the readable range is dropped and counted',
+    test('a byte below 70 is a code, dropped and counted; 70–100 is kept',
         () {
       final bytes = [
         ...List.filled(12, 96),
-        1, 2, 3, 127, 79, 101, // status codes, not saturations
+        1, 2, 3, 8, 69, // diagnostic codes
+        70, 100, // the edges, kept
       ];
       final n = spo2BandNight(bytes)!;
-      expect(n.n, 12);
-      expect(n.unreadN, 6);
+      expect(n.n, 14);
+      expect(n.unreadN, 5);
+      expect(n.min, 70);
       expect(n.median, 96);
       expect(spo2BandNight([...List.filled(20, 5), 96]), isNull,
           reason: 'codes alone never make a night');

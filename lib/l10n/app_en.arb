@@ -16800,7 +16800,7 @@
   "@healthMonitorReported": {
     "description": "Health Monitor status pill for a value the band or an import reported, which this app did not measure."
   },
-  "healthMonitorSpo2BandNote": "The band's own overnight reading, shown as sent. Its encoding is not yet confirmed, so treat it as a guide.",
+  "healthMonitorSpo2BandNote": "The band's own overnight reading, read the way an independent project checked against WHOOP. Not yet compared on your nights, so treat it as a guide.",
   "@healthMonitorSpo2BandNote": {
     "description": "Caveat under the SpO2 value when it comes from the WHOOP 5.0 band byte whose encoding the protocol has not pinned."
   },

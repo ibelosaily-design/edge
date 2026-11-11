@@ -12,11 +12,23 @@
 // band-side SpO2 the app has, and it is kept apart from WHOOP's own nightly
 // value carried in from a "My Data" export (metric_series `spo2`).
 //
+// Independent corroboration (2026-11-11): the NOOP Android line and its Rust
+// core (tanarchytan/noop, tanarchytan/whoop-rs — PolyForm Noncommercial; no
+// code is taken, the byte offset and gate are protocol facts) read the SAME
+// byte (their frame-82 = this inner-74) as "the strap's own computed SpO2",
+// keep it only in 70..100, drop bit-7 bytes as saturation sentinels and
+// sub-70 bytes as diagnostic codes, take the in-bed median per night, and
+// report it "cross-checked against the band's own readings". This module's
+// gate now matches that reading exactly. What is still not done: a check of
+// the number against the WHOOP app on THIS wearer's nights, so every surface
+// keeps the band-reported label until that comparison is in hand.
+//
 // Honesty gates — any one of them failing yields null, never a shape of nulls:
 //   * a second's byte of 0 is "no sample", not 0 %;
-//   * bit 7 is stripped and counted ([Spo2BandNight.flaggedN]), not read;
-//   * a stripped value outside [kSpo2BandLo]..[kSpo2BandHi] is a status code we
-//     cannot read — counted ([Spo2BandNight.unreadN]) and dropped;
+//   * a byte with bit 7 set is a sentinel: counted ([Spo2BandNight.flaggedN])
+//     and dropped, never read as a value with the bit stripped;
+//   * a byte below [kSpo2BandLo] is a status code we cannot read — counted
+//     ([Spo2BandNight.unreadN]) and dropped;
 //   * fewer than [kSpo2BandMinSamples] kept samples is no night.
 //
 // Pure: a list of per-second bytes in, a summary out. The engine stores the
@@ -24,10 +36,10 @@
 // gen5 day drained before the column existed carry no `spo2_band` key at all
 // (the WHOOP freeze golden pins that).
 
-/// Lowest stripped byte read as a value (below it, a code).
-const int kSpo2BandLo = 80;
+/// Lowest byte read as a value (below it, a diagnostic code).
+const int kSpo2BandLo = 70;
 
-/// Highest stripped byte read as a value.
+/// Highest byte read as a value; above it (bit 7) a sentinel.
 const int kSpo2BandHi = 100;
 
 /// Kept samples a night needs before it is summarised at all. The byte fires
@@ -38,8 +50,10 @@ const int kSpo2BandMinSamples = 10;
 
 /// Written into the block so a reader (and a future self) sees what this is.
 const String kSpo2BandNote =
-    'band_reported: gen5 SpO2 estimate/status byte, encoding not pinned; '
-    'bit 7 stripped, values outside $kSpo2BandLo-$kSpo2BandHi dropped';
+    'band_reported: gen5 SpO2 byte (inner 74), read as a percent in '
+    '$kSpo2BandLo-$kSpo2BandHi; bit-7 sentinels and sub-$kSpo2BandLo codes '
+    'dropped (gate matches whoop-rs v18; not yet checked against WHOOP on '
+    'this wearer)';
 
 /// One night's band-reported SpO2 summary. [median] and [min] are over the
 /// kept stripped bytes, in whatever unit the band uses (observed to behave
@@ -51,10 +65,10 @@ class Spo2BandNight {
   /// Kept samples.
   final int n;
 
-  /// Nonzero samples with bit 7 set (before stripping).
+  /// Nonzero samples with bit 7 set — sentinels, dropped.
   final int flaggedN;
 
-  /// Nonzero samples whose stripped value fell outside the readable range.
+  /// Nonzero samples below the readable range — codes, dropped.
   final int unreadN;
 
   const Spo2BandNight({
@@ -83,13 +97,15 @@ Spo2BandNight? spo2BandNight(List<int> bytes) {
   var flagged = 0, unread = 0;
   for (final b in bytes) {
     if (b <= 0) continue;
-    if ((b & 0x80) != 0) flagged++;
-    final v = b & 0x7F;
-    if (v < kSpo2BandLo || v > kSpo2BandHi) {
+    if ((b & 0x80) != 0) {
+      flagged++;
+      continue;
+    }
+    if (b < kSpo2BandLo || b > kSpo2BandHi) {
       unread++;
       continue;
     }
-    kept.add(v);
+    kept.add(b);
   }
   if (kept.length < kSpo2BandMinSamples) return null;
   kept.sort();

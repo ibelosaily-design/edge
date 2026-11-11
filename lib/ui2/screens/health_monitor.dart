@@ -8,8 +8,8 @@
 // nights a vital is calibrating and says how many nights are left. SpO₂ has
 // no measured path here (the band's red and infrared channels arrive as one
 // signal), so its card shows, in this order, what IS there: the band's own
-// nightly SpO₂ byte (gen5, `spo2_band`, labelled as the band's report with
-// its encoding unconfirmed), else WHOOP's own value for the night from an
+// nightly SpO₂ byte (gen5, `spo2_band`, labelled as the band's report, not
+// yet compared with WHOOP on this wearer), else WHOOP's own value from an
 // import (`spo2` series), else the refusal and why.
 
 import 'package:flutter/material.dart';
@@ -130,8 +130,9 @@ List<VitalRead> vitalReads(HealthData d, AppLocalizations? l) {
         unit: '%',
         status: VitalStatus.reported,
         note: l?.healthMonitorSpo2BandNote ??
-            'The band\'s own overnight reading, shown as sent. Its encoding '
-                'is not yet confirmed, so treat it as a guide.',
+            'The band\'s own overnight reading, read the way an independent '
+                'project checked against WHOOP. Not yet compared on your '
+                'nights, so treat it as a guide.',
         opens: importedV != null,
       )
     else if (importedV != null)

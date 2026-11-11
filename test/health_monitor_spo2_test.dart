@@ -41,7 +41,7 @@ void main() {
     expect(r.unit, '%');
     expect(r.status, VitalStatus.reported);
     expect(r.refusal, isNull);
-    expect(r.note, contains('as sent'));
+    expect(r.note, contains('guide'));
     expect(r.opens, isFalse,
         reason: 'the detail screen charts the IMPORTED series only');
   });
@@ -110,7 +110,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('96'), findsOneWidget);
     expect(find.text('Reported, not measured here'), findsOneWidget);
-    expect(find.textContaining('encoding'), findsOneWidget);
+    expect(find.textContaining('guide'), findsOneWidget);
     expect(find.textContaining('Not computed'), findsNothing);
   });
 }
