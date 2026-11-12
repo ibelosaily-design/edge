@@ -15,7 +15,8 @@ jobs:
   apk:
     runs-on: ubuntu-24.04
     permissions:
-      contents: write   # only to stash the APK on a private DRAFT release
+      contents: write   # stash the APK on a private DRAFT release; prune old drafts
+      actions: write    # prune stale artifacts of earlier runs
     env:
       # Secrets cannot be used in `if:` directly; surface their presence here.
       HAS_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
@@ -78,7 +79,9 @@ jobs:
         with:
           name: elosaily-strap-apk
           path: dist/*.apk
-          retention-days: 30
+          # Two days: the draft release below is the copy that lasts, and an
+          # artifact is only the quick download for the run that made it.
+          retention-days: 2
 
       # Also stash the APK on a private DRAFT release (drafts are visible only
       # to repo collaborators, never on the public Releases page). Artifacts
@@ -92,3 +95,25 @@ jobs:
           gh release create "$tag" --draft --title "CI build #${{ github.run_number }}" \
             --notes "Automated build of ${{ github.sha }} (branch elosaily). Draft: not public." \
             dist/*.apk
+
+      # Every build is ~180 MB. Keep the newest three drafts (this one and two
+      # to fall back to) and delete the rest; any older APK is rebuilt from
+      # its commit. A real (non-draft) release is never touched.
+      - name: Prune old draft builds
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api --paginate "repos/${{ github.repository }}/releases?per_page=100" \
+            --jq '.[] | select(.draft == true and (.tag_name | startswith("build-"))) | "\(.created_at) \(.id)"' \
+            | sort -r | tail -n +4 | awk '{print $2}' \
+            | while read -r id; do
+                gh api -X DELETE "repos/${{ github.repository }}/releases/$id" && echo "deleted release $id"
+              done
+          # Stale artifacts from earlier runs (retention does the rest).
+          gh api --paginate "repos/${{ github.repository }}/actions/artifacts?per_page=100" \
+            --jq '.artifacts[] | select(.expired == false) | "\(.created_at) \(.id)"' \
+            | sort -r | tail -n +3 | awk '{print $2}' \
+            | while read -r id; do
+                gh api -X DELETE "repos/${{ github.repository }}/actions/artifacts/$id" && echo "deleted artifact $id"
+              done
